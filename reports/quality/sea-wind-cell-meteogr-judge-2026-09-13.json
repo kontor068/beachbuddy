@@ -1,0 +1,3565 @@
+{
+  "generatedAt": "2026-09-13T18:36:23.705Z",
+  "ledger": "data\\sea-wind-cell-overrides.json",
+  "maxKm": 20,
+  "pastDays": 92,
+  "minDays": 40,
+  "rule": "ριπή: MAE νέου < παλιού − 1 · μέσος: MAE νέου < παλιού − 0.5 · συμφωνία ή μία ισοπαλία → ψήφος, αντίφαση → ισοπαλία · όργανο σε απάγκιο (ριπή <0.7× / μέσος <0.6× του μοντέλου στη θέση του) δεν ψηφίζει υπέρ του ηπιότερου κελιού · ριπή <0.7× ΚΑΙ διεύθυνση ύποπτη = δεν ψηφίζει · με METAR: ίδιος συνδυασμός",
+  "judge": "meteo.gr (ΕΑΑ) ημερήσιες συνόψεις Ιουν-Αυγ 2026 — όργανο στο χωριό, όχι στην άμμο· κρίνει κλίση ανά μέρα, όχι ώρα",
+  "summary": {
+    "deferred": 81,
+    "withStation": 37,
+    "withoutStation": 44,
+    "verdicts": {
+      "παλιό": 19,
+      "ισοπαλία": 14,
+      "λίγα": 3,
+      "νέο": 1
+    },
+    "meanMaeMeanKmh": {
+      "old": 4.85,
+      "new": 5.91
+    },
+    "meanMaeGustKmh": {
+      "old": 10.09,
+      "new": 11.76
+    },
+    "meanBiasMeanKmh": {
+      "old": 3.05,
+      "new": 4.01
+    },
+    "meanDirWithin22Pct": {
+      "old": 51,
+      "new": 46.45
+    },
+    "meanStrongUnder": {
+      "old": 0.57,
+      "new": 0.55
+    },
+    "newCellCalmer": 7
+  },
+  "stationsUsed": [
+    {
+      "name": "sifnos",
+      "note": "κεφαλίδα 5μ",
+      "auditDays": 92,
+      "gustRatio": 1.08,
+      "meanRatio": 0.57,
+      "dirWithin22Pct": 37,
+      "dirOppositePct": 10,
+      "gustSheltered": false,
+      "meanSheltered": true,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": [
+        "μέσος σε απάγκιο"
+      ]
+    },
+    {
+      "name": "andros",
+      "note": "κεφαλίδα 16μ",
+      "auditDays": 92,
+      "gustRatio": 0.7,
+      "meanRatio": 0.76,
+      "dirWithin22Pct": 73,
+      "dirOppositePct": 0,
+      "gustSheltered": true,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": [
+        "ριπή σε απάγκιο"
+      ]
+    },
+    {
+      "name": "amorgos",
+      "note": "κεφαλίδα 3μ",
+      "auditDays": 92,
+      "gustRatio": 1.29,
+      "meanRatio": 0.5,
+      "dirWithin22Pct": 0,
+      "dirOppositePct": 38,
+      "gustSheltered": false,
+      "meanSheltered": true,
+      "dirSuspect": true,
+      "suspectInstrument": false,
+      "flags": [
+        "μέσος σε απάγκιο",
+        "διεύθυνση ύποπτη"
+      ]
+    },
+    {
+      "name": "kalymnos",
+      "note": "κεφαλίδα 35μ",
+      "auditDays": 92,
+      "gustRatio": 0.87,
+      "meanRatio": 0.8,
+      "dirWithin22Pct": 48,
+      "dirOppositePct": 0,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": []
+    },
+    {
+      "name": "Ζάκυνθος",
+      "note": "κεφαλίδα 10μ",
+      "auditDays": 92,
+      "gustRatio": 0.49,
+      "meanRatio": 0.2,
+      "dirWithin22Pct": null,
+      "dirOppositePct": null,
+      "gustSheltered": true,
+      "meanSheltered": true,
+      "dirSuspect": true,
+      "suspectInstrument": true,
+      "flags": [
+        "ριπή σε απάγκιο",
+        "μέσος σε απάγκιο",
+        "διεύθυνση ύποπτη"
+      ]
+    },
+    {
+      "name": "Αχαράβη_Κέρκυρας",
+      "note": "κεφαλίδα 25μ",
+      "auditDays": 92,
+      "gustRatio": 0.63,
+      "meanRatio": 0.88,
+      "dirWithin22Pct": 6,
+      "dirOppositePct": 59,
+      "gustSheltered": true,
+      "meanSheltered": false,
+      "dirSuspect": true,
+      "suspectInstrument": true,
+      "flags": [
+        "ριπή σε απάγκιο",
+        "διεύθυνση ύποπτη"
+      ]
+    },
+    {
+      "name": "ios",
+      "note": "κεφαλίδα 3μ",
+      "auditDays": 92,
+      "gustRatio": 0.86,
+      "meanRatio": 1.1,
+      "dirWithin22Pct": 82,
+      "dirOppositePct": 3,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": []
+    },
+    {
+      "name": "alonnisos",
+      "note": "κεφαλίδα 50μ",
+      "auditDays": 31,
+      "gustRatio": 0.84,
+      "meanRatio": 0.8,
+      "dirWithin22Pct": 24,
+      "dirOppositePct": 0,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": true,
+      "suspectInstrument": false,
+      "flags": [
+        "διεύθυνση ύποπτη"
+      ]
+    },
+    {
+      "name": "lentas",
+      "note": "ακτή",
+      "auditDays": 92,
+      "gustRatio": 1.41,
+      "meanRatio": 1.35,
+      "dirWithin22Pct": 82,
+      "dirOppositePct": 16,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": []
+    },
+    {
+      "name": "ikaria-evdilos",
+      "note": "Εύδηλος (χωρίς κεφαλίδα)",
+      "auditDays": 92,
+      "gustRatio": 0.53,
+      "meanRatio": 0.48,
+      "dirWithin22Pct": 83,
+      "dirOppositePct": 0,
+      "gustSheltered": true,
+      "meanSheltered": true,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": [
+        "ριπή σε απάγκιο",
+        "μέσος σε απάγκιο"
+      ]
+    },
+    {
+      "name": "skopelos",
+      "note": "Σκόπελος Χώρα (κενή κεφαλίδα)",
+      "auditDays": 92,
+      "gustRatio": 0.81,
+      "meanRatio": 0.97,
+      "dirWithin22Pct": 37,
+      "dirOppositePct": 2,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": []
+    },
+    {
+      "name": "Ιθάκη",
+      "note": "κεφαλίδα 7μ",
+      "auditDays": 92,
+      "gustRatio": 1,
+      "meanRatio": 0.62,
+      "dirWithin22Pct": 100,
+      "dirOppositePct": 0,
+      "gustSheltered": false,
+      "meanSheltered": false,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": []
+    },
+    {
+      "name": "chios-kardamyla",
+      "note": "κεφαλίδα 7μ",
+      "auditDays": 92,
+      "gustRatio": 0.83,
+      "meanRatio": 0.45,
+      "dirWithin22Pct": 70,
+      "dirOppositePct": 4,
+      "gustSheltered": false,
+      "meanSheltered": true,
+      "dirSuspect": false,
+      "suspectInstrument": false,
+      "flags": [
+        "μέσος σε απάγκιο"
+      ]
+    },
+    {
+      "name": "folegandros",
+      "note": "κεφαλίδα 200μ",
+      "auditDays": 92,
+      "gustRatio": 1.01,
+      "meanRatio": 0.53,
+      "dirWithin22Pct": 10,
+      "dirOppositePct": 76,
+      "gustSheltered": false,
+      "meanSheltered": true,
+      "dirSuspect": true,
+      "suspectInstrument": false,
+      "flags": [
+        "μέσος σε απάγκιο",
+        "διεύθυνση ύποπτη"
+      ]
+    }
+  ],
+  "perBeach": [
+    {
+      "beachId": 2108,
+      "name": "Spilia",
+      "region": "south-aegean-sifnos",
+      "station": {
+        "name": "sifnos",
+        "lat": 37,
+        "lon": 24.7,
+        "km": 2.7
+      },
+      "stationQuality": {
+        "name": "sifnos",
+        "note": "κεφαλίδα 5μ",
+        "auditDays": 92,
+        "gustRatio": 1.08,
+        "meanRatio": 0.57,
+        "dirWithin22Pct": 37,
+        "dirOppositePct": 10,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "37_24.6875",
+      "newCell": "37_24.625",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 7.57,
+        "biasMeanKmh": 7.26,
+        "maeGustKmh": 8.97,
+        "biasGustKmh": -4.88,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 39,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.73
+      },
+      "new": {
+        "maeMeanKmh": 7.92,
+        "biasMeanKmh": 7.18,
+        "maeGustKmh": 13.84,
+        "biasGustKmh": -13.19,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 32,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.66
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 9,
+      "newCloserWhenDisagree": 0.111,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2101,
+      "name": "Kamares",
+      "region": "south-aegean-sifnos",
+      "station": {
+        "name": "sifnos",
+        "lat": 37,
+        "lon": 24.7,
+        "km": 2.2
+      },
+      "stationQuality": {
+        "name": "sifnos",
+        "note": "κεφαλίδα 5μ",
+        "auditDays": 92,
+        "gustRatio": 1.08,
+        "meanRatio": 0.57,
+        "dirWithin22Pct": 37,
+        "dirOppositePct": 10,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "37_24.6875",
+      "newCell": "37_24.625",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 7.57,
+        "biasMeanKmh": 7.26,
+        "maeGustKmh": 8.97,
+        "biasGustKmh": -4.88,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 39,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.73
+      },
+      "new": {
+        "maeMeanKmh": 7.92,
+        "biasMeanKmh": 7.18,
+        "maeGustKmh": 13.84,
+        "biasGustKmh": -13.19,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 32,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.66
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 9,
+      "newCloserWhenDisagree": 0.111,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2109,
+      "name": "Toso Nero",
+      "region": "south-aegean-sifnos",
+      "station": {
+        "name": "sifnos",
+        "lat": 37,
+        "lon": 24.7,
+        "km": 4.2
+      },
+      "stationQuality": {
+        "name": "sifnos",
+        "note": "κεφαλίδα 5μ",
+        "auditDays": 92,
+        "gustRatio": 1.08,
+        "meanRatio": 0.57,
+        "dirWithin22Pct": 37,
+        "dirOppositePct": 10,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "37_24.6875",
+      "newCell": "36.9375_24.625",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 7.57,
+        "biasMeanKmh": 7.26,
+        "maeGustKmh": 8.97,
+        "biasGustKmh": -4.88,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 39,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.73
+      },
+      "new": {
+        "maeMeanKmh": 8.5,
+        "biasMeanKmh": 7.81,
+        "maeGustKmh": 15.1,
+        "biasGustKmh": -14.59,
+        "dirWithin22Pct": 35,
+        "bftExactPct": 32,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 18.29
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 8,
+      "newCloserWhenDisagree": 0.125,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": [
+        "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.57× του μοντέλου"
+      ]
+    },
+    {
+      "beachId": 1720,
+      "name": "Platanistos",
+      "region": "south-aegean-andros",
+      "station": {
+        "name": "andros",
+        "lat": 37.9,
+        "lon": 24.7,
+        "km": 18.1
+      },
+      "stationQuality": {
+        "name": "andros",
+        "note": "κεφαλίδα 16μ",
+        "auditDays": 92,
+        "gustRatio": 0.7,
+        "meanRatio": 0.76,
+        "dirWithin22Pct": 73,
+        "dirOppositePct": 0,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "ριπή σε απάγκιο"
+        ]
+      },
+      "oldCell": "37.875_24.9375",
+      "newCell": "37.9375_24.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.84,
+        "biasMeanKmh": -0.03,
+        "maeGustKmh": 11.42,
+        "biasGustKmh": -8.33,
+        "dirWithin22Pct": 17,
+        "bftExactPct": 55,
+        "strongDays": 22,
+        "strongUnder": 0.318,
+        "meanOfDailyMeanKmh": 17.82
+      },
+      "new": {
+        "maeMeanKmh": 4.2,
+        "biasMeanKmh": 3.09,
+        "maeGustKmh": 14.55,
+        "biasGustKmh": -13.14,
+        "dirWithin22Pct": 10,
+        "bftExactPct": 52,
+        "strongDays": 22,
+        "strongUnder": 0.091,
+        "meanOfDailyMeanKmh": 20.95
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 25,
+      "newCloserWhenDisagree": 0.52,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "ισοπαλία",
+      "metar": null,
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ψήφος ριπής υπέρ του ηπιότερου (παλιό) σβήνει — ριπή σταθμού 0.7× του μοντέλου"
+      ]
+    },
+    {
+      "beachId": 1678,
+      "name": "Livoskopos",
+      "region": "south-aegean-anafi",
+      "station": {
+        "name": "amorgos",
+        "lat": 36.5,
+        "lon": 25.6,
+        "km": 19.7
+      },
+      "stationQuality": {
+        "name": "amorgos",
+        "note": "κεφαλίδα 3μ",
+        "auditDays": 92,
+        "gustRatio": 1.29,
+        "meanRatio": 0.5,
+        "dirWithin22Pct": 0,
+        "dirOppositePct": 38,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": true,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "36.375_25.75",
+      "newCell": "36.4375_25.75",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 8.92,
+        "biasMeanKmh": 8.9,
+        "maeGustKmh": 9.03,
+        "biasGustKmh": 3.72,
+        "dirWithin22Pct": 5,
+        "bftExactPct": 20,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.1
+      },
+      "new": {
+        "maeMeanKmh": 8.6,
+        "biasMeanKmh": 8.59,
+        "maeGustKmh": 11.15,
+        "biasGustKmh": -10.06,
+        "dirWithin22Pct": 3,
+        "bftExactPct": 21,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 16.79
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 5,
+      "newCloserWhenDisagree": 1,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "region": "south-aegean-kalymnos",
+      "station": {
+        "name": "kalymnos",
+        "lat": 36.95138888888889,
+        "lon": 26.980555555555554,
+        "km": 4.8
+      },
+      "stationQuality": {
+        "name": "kalymnos",
+        "note": "κεφαλίδα 35μ",
+        "auditDays": 92,
+        "gustRatio": 0.87,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 48,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "36.9375_26.9375",
+      "newCell": "37_26.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.83,
+        "biasMeanKmh": 3.79,
+        "maeGustKmh": 5.76,
+        "biasGustKmh": 4.44,
+        "dirWithin22Pct": 54,
+        "bftExactPct": 45,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 14.11
+      },
+      "new": {
+        "maeMeanKmh": 5.01,
+        "biasMeanKmh": 4.9,
+        "maeGustKmh": 7.89,
+        "biasGustKmh": -5.44,
+        "dirWithin22Pct": 48,
+        "bftExactPct": 43,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 15.23
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.357,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2260,
+      "name": "Paralia Alexis",
+      "region": "south-aegean-kalymnos",
+      "station": {
+        "name": "kalymnos",
+        "lat": 36.95138888888889,
+        "lon": 26.980555555555554,
+        "km": 11.7
+      },
+      "stationQuality": {
+        "name": "kalymnos",
+        "note": "κεφαλίδα 35μ",
+        "auditDays": 92,
+        "gustRatio": 0.87,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 48,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "37.0625_26.9375",
+      "newCell": "37.0625_26.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.48,
+        "biasMeanKmh": 3.18,
+        "maeGustKmh": 4.99,
+        "biasGustKmh": 0.08,
+        "dirWithin22Pct": 65,
+        "bftExactPct": 63,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 13.51
+      },
+      "new": {
+        "maeMeanKmh": 4.01,
+        "biasMeanKmh": 3.45,
+        "maeGustKmh": 7.58,
+        "biasGustKmh": -6.02,
+        "dirWithin22Pct": 61,
+        "bftExactPct": 57,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 13.78
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 5,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": {
+        "icao": "LGLE",
+        "km": 18.8,
+        "hours": 0,
+        "verdict": "λίγα"
+      },
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1187,
+      "name": "Kalamaki",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "name": "Ζάκυνθος",
+        "lat": 37.8,
+        "lon": 20.8,
+        "km": 11.8
+      },
+      "stationQuality": {
+        "name": "Ζάκυνθος",
+        "note": "κεφαλίδα 10μ",
+        "auditDays": 92,
+        "gustRatio": 0.49,
+        "meanRatio": 0.2,
+        "dirWithin22Pct": null,
+        "dirOppositePct": null,
+        "gustSheltered": true,
+        "meanSheltered": true,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.23,
+        "biasMeanKmh": 6.23,
+        "maeGustKmh": 8.96,
+        "biasGustKmh": 8.51,
+        "dirWithin22Pct": null,
+        "bftExactPct": 20,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.86
+      },
+      "new": {
+        "maeMeanKmh": 6.88,
+        "biasMeanKmh": 6.88,
+        "maeGustKmh": 8.03,
+        "biasGustKmh": 7.04,
+        "dirWithin22Pct": null,
+        "bftExactPct": 7,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.51
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.143,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGZA",
+        "km": 2.6,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+        "METAR LGZA (2.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 2265,
+      "name": "Paralia Kantouni",
+      "region": "south-aegean-kalymnos",
+      "station": {
+        "name": "kalymnos",
+        "lat": 36.95138888888889,
+        "lon": 26.980555555555554,
+        "km": 4.6
+      },
+      "stationQuality": {
+        "name": "kalymnos",
+        "note": "κεφαλίδα 35μ",
+        "auditDays": 92,
+        "gustRatio": 0.87,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 48,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "36.9375_26.9375",
+      "newCell": "37_26.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.83,
+        "biasMeanKmh": 3.79,
+        "maeGustKmh": 5.76,
+        "biasGustKmh": 4.44,
+        "dirWithin22Pct": 54,
+        "bftExactPct": 45,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 14.11
+      },
+      "new": {
+        "maeMeanKmh": 5.01,
+        "biasMeanKmh": 4.9,
+        "maeGustKmh": 7.89,
+        "biasGustKmh": -5.44,
+        "dirWithin22Pct": 48,
+        "bftExactPct": 43,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 15.23
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.357,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 928,
+      "name": "Agias Triades Beach",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "lat": 39.8,
+        "lon": 19.8,
+        "km": 15.9
+      },
+      "stationQuality": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "note": "κεφαλίδα 25μ",
+        "auditDays": 92,
+        "gustRatio": 0.63,
+        "meanRatio": 0.88,
+        "dirWithin22Pct": 6,
+        "dirOppositePct": 59,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.38,
+        "biasMeanKmh": 2.32,
+        "maeGustKmh": 9.33,
+        "biasGustKmh": 6.85,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.66
+      },
+      "new": {
+        "maeMeanKmh": 4.45,
+        "biasMeanKmh": 4.38,
+        "maeGustKmh": 7.92,
+        "biasGustKmh": 3.42,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 38,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGKR",
+        "km": 18.6,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+        "METAR LGKR (18.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 991,
+      "name": "Paralia Klimatia",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "lat": 39.8,
+        "lon": 19.8,
+        "km": 16.2
+      },
+      "stationQuality": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "note": "κεφαλίδα 25μ",
+        "auditDays": 92,
+        "gustRatio": 0.63,
+        "meanRatio": 0.88,
+        "dirWithin22Pct": 6,
+        "dirOppositePct": 59,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.38,
+        "biasMeanKmh": 2.32,
+        "maeGustKmh": 9.33,
+        "biasGustKmh": 6.85,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.66
+      },
+      "new": {
+        "maeMeanKmh": 4.45,
+        "biasMeanKmh": 4.38,
+        "maeGustKmh": 7.92,
+        "biasGustKmh": 3.42,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 38,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGKR",
+        "km": 17.6,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+        "METAR LGKR (17.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 1792,
+      "name": "Santoriniko",
+      "region": "south-aegean-ios",
+      "station": {
+        "name": "ios",
+        "lat": 36.7,
+        "lon": 25.3,
+        "km": 7.4
+      },
+      "stationQuality": {
+        "name": "ios",
+        "note": "κεφαλίδα 3μ",
+        "auditDays": 92,
+        "gustRatio": 0.86,
+        "meanRatio": 1.1,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 3,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "36.6875_25.375",
+      "newCell": "36.625_25.375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.01,
+        "biasMeanKmh": -1.71,
+        "maeGustKmh": 8.17,
+        "biasGustKmh": -2.67,
+        "dirWithin22Pct": 92,
+        "bftExactPct": 61,
+        "strongDays": 29,
+        "strongUnder": 0.345,
+        "meanOfDailyMeanKmh": 18.53
+      },
+      "new": {
+        "maeMeanKmh": 5.02,
+        "biasMeanKmh": -3.59,
+        "maeGustKmh": 17.23,
+        "biasGustKmh": -16.89,
+        "dirWithin22Pct": 85,
+        "bftExactPct": 39,
+        "strongDays": 29,
+        "strongUnder": 0.552,
+        "meanOfDailyMeanKmh": 16.65
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.071,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1220,
+      "name": "Sekania",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "name": "Ζάκυνθος",
+        "lat": 37.8,
+        "lon": 20.8,
+        "km": 14.7
+      },
+      "stationQuality": {
+        "name": "Ζάκυνθος",
+        "note": "κεφαλίδα 10μ",
+        "auditDays": 92,
+        "gustRatio": 0.49,
+        "meanRatio": 0.2,
+        "dirWithin22Pct": null,
+        "dirOppositePct": null,
+        "gustSheltered": true,
+        "meanSheltered": true,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.23,
+        "biasMeanKmh": 6.23,
+        "maeGustKmh": 8.96,
+        "biasGustKmh": 8.51,
+        "dirWithin22Pct": null,
+        "bftExactPct": 20,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.86
+      },
+      "new": {
+        "maeMeanKmh": 6.88,
+        "biasMeanKmh": 6.88,
+        "maeGustKmh": 8.03,
+        "biasGustKmh": 7.04,
+        "dirWithin22Pct": null,
+        "bftExactPct": 7,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.51
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.143,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGZA",
+        "km": 5.5,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+        "METAR LGZA (5.5 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 1186,
+      "name": "Dafni",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "name": "Ζάκυνθος",
+        "lat": 37.8,
+        "lon": 20.8,
+        "km": 16.2
+      },
+      "stationQuality": {
+        "name": "Ζάκυνθος",
+        "note": "κεφαλίδα 10μ",
+        "auditDays": 92,
+        "gustRatio": 0.49,
+        "meanRatio": 0.2,
+        "dirWithin22Pct": null,
+        "dirOppositePct": null,
+        "gustSheltered": true,
+        "meanSheltered": true,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.23,
+        "biasMeanKmh": 6.23,
+        "maeGustKmh": 8.96,
+        "biasGustKmh": 8.51,
+        "dirWithin22Pct": null,
+        "bftExactPct": 20,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.86
+      },
+      "new": {
+        "maeMeanKmh": 6.88,
+        "biasMeanKmh": 6.88,
+        "maeGustKmh": 8.03,
+        "biasGustKmh": 7.04,
+        "dirWithin22Pct": null,
+        "bftExactPct": 7,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.51
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.143,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGZA",
+        "km": 7,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+        "METAR LGZA (7 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 993,
+      "name": "Paralia Limni",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "lat": 39.8,
+        "lon": 19.8,
+        "km": 16.3
+      },
+      "stationQuality": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "note": "κεφαλίδα 25μ",
+        "auditDays": 92,
+        "gustRatio": 0.63,
+        "meanRatio": 0.88,
+        "dirWithin22Pct": 6,
+        "dirOppositePct": 59,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.38,
+        "biasMeanKmh": 2.32,
+        "maeGustKmh": 9.33,
+        "biasGustKmh": 6.85,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.66
+      },
+      "new": {
+        "maeMeanKmh": 4.45,
+        "biasMeanKmh": 4.38,
+        "maeGustKmh": 7.92,
+        "biasGustKmh": 3.42,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 38,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGKR",
+        "km": 17.6,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+        "METAR LGKR (17.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 3093,
+      "name": "Megali Ammos",
+      "region": "thessaly-alonissos",
+      "station": {
+        "name": "alonnisos",
+        "lat": 39.2,
+        "lon": 23.9,
+        "km": 5.8
+      },
+      "stationQuality": {
+        "name": "alonnisos",
+        "note": "κεφαλίδα 50μ",
+        "auditDays": 31,
+        "gustRatio": 0.84,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 24,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": false,
+        "flags": [
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.25_23.9375",
+      "newCell": "39.25_24",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 31,
+      "firstDay": "2026-08-01",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.92,
+        "biasMeanKmh": 2.51,
+        "maeGustKmh": 11.05,
+        "biasGustKmh": 9.69,
+        "dirWithin22Pct": 24,
+        "bftExactPct": 52,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 10.28
+      },
+      "new": {
+        "maeMeanKmh": 4.09,
+        "biasMeanKmh": 3.25,
+        "maeGustKmh": 6.38,
+        "biasGustKmh": -1.51,
+        "dirWithin22Pct": 33,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 11.02
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 2,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "λίγα",
+      "metar": null,
+      "verdict": "λίγα",
+      "notes": []
+    },
+    {
+      "beachId": 984,
+      "name": "Paralia Ampelaki",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "lat": 39.8,
+        "lon": 19.8,
+        "km": 16.5
+      },
+      "stationQuality": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "note": "κεφαλίδα 25μ",
+        "auditDays": 92,
+        "gustRatio": 0.63,
+        "meanRatio": 0.88,
+        "dirWithin22Pct": 6,
+        "dirOppositePct": 59,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.38,
+        "biasMeanKmh": 2.32,
+        "maeGustKmh": 9.33,
+        "biasGustKmh": 6.85,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.66
+      },
+      "new": {
+        "maeMeanKmh": 4.45,
+        "biasMeanKmh": 4.38,
+        "maeGustKmh": 7.92,
+        "biasGustKmh": 3.42,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 38,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGKR",
+        "km": 19.7,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+        "METAR LGKR (19.7 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 628,
+      "name": "Poros",
+      "region": "crete-crete-heraklion",
+      "station": {
+        "name": "lentas",
+        "lat": 34.9331,
+        "lon": 24.9372,
+        "km": 16.9
+      },
+      "stationQuality": {
+        "name": "lentas",
+        "note": "ακτή",
+        "auditDays": 92,
+        "gustRatio": 1.41,
+        "meanRatio": 1.35,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 16,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "34.9375_24.75",
+      "newCell": "34.875_24.75",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.29,
+        "biasMeanKmh": -4.6,
+        "maeGustKmh": 22.76,
+        "biasGustKmh": -19.35,
+        "dirWithin22Pct": 4,
+        "bftExactPct": 38,
+        "strongDays": 11,
+        "strongUnder": 1,
+        "meanOfDailyMeanKmh": 8.49
+      },
+      "new": {
+        "maeMeanKmh": 6.26,
+        "biasMeanKmh": -2.41,
+        "maeGustKmh": 23.95,
+        "biasGustKmh": -22.06,
+        "dirWithin22Pct": 10,
+        "bftExactPct": 34,
+        "strongDays": 11,
+        "strongUnder": 0.909,
+        "meanOfDailyMeanKmh": 10.69
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 19,
+      "newCloserWhenDisagree": 0.474,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2591,
+      "name": "Kalyvia Stamatiou",
+      "region": "thessaly-alonissos",
+      "station": {
+        "name": "alonnisos",
+        "lat": 39.2,
+        "lon": 23.9,
+        "km": 5.2
+      },
+      "stationQuality": {
+        "name": "alonnisos",
+        "note": "κεφαλίδα 50μ",
+        "auditDays": 31,
+        "gustRatio": 0.84,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 24,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": false,
+        "flags": [
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.25_23.9375",
+      "newCell": "39.1875_23.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 31,
+      "firstDay": "2026-08-01",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.92,
+        "biasMeanKmh": 2.51,
+        "maeGustKmh": 11.05,
+        "biasGustKmh": 9.69,
+        "dirWithin22Pct": 24,
+        "bftExactPct": 52,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 10.28
+      },
+      "new": {
+        "maeMeanKmh": 3.37,
+        "biasMeanKmh": 2.29,
+        "maeGustKmh": 9.68,
+        "biasGustKmh": 7.72,
+        "dirWithin22Pct": 24,
+        "bftExactPct": 55,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 10.07
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 2,
+      "newCloserWhenDisagree": 1,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "λίγα",
+      "metar": null,
+      "verdict": "λίγα",
+      "notes": []
+    },
+    {
+      "beachId": 3014,
+      "name": "Palaiokastritsa",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "lat": 39.8,
+        "lon": 19.8,
+        "km": 15.7
+      },
+      "stationQuality": {
+        "name": "Αχαράβη_Κέρκυρας",
+        "note": "κεφαλίδα 25μ",
+        "auditDays": 92,
+        "gustRatio": 0.63,
+        "meanRatio": 0.88,
+        "dirWithin22Pct": 6,
+        "dirOppositePct": 59,
+        "gustSheltered": true,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": true,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.38,
+        "biasMeanKmh": 2.32,
+        "maeGustKmh": 9.33,
+        "biasGustKmh": 6.85,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.66
+      },
+      "new": {
+        "maeMeanKmh": 4.45,
+        "biasMeanKmh": 4.38,
+        "maeGustKmh": 7.92,
+        "biasGustKmh": 3.42,
+        "dirWithin22Pct": 9,
+        "bftExactPct": 38,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "όργανο ύποπτο",
+      "metar": {
+        "icao": "LGKR",
+        "km": 19,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+        "METAR LGKR (19 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 2116,
+      "name": "Agios Panteleimonas",
+      "region": "south-aegean-sikinos",
+      "station": {
+        "name": "ios",
+        "lat": 36.7,
+        "lon": 25.3,
+        "km": 16.4
+      },
+      "stationQuality": {
+        "name": "ios",
+        "note": "κεφαλίδα 3μ",
+        "auditDays": 92,
+        "gustRatio": 0.86,
+        "meanRatio": 1.1,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 3,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "36.6875_25.125",
+      "newCell": "36.625_25.125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.46,
+        "biasMeanKmh": -1.12,
+        "maeGustKmh": 9.29,
+        "biasGustKmh": -5.92,
+        "dirWithin22Pct": 91,
+        "bftExactPct": 57,
+        "strongDays": 29,
+        "strongUnder": 0.276,
+        "meanOfDailyMeanKmh": 19.12
+      },
+      "new": {
+        "maeMeanKmh": 3.83,
+        "biasMeanKmh": -1.1,
+        "maeGustKmh": 15.18,
+        "biasGustKmh": -14.71,
+        "dirWithin22Pct": 89,
+        "bftExactPct": 52,
+        "strongDays": 29,
+        "strongUnder": 0.31,
+        "meanOfDailyMeanKmh": 19.14
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 7,
+      "newCloserWhenDisagree": 0.286,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1298,
+      "name": "Kerame",
+      "region": "north-aegean-ikaria",
+      "station": {
+        "name": "ikaria-evdilos",
+        "lat": 37.63,
+        "lon": 26.17,
+        "km": 15.2
+      },
+      "stationQuality": {
+        "name": "ikaria-evdilos",
+        "note": "Εύδηλος (χωρίς κεφαλίδα)",
+        "auditDays": 92,
+        "gustRatio": 0.53,
+        "meanRatio": 0.48,
+        "dirWithin22Pct": 83,
+        "dirOppositePct": 0,
+        "gustSheltered": true,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "37.6875_26.3125",
+      "newCell": "37.6875_26.375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 8.82,
+        "biasMeanKmh": 8.82,
+        "maeGustKmh": 14.24,
+        "biasGustKmh": 14.24,
+        "dirWithin22Pct": 78,
+        "bftExactPct": 9,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 14.84
+      },
+      "new": {
+        "maeMeanKmh": 12.91,
+        "biasMeanKmh": 12.91,
+        "maeGustKmh": 7.98,
+        "biasGustKmh": 7.7,
+        "dirWithin22Pct": 78,
+        "bftExactPct": 4,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 18.93
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 28,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "νέο",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "νέο",
+      "metar": {
+        "icao": "LGIK",
+        "km": 2.8,
+        "hours": 0,
+        "verdict": "λίγα"
+      },
+      "verdict": "νέο",
+      "notes": [
+        "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.48× του μοντέλου"
+      ]
+    },
+    {
+      "beachId": 2611,
+      "name": "Strovili",
+      "region": "thessaly-alonissos",
+      "station": {
+        "name": "alonnisos",
+        "lat": 39.2,
+        "lon": 23.9,
+        "km": 6.2
+      },
+      "stationQuality": {
+        "name": "alonnisos",
+        "note": "κεφαλίδα 50μ",
+        "auditDays": 31,
+        "gustRatio": 0.84,
+        "meanRatio": 0.8,
+        "dirWithin22Pct": 24,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": true,
+        "suspectInstrument": false,
+        "flags": [
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "39.25_23.9375",
+      "newCell": "39.25_24",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 31,
+      "firstDay": "2026-08-01",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.92,
+        "biasMeanKmh": 2.51,
+        "maeGustKmh": 11.05,
+        "biasGustKmh": 9.69,
+        "dirWithin22Pct": 24,
+        "bftExactPct": 52,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 10.28
+      },
+      "new": {
+        "maeMeanKmh": 4.09,
+        "biasMeanKmh": 3.25,
+        "maeGustKmh": 6.38,
+        "biasGustKmh": -1.51,
+        "dirWithin22Pct": 33,
+        "bftExactPct": 48,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 11.02
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 2,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "λίγα",
+      "metar": null,
+      "verdict": "λίγα",
+      "notes": []
+    },
+    {
+      "beachId": 1801,
+      "name": "Trypiti",
+      "region": "south-aegean-ios",
+      "station": {
+        "name": "ios",
+        "lat": 36.7,
+        "lon": 25.3,
+        "km": 6.4
+      },
+      "stationQuality": {
+        "name": "ios",
+        "note": "κεφαλίδα 3μ",
+        "auditDays": 92,
+        "gustRatio": 0.86,
+        "meanRatio": 1.1,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 3,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "36.6875_25.375",
+      "newCell": "36.625_25.3125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 3.01,
+        "biasMeanKmh": -1.71,
+        "maeGustKmh": 8.17,
+        "biasGustKmh": -2.67,
+        "dirWithin22Pct": 92,
+        "bftExactPct": 61,
+        "strongDays": 29,
+        "strongUnder": 0.345,
+        "meanOfDailyMeanKmh": 18.53
+      },
+      "new": {
+        "maeMeanKmh": 3.73,
+        "biasMeanKmh": -2.12,
+        "maeGustKmh": 16.81,
+        "biasGustKmh": -16.81,
+        "dirWithin22Pct": 81,
+        "bftExactPct": 57,
+        "strongDays": 29,
+        "strongUnder": 0.31,
+        "meanOfDailyMeanKmh": 18.11
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 12,
+      "newCloserWhenDisagree": 0.417,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 627,
+      "name": "Martsalo",
+      "region": "crete-crete-heraklion",
+      "station": {
+        "name": "lentas",
+        "lat": 34.9331,
+        "lon": 24.9372,
+        "km": 15.2
+      },
+      "stationQuality": {
+        "name": "lentas",
+        "note": "ακτή",
+        "auditDays": 92,
+        "gustRatio": 1.41,
+        "meanRatio": 1.35,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 16,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "34.9375_24.75",
+      "newCell": "34.875_24.75",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.29,
+        "biasMeanKmh": -4.6,
+        "maeGustKmh": 22.76,
+        "biasGustKmh": -19.35,
+        "dirWithin22Pct": 4,
+        "bftExactPct": 38,
+        "strongDays": 11,
+        "strongUnder": 1,
+        "meanOfDailyMeanKmh": 8.49
+      },
+      "new": {
+        "maeMeanKmh": 6.26,
+        "biasMeanKmh": -2.41,
+        "maeGustKmh": 23.95,
+        "biasGustKmh": -22.06,
+        "dirWithin22Pct": 10,
+        "bftExactPct": 34,
+        "strongDays": 11,
+        "strongUnder": 0.909,
+        "meanOfDailyMeanKmh": 10.69
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 19,
+      "newCloserWhenDisagree": 0.474,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 621,
+      "name": "Agiofarango",
+      "region": "crete-crete-heraklion",
+      "station": {
+        "name": "lentas",
+        "lat": 34.9331,
+        "lon": 24.9372,
+        "km": 14.5
+      },
+      "stationQuality": {
+        "name": "lentas",
+        "note": "ακτή",
+        "auditDays": 92,
+        "gustRatio": 1.41,
+        "meanRatio": 1.35,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 16,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "34.9375_24.75",
+      "newCell": "34.875_24.8125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 6.29,
+        "biasMeanKmh": -4.6,
+        "maeGustKmh": 22.76,
+        "biasGustKmh": -19.35,
+        "dirWithin22Pct": 4,
+        "bftExactPct": 38,
+        "strongDays": 11,
+        "strongUnder": 1,
+        "meanOfDailyMeanKmh": 8.49
+      },
+      "new": {
+        "maeMeanKmh": 7.2,
+        "biasMeanKmh": -4.59,
+        "maeGustKmh": 27.13,
+        "biasGustKmh": -25.24,
+        "dirWithin22Pct": 6,
+        "bftExactPct": 30,
+        "strongDays": 11,
+        "strongUnder": 1,
+        "meanOfDailyMeanKmh": 8.51
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 8,
+      "newCloserWhenDisagree": 0.125,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 665,
+      "name": "Salamias",
+      "region": "crete-crete-heraklion",
+      "station": {
+        "name": "lentas",
+        "lat": 34.9331,
+        "lon": 24.9372,
+        "km": 7.8
+      },
+      "stationQuality": {
+        "name": "lentas",
+        "note": "ακτή",
+        "auditDays": 92,
+        "gustRatio": 1.41,
+        "meanRatio": 1.35,
+        "dirWithin22Pct": 82,
+        "dirOppositePct": 16,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "34.9375_25",
+      "newCell": "34.875_25",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 4.97,
+        "biasMeanKmh": -2.18,
+        "maeGustKmh": 18.49,
+        "biasGustKmh": -15.65,
+        "dirWithin22Pct": 90,
+        "bftExactPct": 43,
+        "strongDays": 11,
+        "strongUnder": 0.818,
+        "meanOfDailyMeanKmh": 10.92
+      },
+      "new": {
+        "maeMeanKmh": 6.5,
+        "biasMeanKmh": -3.88,
+        "maeGustKmh": 24.6,
+        "biasGustKmh": -23.63,
+        "dirWithin22Pct": 26,
+        "bftExactPct": 39,
+        "strongDays": 11,
+        "strongUnder": 0.909,
+        "meanOfDailyMeanKmh": 9.21
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 18,
+      "newCloserWhenDisagree": 0.167,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 2647,
+      "name": "Glysteri",
+      "region": "thessaly-skopelos",
+      "station": {
+        "name": "skopelos",
+        "lat": 39.122,
+        "lon": 23.727,
+        "km": 2.5
+      },
+      "stationQuality": {
+        "name": "skopelos",
+        "note": "Σκόπελος Χώρα (κενή κεφαλίδα)",
+        "auditDays": 92,
+        "gustRatio": 0.81,
+        "meanRatio": 0.97,
+        "dirWithin22Pct": 37,
+        "dirOppositePct": 2,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "39.125_23.75",
+      "newCell": "39.1875_23.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 1.66,
+        "biasMeanKmh": 0.67,
+        "maeGustKmh": 6.4,
+        "biasGustKmh": 1.66,
+        "dirWithin22Pct": 31,
+        "bftExactPct": 64,
+        "strongDays": 3,
+        "strongUnder": 0,
+        "meanOfDailyMeanKmh": 8.78
+      },
+      "new": {
+        "maeMeanKmh": 1.52,
+        "biasMeanKmh": 0.95,
+        "maeGustKmh": 6.25,
+        "biasGustKmh": -4.54,
+        "dirWithin22Pct": 41,
+        "bftExactPct": 79,
+        "strongDays": 3,
+        "strongUnder": 0,
+        "meanOfDailyMeanKmh": 9.06
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 14,
+      "newCloserWhenDisagree": 0.857,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "ισοπαλία",
+      "metar": {
+        "icao": "LGSK",
+        "km": 18.8,
+        "hours": 620,
+        "verdict": "ισοπαλία"
+      },
+      "verdict": "ισοπαλία",
+      "notes": []
+    },
+    {
+      "beachId": 1222,
+      "name": "Pera Pigadi",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 9
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.3125_20.75",
+      "newCell": "38.3125_20.8125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 1.74,
+        "biasMeanKmh": 1.44,
+        "maeGustKmh": 11.32,
+        "biasGustKmh": -10.32,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 55,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 6.68
+      },
+      "new": {
+        "maeMeanKmh": 2.63,
+        "biasMeanKmh": 2.6,
+        "maeGustKmh": 14.79,
+        "biasGustKmh": -14.37,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 41,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 7.83
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 11,
+      "newCloserWhenDisagree": 0.182,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1223,
+      "name": "Paralia Kaminia",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 7.6
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.3125_20.75",
+      "newCell": "38.375_20.8125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 1.74,
+        "biasMeanKmh": 1.44,
+        "maeGustKmh": 11.32,
+        "biasGustKmh": -10.32,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 55,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 6.68
+      },
+      "new": {
+        "maeMeanKmh": 3.49,
+        "biasMeanKmh": 3.49,
+        "maeGustKmh": 8.29,
+        "biasGustKmh": -7.65,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 23,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.72
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 23,
+      "newCloserWhenDisagree": 0.087,
+      "votes": {
+        "gust": "νέο",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "ισοπαλία",
+      "metar": null,
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ριπή λέει νέο, μέσος λέει παλιό — αντίφαση"
+      ]
+    },
+    {
+      "beachId": 1241,
+      "name": "Prota Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 7
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.4375_20.6875",
+      "newCell": "38.5_20.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.85,
+        "biasMeanKmh": 2.85,
+        "maeGustKmh": 5.66,
+        "biasGustKmh": -2.2,
+        "dirWithin22Pct": 87,
+        "bftExactPct": 25,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.08
+      },
+      "new": {
+        "maeMeanKmh": 4.73,
+        "biasMeanKmh": 4.73,
+        "maeGustKmh": 5.61,
+        "biasGustKmh": -3.36,
+        "dirWithin22Pct": 53,
+        "bftExactPct": 9,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.97
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0.077,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1247,
+      "name": "Paralia Pyrgia (vorios ormos)",
+      "region": "north-aegean-chios",
+      "station": {
+        "name": "chios-kardamyla",
+        "lat": 38.53805555555555,
+        "lon": 26.115000000000002,
+        "km": 3.8
+      },
+      "stationQuality": {
+        "name": "chios-kardamyla",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 0.83,
+        "meanRatio": 0.45,
+        "dirWithin22Pct": 70,
+        "dirOppositePct": 4,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "38.5_26.125",
+      "newCell": "38.5_26.1875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 10.02,
+        "biasMeanKmh": 9.94,
+        "maeGustKmh": 10.5,
+        "biasGustKmh": 7.56,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 13,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 16.27
+      },
+      "new": {
+        "maeMeanKmh": 11.86,
+        "biasMeanKmh": 11.64,
+        "maeGustKmh": 9.26,
+        "biasGustKmh": 5.06,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 9,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.97
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 10,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "νέο",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "νέο",
+      "metar": {
+        "icao": "LGHI",
+        "km": 19.5,
+        "hours": 615,
+        "verdict": "παλιό"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.45× του μοντέλου",
+        "METAR LGHI (19.5 χλμ, 615 ώρες) λέει παλιό → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 1233,
+      "name": "Liano Nisaki",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 3
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.4375_20.6875",
+      "newCell": "38.4375_20.75",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.85,
+        "biasMeanKmh": 2.85,
+        "maeGustKmh": 5.66,
+        "biasGustKmh": -2.2,
+        "dirWithin22Pct": 87,
+        "bftExactPct": 25,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.08
+      },
+      "new": {
+        "maeMeanKmh": 2.97,
+        "biasMeanKmh": 2.97,
+        "maeGustKmh": 10.77,
+        "biasGustKmh": -10.64,
+        "dirWithin22Pct": 93,
+        "bftExactPct": 23,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.2
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 5,
+      "newCloserWhenDisagree": 0.4,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1239,
+      "name": "Trita Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 6.6
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.4375_20.6875",
+      "newCell": "38.5_20.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.85,
+        "biasMeanKmh": 2.85,
+        "maeGustKmh": 5.66,
+        "biasGustKmh": -2.2,
+        "dirWithin22Pct": 87,
+        "bftExactPct": 25,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.08
+      },
+      "new": {
+        "maeMeanKmh": 4.73,
+        "biasMeanKmh": 4.73,
+        "maeGustKmh": 5.61,
+        "biasGustKmh": -3.36,
+        "dirWithin22Pct": 53,
+        "bftExactPct": 9,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 9.97
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 13,
+      "newCloserWhenDisagree": 0.077,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "παλιό"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    },
+    {
+      "beachId": 1246,
+      "name": "Paralia Pyrgia (notios ormos)",
+      "region": "north-aegean-chios",
+      "station": {
+        "name": "chios-kardamyla",
+        "lat": 38.53805555555555,
+        "lon": 26.115000000000002,
+        "km": 4.2
+      },
+      "stationQuality": {
+        "name": "chios-kardamyla",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 0.83,
+        "meanRatio": 0.45,
+        "dirWithin22Pct": 70,
+        "dirOppositePct": 4,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο"
+        ]
+      },
+      "oldCell": "38.5_26.125",
+      "newCell": "38.5_26.1875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 10.02,
+        "biasMeanKmh": 9.94,
+        "maeGustKmh": 10.5,
+        "biasGustKmh": 7.56,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 13,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 16.27
+      },
+      "new": {
+        "maeMeanKmh": 11.86,
+        "biasMeanKmh": 11.64,
+        "maeGustKmh": 9.26,
+        "biasGustKmh": 5.06,
+        "dirWithin22Pct": 100,
+        "bftExactPct": 9,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.97
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 10,
+      "newCloserWhenDisagree": 0,
+      "votes": {
+        "gust": "νέο",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "νέο",
+      "metar": {
+        "icao": "LGHI",
+        "km": 18.9,
+        "hours": 615,
+        "verdict": "παλιό"
+      },
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.45× του μοντέλου",
+        "METAR LGHI (18.9 χλμ, 615 ώρες) λέει παλιό → τελικό ισοπαλία"
+      ]
+    },
+    {
+      "beachId": 1746,
+      "name": "Katergo",
+      "region": "south-aegean-folegandros",
+      "station": {
+        "name": "folegandros",
+        "lat": 36.62777777777778,
+        "lon": 24.921944444444446,
+        "km": 4.4
+      },
+      "stationQuality": {
+        "name": "folegandros",
+        "note": "κεφαλίδα 200μ",
+        "auditDays": 92,
+        "gustRatio": 1.01,
+        "meanRatio": 0.53,
+        "dirWithin22Pct": 10,
+        "dirOppositePct": 76,
+        "gustSheltered": false,
+        "meanSheltered": true,
+        "dirSuspect": true,
+        "suspectInstrument": false,
+        "flags": [
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ]
+      },
+      "oldCell": "36.625_24.9375",
+      "newCell": "36.5625_24.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 8.95,
+        "biasMeanKmh": 8.93,
+        "maeGustKmh": 6.47,
+        "biasGustKmh": -0.51,
+        "dirWithin22Pct": 2,
+        "bftExactPct": 21,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 18.42
+      },
+      "new": {
+        "maeMeanKmh": 8.29,
+        "biasMeanKmh": 8.28,
+        "maeGustKmh": 6.91,
+        "biasGustKmh": -5.24,
+        "dirWithin22Pct": 2,
+        "bftExactPct": 21,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 17.76
+      },
+      "calmerCell": "νέο",
+      "disagreeDays": 9,
+      "newCloserWhenDisagree": 0.889,
+      "votes": {
+        "gust": "ισοπαλία",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "ισοπαλία",
+      "metar": null,
+      "verdict": "ισοπαλία",
+      "notes": [
+        "ψήφος μέσου υπέρ του ηπιότερου (νέο) σβήνει — μέσος σταθμού 0.53× του μοντέλου"
+      ]
+    },
+    {
+      "beachId": 1234,
+      "name": "Kritami",
+      "region": "ionian-islands-ithaca",
+      "station": {
+        "name": "Ιθάκη",
+        "lat": 38.4,
+        "lon": 20.7,
+        "km": 3.4
+      },
+      "stationQuality": {
+        "name": "Ιθάκη",
+        "note": "κεφαλίδα 7μ",
+        "auditDays": 92,
+        "gustRatio": 1,
+        "meanRatio": 0.62,
+        "dirWithin22Pct": 100,
+        "dirOppositePct": 0,
+        "gustSheltered": false,
+        "meanSheltered": false,
+        "dirSuspect": false,
+        "suspectInstrument": false,
+        "flags": []
+      },
+      "oldCell": "38.4375_20.6875",
+      "newCell": "38.4375_20.75",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "days": 56,
+      "firstDay": "2026-07-07",
+      "lastDay": "2026-08-31",
+      "old": {
+        "maeMeanKmh": 2.85,
+        "biasMeanKmh": 2.85,
+        "maeGustKmh": 5.66,
+        "biasGustKmh": -2.2,
+        "dirWithin22Pct": 87,
+        "bftExactPct": 25,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.08
+      },
+      "new": {
+        "maeMeanKmh": 2.97,
+        "biasMeanKmh": 2.97,
+        "maeGustKmh": 10.77,
+        "biasGustKmh": -10.64,
+        "dirWithin22Pct": 93,
+        "bftExactPct": 23,
+        "strongDays": 0,
+        "strongUnder": null,
+        "meanOfDailyMeanKmh": 8.2
+      },
+      "calmerCell": "παλιό",
+      "disagreeDays": 5,
+      "newCloserWhenDisagree": 0.4,
+      "votes": {
+        "gust": "παλιό",
+        "mean": "ισοπαλία"
+      },
+      "verdictMeteoGr": "παλιό",
+      "metar": null,
+      "verdict": "παλιό",
+      "notes": []
+    }
+  ],
+  "noStation": [
+    {
+      "beachId": 375,
+      "name": "Paralia Koromili",
+      "region": "central-greece-viotia-mainland",
+      "nearestMeteoGr": {
+        "station": "skopelos",
+        "km": 117.2
+      },
+      "nearestMetar": {
+        "icao": "LGSK",
+        "name": "Σκιάθος",
+        "km": 115.2
+      },
+      "why": null
+    },
+    {
+      "beachId": 1684,
+      "name": "Roukounas",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 24.4
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 28.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 1676,
+      "name": "Katsouni",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 23.7
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 27.7
+      },
+      "why": null
+    },
+    {
+      "beachId": 891,
+      "name": "Gallikos Molos",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 23.3
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 35.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 1698,
+      "name": "Gyalia",
+      "region": "south-aegean-andros",
+      "nearestMeteoGr": {
+        "station": "andros",
+        "km": 21.6
+      },
+      "nearestMetar": {
+        "icao": "LGMK",
+        "name": "Μύκονος",
+        "km": 58.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 1692,
+      "name": "Achla",
+      "region": "south-aegean-andros",
+      "nearestMeteoGr": {
+        "station": "andros",
+        "km": 22.1
+      },
+      "nearestMetar": {
+        "icao": "LGMK",
+        "name": "Μύκονος",
+        "km": 61.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 1718,
+      "name": "Piso Gyalia",
+      "region": "south-aegean-andros",
+      "nearestMeteoGr": {
+        "station": "andros",
+        "km": 21.6
+      },
+      "nearestMetar": {
+        "icao": "LGMK",
+        "name": "Μύκονος",
+        "km": 59
+      },
+      "why": null
+    },
+    {
+      "beachId": 1703,
+      "name": "Nimporio",
+      "region": "south-aegean-andros",
+      "nearestMeteoGr": {
+        "station": "andros",
+        "km": 21.6
+      },
+      "nearestMetar": {
+        "icao": "LGMK",
+        "name": "Μύκονος",
+        "km": 58.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 348,
+      "name": "Paralia Agiou Andrea",
+      "region": "central-greece-fokida-mainland",
+      "nearestMeteoGr": {
+        "station": "skiathos-xanemos",
+        "km": 127.1
+      },
+      "nearestMetar": {
+        "icao": "LGRX",
+        "name": "Άραξος",
+        "km": 103
+      },
+      "why": null
+    },
+    {
+      "beachId": 372,
+      "name": "Gyalini Ammos",
+      "region": "central-greece-viotia-mainland",
+      "nearestMeteoGr": {
+        "station": "skiathos-xanemos",
+        "km": 129.2
+      },
+      "nearestMetar": {
+        "icao": "LGRX",
+        "name": "Άραξος",
+        "km": 101.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 892,
+      "name": "Dei",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 23.8
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 34.3
+      },
+      "why": null
+    },
+    {
+      "beachId": 893,
+      "name": "Dei plous",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 23.9
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 34.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 1677,
+      "name": "Klisidi",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 23.4
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 27.3
+      },
+      "why": null
+    },
+    {
+      "beachId": 213,
+      "name": "Vythouri",
+      "region": "central-greece-evia",
+      "nearestMeteoGr": {
+        "station": "skopelos",
+        "km": 49
+      },
+      "nearestMetar": {
+        "icao": "LGSK",
+        "name": "Σκιάθος",
+        "km": 60.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 1680,
+      "name": "Mikros Roukounas",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 24.3
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 28.6
+      },
+      "why": null
+    },
+    {
+      "beachId": 1673,
+      "name": "Exo Roukounas",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 24.2
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 28.4
+      },
+      "why": null
+    },
+    {
+      "beachId": 2276,
+      "name": "Evgonymos",
+      "region": "south-aegean-karpathos",
+      "nearestMeteoGr": {
+        "station": "kasos",
+        "km": 43.2
+      },
+      "nearestMetar": {
+        "icao": "LGKP",
+        "name": "Κάρπαθος",
+        "km": 33.7
+      },
+      "why": null
+    },
+    {
+      "beachId": 1685,
+      "name": "Flamourou",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 23.8
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 27.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 2471,
+      "name": "Paralia Agiou Georgiou",
+      "region": "south-aegean-symi",
+      "nearestMeteoGr": {
+        "station": "rodos",
+        "km": 36.7
+      },
+      "nearestMetar": {
+        "icao": "LGRP",
+        "name": "Ρόδος",
+        "km": 28.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 1675,
+      "name": "Katalimatsa",
+      "region": "south-aegean-anafi",
+      "nearestMeteoGr": {
+        "station": "amorgos",
+        "km": 24.5
+      },
+      "nearestMetar": {
+        "icao": "LGSR",
+        "name": "Σαντορίνη",
+        "km": 29.2
+      },
+      "why": null
+    },
+    {
+      "beachId": 2478,
+      "name": "Livadia",
+      "region": "south-aegean-tilos",
+      "nearestMeteoGr": {
+        "station": "kos",
+        "km": 54.9
+      },
+      "nearestMetar": {
+        "icao": "LGKO",
+        "name": "Κως",
+        "km": 50.2
+      },
+      "why": null
+    },
+    {
+      "beachId": 1660,
+      "name": "Kampi",
+      "region": "south-aegean-amorgos",
+      "nearestMeteoGr": {
+        "station": "koufonisia",
+        "km": 28.6
+      },
+      "nearestMetar": {
+        "icao": "LGNX",
+        "name": "Νάξος",
+        "km": 55.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 1657,
+      "name": "Agia Anna",
+      "region": "south-aegean-amorgos",
+      "nearestMeteoGr": {
+        "station": "koufonisia",
+        "km": 28.5
+      },
+      "nearestMetar": {
+        "icao": "LGNX",
+        "name": "Νάξος",
+        "km": 55.7
+      },
+      "why": null
+    },
+    {
+      "beachId": 336,
+      "name": "Agios Vasilios",
+      "region": "central-greece-fokida-mainland",
+      "nearestMeteoGr": {
+        "station": "skiathos-xanemos",
+        "km": 137
+      },
+      "nearestMetar": {
+        "icao": "LGRX",
+        "name": "Άραξος",
+        "km": 84.4
+      },
+      "why": null
+    },
+    {
+      "beachId": 131,
+      "name": "Diakofti",
+      "region": "attica-kythira",
+      "nearestMeteoGr": {
+        "station": "falasarna",
+        "km": 97
+      },
+      "nearestMetar": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "km": 5.6
+      },
+      "why": null
+    },
+    {
+      "beachId": 134,
+      "name": "Paralia Palaiopoli",
+      "region": "attica-kythira",
+      "nearestMeteoGr": {
+        "station": "falasarna",
+        "km": 93.9
+      },
+      "nearestMetar": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "km": 7
+      },
+      "why": null
+    },
+    {
+      "beachId": 135,
+      "name": "Paralia Limni (Palaiopoli)",
+      "region": "attica-kythira",
+      "nearestMeteoGr": {
+        "station": "falasarna",
+        "km": 93.9
+      },
+      "nearestMetar": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "km": 7
+      },
+      "why": null
+    },
+    {
+      "beachId": 2387,
+      "name": "Pachia Ammos",
+      "region": "south-aegean-nisyros",
+      "nearestMeteoGr": {
+        "station": "kos",
+        "km": 35.4
+      },
+      "nearestMetar": {
+        "icao": "LGKO",
+        "name": "Κως",
+        "km": 24.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 181,
+      "name": "Nisiza",
+      "region": "attica-methana",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 102.8
+      },
+      "nearestMetar": {
+        "icao": "LGKL",
+        "name": "Καλαμάτα",
+        "km": 121.8
+      },
+      "why": null
+    },
+    {
+      "beachId": 156,
+      "name": "Vagionia",
+      "region": "attica-poros",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 81
+      },
+      "nearestMetar": {
+        "icao": "LGML",
+        "name": "Μήλος",
+        "km": 127.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 475,
+      "name": "Paralia Ampelos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "nearestMeteoGr": {
+        "station": "alonnisos",
+        "km": 85.2
+      },
+      "nearestMetar": {
+        "icao": "LGSK",
+        "name": "Σκιάθος",
+        "km": 96.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 910,
+      "name": "Paralia Galazios Kolpos",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 27.2
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 34
+      },
+      "why": null
+    },
+    {
+      "beachId": 918,
+      "name": "Paralia Navtilos",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 27.4
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 34.3
+      },
+      "why": null
+    },
+    {
+      "beachId": 912,
+      "name": "Paralia Elia",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 29.8
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 32.4
+      },
+      "why": null
+    },
+    {
+      "beachId": 915,
+      "name": "Paralia Kokkinos Vrachos",
+      "region": "epirus-thesprotia-mainland",
+      "nearestMeteoGr": {
+        "station": "Παξοί",
+        "km": 29.4
+      },
+      "nearestMetar": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "km": 32.9
+      },
+      "why": null
+    },
+    {
+      "beachId": 2667,
+      "name": "Izgkoud (Trikeri)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "nearestMeteoGr": {
+        "station": "skiathos-xanemos",
+        "km": 35.7
+      },
+      "nearestMetar": {
+        "icao": "LGBL",
+        "name": "Ν. Αγχίαλος",
+        "km": 27.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 98,
+      "name": "Paralia Megalochoriou",
+      "region": "attica-agistri",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 101.1
+      },
+      "nearestMetar": {
+        "icao": "LGKL",
+        "name": "Καλαμάτα",
+        "km": 137.3
+      },
+      "why": null
+    },
+    {
+      "beachId": 447,
+      "name": "Totos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "nearestMeteoGr": {
+        "station": "Θάσος",
+        "km": 79.6
+      },
+      "nearestMetar": {
+        "icao": "LGTS",
+        "name": "Θεσσαλονίκη",
+        "km": 70.5
+      },
+      "why": null
+    },
+    {
+      "beachId": 1553,
+      "name": "Vlychada",
+      "region": "peloponnese-lakonia-mainland",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 118.3
+      },
+      "nearestMetar": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "km": 65
+      },
+      "why": null
+    },
+    {
+      "beachId": 453,
+      "name": "Voreas Limani",
+      "region": "central-macedonia-halkidiki-mainland",
+      "nearestMeteoGr": {
+        "station": "Θάσος",
+        "km": 79
+      },
+      "nearestMetar": {
+        "icao": "LGTS",
+        "name": "Θεσσαλονίκη",
+        "km": 71.1
+      },
+      "why": null
+    },
+    {
+      "beachId": 2302,
+      "name": "Agia Irini",
+      "region": "south-aegean-karpathos",
+      "nearestMeteoGr": {
+        "station": "kasos",
+        "km": 35.7
+      },
+      "nearestMetar": {
+        "icao": "LGKP",
+        "name": "Κάρπαθος",
+        "km": 27
+      },
+      "why": null
+    },
+    {
+      "beachId": 85,
+      "name": "Klidi",
+      "region": "attica-aegina",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 89.9
+      },
+      "nearestMetar": {
+        "icao": "LGML",
+        "name": "Μήλος",
+        "km": 140.5
+      },
+      "why": null
+    },
+    {
+      "beachId": 174,
+      "name": "Ligoneri",
+      "region": "attica-spetses",
+      "nearestMeteoGr": {
+        "station": "kea-limani",
+        "km": 103.8
+      },
+      "nearestMetar": {
+        "icao": "LGKL",
+        "name": "Καλαμάτα",
+        "km": 100.7
+      },
+      "why": null
+    },
+    {
+      "beachId": 502,
+      "name": "Sykia Olympiadas",
+      "region": "central-macedonia-halkidiki-mainland",
+      "nearestMeteoGr": {
+        "station": "Θάσος",
+        "km": 80
+      },
+      "nearestMetar": {
+        "icao": "LGTS",
+        "name": "Θεσσαλονίκη",
+        "km": 69.8
+      },
+      "why": null
+    }
+  ]
+}

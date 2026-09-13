@@ -118,7 +118,9 @@ if (!fs.existsSync(MAP_PATH)) {
 // ξαναδείχνει στο κοντινότερο κελί με καθαρή διαδρομή (<50 μ.) που απαντά η ίδια πόρτα και αντέχει
 // τον έλεγχο echo 0,2° του runtime. Εδώ η πύλη ΞΑΝΑΚΡΙΝΕΙ, δεν εμπιστεύεται το bake:
 //   Η1 κάθε εξαίρεση ψημένη στο επιλεγμένο κελί, ποτέ στο αποκλεισμένο·
-//   Η2 το ledger μεγαλώνει μόνο με απόδειξη (βουνό ≥200 μ., νέα διαδρομή <50 μ., echo ≤0,2°)·
+//   Η2 το ledger μεγαλώνει μόνο με απόδειξη (βουνό ≥200 μ., νέα διαδρομή <50 μ., echo ≤0,2°) ΚΑΙ με κριτή
+//      οργάνου (θέμα 21, 13/09): `stationJudge.verdict` = «νέο» από METAR ≥100 ώρες ή meteo.gr ≥40 μέρες —
+//      η μέτρηση της Δ9-Α έδειξε τα νέα κελιά πιο ήρεμα στα 2/3 των ωρών, άρα χωρίς όργανο δεν ανεβαίνουν·
 //   Η3 η σφραγίδα `seaWindCell` επέζησε του build — στο app ΚΑΙ στο summary·
 //   Η4 κανείς δεν χάθηκε από τον χάρτη (πλήθος κλειδιών = beachCount)·
 //   Η5 οι unresolved κρατούν το παλιό τους κελί·
@@ -138,6 +140,8 @@ const ledgerProblems = (cells, ledger) => {
     if (!/^relief≥\d+m$/.test(String(o.reason)) || !(o.maxElevM >= 200)) out.push(`Η2 #${id}: εξαίρεση χωρίς βουνό ≥200 μ. (${o.reason}, ${o.maxElevM})`);
     if (!(o.pathMaxElevM < 50)) out.push(`Η2 #${id}: η νέα διαδρομή έχει στεριά ${o.pathMaxElevM} μ. (όριο <50)`);
     if (!(typeof o.echo?.deltaDeg === 'number' && o.echo.deltaDeg <= 0.2)) out.push(`Η2 #${id}: χωρίς επαλήθευση echo ≤0,2°`);
+    const sj = o.stationJudge;
+    if (!(sj && sj.verdict === 'νέο' && ((sj.hours ?? 0) >= 100 || (sj.days ?? 0) >= 40))) out.push(`Η2 #${id}: εξαίρεση χωρίς κριτή οργάνου (stationJudge.verdict «νέο», ≥100 ώρες METAR ή ≥40 μέρες meteo.gr)`);
   }
   for (const u of ledger.unresolved || []) {
     const id = String(u.beachId);
@@ -180,7 +184,7 @@ if (!fs.existsSync(LEDGER_PATH)) {
     if (!sabotaged.some(p => p.startsWith(`Η1 #${first.beachId}`))) problems.push('Η6 το αυτοσαμποτάζ πέρασε — ο έλεγχος δεν βλέπει το αποκλεισμένο κελί');
   }
   const ok = !problems.length;
-  console.log(`${ok ? 'OK  ' : 'FAIL'} Η. ledger εξαιρέσεων Δ9-Α: ${(ledger.overrides || []).length} παραλίες σε νέο κελί, ${(ledger.unresolved || []).length} κρατούν το παλιό — σφραγίδα σε app+summary, βουνό ≥200 μ. / διαδρομή <50 μ. / echo ≤0,2°`);
+  console.log(`${ok ? 'OK  ' : 'FAIL'} Η. ledger εξαιρέσεων Δ9-Α: ${(ledger.overrides || []).length} παραλίες σε νέο κελί, ${(ledger.unresolved || []).length} κρατούν το παλιό — σφραγίδα σε app+summary, βουνό ≥200 μ. / διαδρομή <50 μ. / echo ≤0,2° / κριτής οργάνου «νέο»`);
   for (const p of problems.slice(0, 8)) console.log(`       ${p}`);
   if (!ok) failures.push('Η');
 }

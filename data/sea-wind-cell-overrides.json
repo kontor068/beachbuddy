@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-09-13T12:57:11.761Z",
   "purpose": "Δ9-Α/Δ9-Δ (13/09/2026): κελιά ανέμου θάλασσας με στεριά ≥200 μ. ανάμεσα στην παραλία και στο κέντρο τους ξαναδείχνουν στο κελί που «βλέπει» η παραλία — ΜΟΝΟ όπου όργανο (METAR ≤20 χλμ, 92 μέρες) λέει ότι το νέο κελί είναι πιο κοντά στην αλήθεια. Τα υπόλοιπα 81 υποψήφια μένουν στο παλιό κελί (deferred): η μέτρηση measureSeaWindCellSwap έδειξε πιο ήρεμο στα 2/3 των ωρών και 33 ηπιότερες ετυμηγορίες, και πιο ήρεμο χωρίς δεύτερη πηγή δεν ανεβαίνει. Το διαβάζει το scripts/bakeSeaWindCells.mjs· το φυλάει το scripts/validateOverWaterWindLayer.mjs (τμήμα Η). Ανά παραλία, όχι ανά κελί.",
-  "rule": "διαδρομή παραλία→κελί με μέγιστο υψόμετρο < 50 μ. (LOW_M του audit), κοντινότερο κελί που απαντά η πόρτα, echo στο κέντρο ≤ 0.2° · ΚΑΙ κριτής METAR: MAE νέου < MAE παλιού − 0,5 χλμ/ώ σε ≥100 ώρες 10-18",
+  "rule": "διαδρομή παραλία→κελί με μέγιστο υψόμετρο < 50 μ. (LOW_M του audit), κοντινότερο κελί που απαντά η πόρτα, echo στο κέντρο ≤ 0.2° · ΚΑΙ κριτής οργάνου: METAR ≤20 χλμ (MAE νέου < παλιού − 0,5 χλμ/ώ σε ≥100 ώρες 10-18) Ή meteo.gr ≤20 χλμ (ημερήσια ριπή/μέσος, ≥40 μέρες, όργανο σε απάγκιο δεν ψηφίζει υπέρ του ηπιότερου) — κάθε εγγραφή κουβαλάει stationJudge.verdict = «νέο»",
   "sourceReport": "reports/quality/sea-wind-cell-relief-2026-09-13.json",
   "alternativesReport": "reports/quality/sea-wind-cell-alternatives-2026-09-13.json",
   "stationJudgeReport": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json",
@@ -179,6 +179,86 @@
         "verdict": "νέο",
         "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json"
       }
+    },
+    {
+      "beachId": 1298,
+      "name": "Kerame",
+      "region": "north-aegean-ikaria",
+      "excludedCell": "37.6875_26.3125",
+      "reason": "relief≥200m",
+      "maxElevM": 303,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "37.6875_26.375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.65844945531819,
+        "lon": 26.34996984997167,
+        "bearingDeg": 90,
+        "km": 1,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 19,
+      "chosenDistanceKm": 4.55,
+      "fetchKmAtBearing": 9.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.6875,
+        "lon": 26.375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "ikaria-evdilos",
+        "km": 15.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 8.82,
+          "biasMeanKmh": 8.82,
+          "maeGustKmh": 14.24,
+          "biasGustKmh": 14.24,
+          "dirWithin22Pct": 78,
+          "bftExactPct": 9,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 12.91,
+          "biasMeanKmh": 12.91,
+          "maeGustKmh": 7.98,
+          "biasGustKmh": 7.7,
+          "dirWithin22Pct": 78,
+          "bftExactPct": 4,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 28,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "νέο",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "νέο",
+        "metar": {
+          "icao": "LGIK",
+          "km": 2.8,
+          "hours": 0,
+          "verdict": "λίγα"
+        },
+        "verdict": "νέο",
+        "notes": [
+          "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.48× του μοντέλου"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     }
   ],
   "deferred": [
@@ -189,7 +269,21 @@
       "excludedCell": "38.1875_23.0625",
       "candidateCell": "38.125_23.0625",
       "keptCell": "38.1875_23.0625",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skopelos",
+          "km": 117.2
+        },
+        "nearestMetar": {
+          "icao": "LGSK",
+          "name": "Σκιάθος",
+          "km": 115.2
+        },
+        "judgedAt": "2026-09-13T18:36:23.706Z"
+      }
     },
     {
       "beachId": 2108,
@@ -198,7 +292,49 @@
       "excludedCell": "37_24.6875",
       "candidateCell": "37_24.625",
       "keptCell": "37_24.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "sifnos",
+        "km": 2.7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 7.57,
+          "biasMeanKmh": 7.26,
+          "maeGustKmh": 8.97,
+          "biasGustKmh": -4.88,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 39,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 7.92,
+          "biasMeanKmh": 7.18,
+          "maeGustKmh": 13.84,
+          "biasGustKmh": -13.19,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 32,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 9,
+        "newCloserWhenDisagree": 0.111,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2101,
@@ -207,7 +343,49 @@
       "excludedCell": "37_24.6875",
       "candidateCell": "37_24.625",
       "keptCell": "37_24.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "sifnos",
+        "km": 2.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 7.57,
+          "biasMeanKmh": 7.26,
+          "maeGustKmh": 8.97,
+          "biasGustKmh": -4.88,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 39,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 7.92,
+          "biasMeanKmh": 7.18,
+          "maeGustKmh": 13.84,
+          "biasGustKmh": -13.19,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 32,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 9,
+        "newCloserWhenDisagree": 0.111,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2109,
@@ -216,7 +394,51 @@
       "excludedCell": "37_24.6875",
       "candidateCell": "36.9375_24.625",
       "keptCell": "37_24.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "sifnos",
+        "km": 4.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 7.57,
+          "biasMeanKmh": 7.26,
+          "maeGustKmh": 8.97,
+          "biasGustKmh": -4.88,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 39,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 8.5,
+          "biasMeanKmh": 7.81,
+          "maeGustKmh": 15.1,
+          "biasGustKmh": -14.59,
+          "dirWithin22Pct": 35,
+          "bftExactPct": 32,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 8,
+        "newCloserWhenDisagree": 0.125,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [
+          "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.57× του μοντέλου"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1720,
@@ -225,7 +447,51 @@
       "excludedCell": "37.875_24.9375",
       "candidateCell": "37.9375_24.9375",
       "keptCell": "37.875_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "andros",
+        "km": 18.1,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 3.84,
+          "biasMeanKmh": -0.03,
+          "maeGustKmh": 11.42,
+          "biasGustKmh": -8.33,
+          "dirWithin22Pct": 17,
+          "bftExactPct": 55,
+          "strongDays": 22,
+          "strongUnder": 0.318
+        },
+        "new": {
+          "maeMeanKmh": 4.2,
+          "biasMeanKmh": 3.09,
+          "maeGustKmh": 14.55,
+          "biasGustKmh": -13.14,
+          "dirWithin22Pct": 10,
+          "bftExactPct": 52,
+          "strongDays": 22,
+          "strongUnder": 0.091
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 25,
+        "newCloserWhenDisagree": 0.52,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "ισοπαλία",
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ψήφος ριπής υπέρ του ηπιότερου (παλιό) σβήνει — ριπή σταθμού 0.7× του μοντέλου"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1678,
@@ -234,7 +500,50 @@
       "excludedCell": "36.375_25.75",
       "candidateCell": "36.4375_25.75",
       "keptCell": "36.375_25.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "amorgos",
+        "km": 19.7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 8.92,
+          "biasMeanKmh": 8.9,
+          "maeGustKmh": 9.03,
+          "biasGustKmh": 3.72,
+          "dirWithin22Pct": 5,
+          "bftExactPct": 20,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 8.6,
+          "biasMeanKmh": 8.59,
+          "maeGustKmh": 11.15,
+          "biasGustKmh": -10.06,
+          "dirWithin22Pct": 3,
+          "bftExactPct": 21,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 5,
+        "newCloserWhenDisagree": 1,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2266,
@@ -243,7 +552,47 @@
       "excludedCell": "36.9375_26.9375",
       "candidateCell": "37_26.875",
       "keptCell": "36.9375_26.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "kalymnos",
+        "km": 4.8,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.83,
+          "biasMeanKmh": 3.79,
+          "maeGustKmh": 5.76,
+          "biasGustKmh": 4.44,
+          "dirWithin22Pct": 54,
+          "bftExactPct": 45,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 5.01,
+          "biasMeanKmh": 4.9,
+          "maeGustKmh": 7.89,
+          "biasGustKmh": -5.44,
+          "dirWithin22Pct": 48,
+          "bftExactPct": 43,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.357,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2260,
@@ -252,7 +601,53 @@
       "excludedCell": "37.0625_26.9375",
       "candidateCell": "37.0625_26.875",
       "keptCell": "37.0625_26.9375",
-      "reason": "σταθμός χωρίς δεδομένα"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "kalymnos",
+        "km": 11.7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.48,
+          "biasMeanKmh": 3.18,
+          "maeGustKmh": 4.99,
+          "biasGustKmh": 0.08,
+          "dirWithin22Pct": 65,
+          "bftExactPct": 63,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.01,
+          "biasMeanKmh": 3.45,
+          "maeGustKmh": 7.58,
+          "biasGustKmh": -6.02,
+          "dirWithin22Pct": 61,
+          "bftExactPct": 57,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 5,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "metar": {
+          "icao": "LGLE",
+          "km": 18.8,
+          "hours": 0,
+          "verdict": "λίγα"
+        },
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1187,
@@ -261,7 +656,60 @@
       "excludedCell": "37.75_20.9375",
       "candidateCell": "37.6875_20.9375",
       "keptCell": "37.75_20.9375",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ζάκυνθος",
+        "km": 11.8,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 6.23,
+          "biasMeanKmh": 6.23,
+          "maeGustKmh": 8.96,
+          "biasGustKmh": 8.51,
+          "dirWithin22Pct": null,
+          "bftExactPct": 20,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 6.88,
+          "biasMeanKmh": 6.88,
+          "maeGustKmh": 8.03,
+          "biasGustKmh": 7.04,
+          "dirWithin22Pct": null,
+          "bftExactPct": 7,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.143,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGZA",
+          "km": 2.6,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+          "METAR LGZA (2.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2265,
@@ -270,7 +718,47 @@
       "excludedCell": "36.9375_26.9375",
       "candidateCell": "37_26.875",
       "keptCell": "36.9375_26.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "kalymnos",
+        "km": 4.6,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.83,
+          "biasMeanKmh": 3.79,
+          "maeGustKmh": 5.76,
+          "biasGustKmh": 4.44,
+          "dirWithin22Pct": 54,
+          "bftExactPct": 45,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 5.01,
+          "biasMeanKmh": 4.9,
+          "maeGustKmh": 7.89,
+          "biasGustKmh": -5.44,
+          "dirWithin22Pct": 48,
+          "bftExactPct": 43,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.357,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1684,
@@ -279,7 +767,21 @@
       "excludedCell": "36.375_25.8125",
       "candidateCell": "36.3125_25.8125",
       "keptCell": "36.375_25.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 24.4
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 28.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1676,
@@ -288,7 +790,21 @@
       "excludedCell": "36.375_25.75",
       "candidateCell": "36.3125_25.75",
       "keptCell": "36.375_25.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 23.7
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 27.7
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 891,
@@ -297,7 +813,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.375_20.25",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 23.3
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 35.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1698,
@@ -306,7 +836,21 @@
       "excludedCell": "37.875_24.9375",
       "candidateCell": "37.875_25",
       "keptCell": "37.875_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "andros",
+          "km": 21.6
+        },
+        "nearestMetar": {
+          "icao": "LGMK",
+          "name": "Μύκονος",
+          "km": 58.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1692,
@@ -315,7 +859,21 @@
       "excludedCell": "37.875_24.9375",
       "candidateCell": "37.875_25",
       "keptCell": "37.875_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "andros",
+          "km": 22.1
+        },
+        "nearestMetar": {
+          "icao": "LGMK",
+          "name": "Μύκονος",
+          "km": 61.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1718,
@@ -324,7 +882,21 @@
       "excludedCell": "37.875_24.9375",
       "candidateCell": "37.8125_25",
       "keptCell": "37.875_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "andros",
+          "km": 21.6
+        },
+        "nearestMetar": {
+          "icao": "LGMK",
+          "name": "Μύκονος",
+          "km": 59
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1703,
@@ -333,7 +905,21 @@
       "excludedCell": "37.875_24.9375",
       "candidateCell": "37.875_25",
       "keptCell": "37.875_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "andros",
+          "km": 21.6
+        },
+        "nearestMetar": {
+          "icao": "LGMK",
+          "name": "Μύκονος",
+          "km": 58.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 348,
@@ -342,7 +928,21 @@
       "excludedCell": "38.3125_22.5625",
       "candidateCell": "38.3125_22.625",
       "keptCell": "38.3125_22.5625",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skiathos-xanemos",
+          "km": 127.1
+        },
+        "nearestMetar": {
+          "icao": "LGRX",
+          "name": "Άραξος",
+          "km": 103
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 372,
@@ -351,7 +951,21 @@
       "excludedCell": "38.3125_22.5625",
       "candidateCell": "38.25_22.5625",
       "keptCell": "38.3125_22.5625",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skiathos-xanemos",
+          "km": 129.2
+        },
+        "nearestMetar": {
+          "icao": "LGRX",
+          "name": "Άραξος",
+          "km": 101.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 928,
@@ -360,7 +974,59 @@
       "excludedCell": "39.6875_19.6875",
       "candidateCell": "39.625_19.6875",
       "keptCell": "39.6875_19.6875",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Αχαράβη_Κέρκυρας",
+        "km": 15.9,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 2.38,
+          "biasMeanKmh": 2.32,
+          "maeGustKmh": 9.33,
+          "biasGustKmh": 6.85,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.45,
+          "biasMeanKmh": 4.38,
+          "maeGustKmh": 7.92,
+          "biasGustKmh": 3.42,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 38,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGKR",
+          "km": 18.6,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+          "METAR LGKR (18.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 892,
@@ -369,7 +1035,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.4375_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 23.8
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 34.3
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 893,
@@ -378,7 +1058,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.4375_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 23.9
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 34.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1677,
@@ -387,7 +1081,21 @@
       "excludedCell": "36.375_25.75",
       "candidateCell": "36.3125_25.75",
       "keptCell": "36.375_25.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 23.4
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 27.3
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 991,
@@ -396,7 +1104,59 @@
       "excludedCell": "39.6875_19.6875",
       "candidateCell": "39.625_19.6875",
       "keptCell": "39.6875_19.6875",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Αχαράβη_Κέρκυρας",
+        "km": 16.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 2.38,
+          "biasMeanKmh": 2.32,
+          "maeGustKmh": 9.33,
+          "biasGustKmh": 6.85,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.45,
+          "biasMeanKmh": 4.38,
+          "maeGustKmh": 7.92,
+          "biasGustKmh": 3.42,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 38,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGKR",
+          "km": 17.6,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+          "METAR LGKR (17.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 213,
@@ -405,7 +1165,21 @@
       "excludedCell": "38.6875_23.8125",
       "candidateCell": "38.6875_23.875",
       "keptCell": "38.6875_23.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skopelos",
+          "km": 49
+        },
+        "nearestMetar": {
+          "icao": "LGSK",
+          "name": "Σκιάθος",
+          "km": 60.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1792,
@@ -414,7 +1188,47 @@
       "excludedCell": "36.6875_25.375",
       "candidateCell": "36.625_25.375",
       "keptCell": "36.6875_25.375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "ios",
+        "km": 7.4,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.01,
+          "biasMeanKmh": -1.71,
+          "maeGustKmh": 8.17,
+          "biasGustKmh": -2.67,
+          "dirWithin22Pct": 92,
+          "bftExactPct": 61,
+          "strongDays": 29,
+          "strongUnder": 0.345
+        },
+        "new": {
+          "maeMeanKmh": 5.02,
+          "biasMeanKmh": -3.59,
+          "maeGustKmh": 17.23,
+          "biasGustKmh": -16.89,
+          "dirWithin22Pct": 85,
+          "bftExactPct": 39,
+          "strongDays": 29,
+          "strongUnder": 0.552
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.071,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1680,
@@ -423,7 +1237,21 @@
       "excludedCell": "36.375_25.8125",
       "candidateCell": "36.3125_25.8125",
       "keptCell": "36.375_25.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 24.3
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 28.6
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1673,
@@ -432,7 +1260,21 @@
       "excludedCell": "36.375_25.8125",
       "candidateCell": "36.3125_25.8125",
       "keptCell": "36.375_25.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 24.2
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 28.4
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2276,
@@ -441,7 +1283,21 @@
       "excludedCell": "35.6875_27.1875",
       "candidateCell": "35.75_27.125",
       "keptCell": "35.6875_27.1875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kasos",
+          "km": 43.2
+        },
+        "nearestMetar": {
+          "icao": "LGKP",
+          "name": "Κάρπαθος",
+          "km": 33.7
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1685,
@@ -450,7 +1306,21 @@
       "excludedCell": "36.375_25.8125",
       "candidateCell": "36.3125_25.8125",
       "keptCell": "36.375_25.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 23.8
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 27.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1220,
@@ -459,7 +1329,60 @@
       "excludedCell": "37.75_20.9375",
       "candidateCell": "37.6875_20.9375",
       "keptCell": "37.75_20.9375",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ζάκυνθος",
+        "km": 14.7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 6.23,
+          "biasMeanKmh": 6.23,
+          "maeGustKmh": 8.96,
+          "biasGustKmh": 8.51,
+          "dirWithin22Pct": null,
+          "bftExactPct": 20,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 6.88,
+          "biasMeanKmh": 6.88,
+          "maeGustKmh": 8.03,
+          "biasGustKmh": 7.04,
+          "dirWithin22Pct": null,
+          "bftExactPct": 7,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.143,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGZA",
+          "km": 5.5,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+          "METAR LGZA (5.5 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1186,
@@ -468,7 +1391,60 @@
       "excludedCell": "37.75_20.9375",
       "candidateCell": "37.6875_20.9375",
       "keptCell": "37.75_20.9375",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ζάκυνθος",
+        "km": 16.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 6.23,
+          "biasMeanKmh": 6.23,
+          "maeGustKmh": 8.96,
+          "biasGustKmh": 8.51,
+          "dirWithin22Pct": null,
+          "bftExactPct": 20,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 6.88,
+          "biasMeanKmh": 6.88,
+          "maeGustKmh": 8.03,
+          "biasGustKmh": 7.04,
+          "dirWithin22Pct": null,
+          "bftExactPct": 7,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.143,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGZA",
+          "km": 7,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Ζάκυνθος βλέπει ριπή 0.49× του μοντέλου και διεύθυνση ±22° null% — δεν ψηφίζει",
+          "METAR LGZA (7 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2471,
@@ -477,7 +1453,21 @@
       "excludedCell": "36.625_27.875",
       "candidateCell": "36.5625_27.9375",
       "keptCell": "36.625_27.875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "rodos",
+          "km": 36.7
+        },
+        "nearestMetar": {
+          "icao": "LGRP",
+          "name": "Ρόδος",
+          "km": 28.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 993,
@@ -486,7 +1476,59 @@
       "excludedCell": "39.6875_19.6875",
       "candidateCell": "39.625_19.6875",
       "keptCell": "39.6875_19.6875",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Αχαράβη_Κέρκυρας",
+        "km": 16.3,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 2.38,
+          "biasMeanKmh": 2.32,
+          "maeGustKmh": 9.33,
+          "biasGustKmh": 6.85,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.45,
+          "biasMeanKmh": 4.38,
+          "maeGustKmh": 7.92,
+          "biasGustKmh": 3.42,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 38,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGKR",
+          "km": 17.6,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+          "METAR LGKR (17.6 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 3093,
@@ -495,7 +1537,49 @@
       "excludedCell": "39.25_23.9375",
       "candidateCell": "39.25_24",
       "keptCell": "39.25_23.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "σταθμός alonnisos με 31 κοινές μέρες (<40) — χωρίς κρίση δεν αλλάζει",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "alonnisos",
+        "km": 5.8,
+        "days": 31,
+        "period": "2026-08-01…2026-08-31",
+        "stationFlags": [
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 3.92,
+          "biasMeanKmh": 2.51,
+          "maeGustKmh": 11.05,
+          "biasGustKmh": 9.69,
+          "dirWithin22Pct": 24,
+          "bftExactPct": 52,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.09,
+          "biasMeanKmh": 3.25,
+          "maeGustKmh": 6.38,
+          "biasGustKmh": -1.51,
+          "dirWithin22Pct": 33,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 2,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "λίγα",
+        "verdict": "λίγα",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 984,
@@ -504,7 +1588,59 @@
       "excludedCell": "39.6875_19.6875",
       "candidateCell": "39.625_19.6875",
       "keptCell": "39.6875_19.6875",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Αχαράβη_Κέρκυρας",
+        "km": 16.5,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 2.38,
+          "biasMeanKmh": 2.32,
+          "maeGustKmh": 9.33,
+          "biasGustKmh": 6.85,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.45,
+          "biasMeanKmh": 4.38,
+          "maeGustKmh": 7.92,
+          "biasGustKmh": 3.42,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 38,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGKR",
+          "km": 19.7,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+          "METAR LGKR (19.7 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1675,
@@ -513,7 +1649,21 @@
       "excludedCell": "36.375_25.8125",
       "candidateCell": "36.3125_25.8125",
       "keptCell": "36.375_25.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "amorgos",
+          "km": 24.5
+        },
+        "nearestMetar": {
+          "icao": "LGSR",
+          "name": "Σαντορίνη",
+          "km": 29.2
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 628,
@@ -522,7 +1672,47 @@
       "excludedCell": "34.9375_24.75",
       "candidateCell": "34.875_24.75",
       "keptCell": "34.9375_24.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "lentas",
+        "km": 16.9,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 6.29,
+          "biasMeanKmh": -4.6,
+          "maeGustKmh": 22.76,
+          "biasGustKmh": -19.35,
+          "dirWithin22Pct": 4,
+          "bftExactPct": 38,
+          "strongDays": 11,
+          "strongUnder": 1
+        },
+        "new": {
+          "maeMeanKmh": 6.26,
+          "biasMeanKmh": -2.41,
+          "maeGustKmh": 23.95,
+          "biasGustKmh": -22.06,
+          "dirWithin22Pct": 10,
+          "bftExactPct": 34,
+          "strongDays": 11,
+          "strongUnder": 0.909
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 19,
+        "newCloserWhenDisagree": 0.474,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2591,
@@ -531,7 +1721,49 @@
       "excludedCell": "39.25_23.9375",
       "candidateCell": "39.1875_23.9375",
       "keptCell": "39.25_23.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "σταθμός alonnisos με 31 κοινές μέρες (<40) — χωρίς κρίση δεν αλλάζει",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "alonnisos",
+        "km": 5.2,
+        "days": 31,
+        "period": "2026-08-01…2026-08-31",
+        "stationFlags": [
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 3.92,
+          "biasMeanKmh": 2.51,
+          "maeGustKmh": 11.05,
+          "biasGustKmh": 9.69,
+          "dirWithin22Pct": 24,
+          "bftExactPct": 52,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 3.37,
+          "biasMeanKmh": 2.29,
+          "maeGustKmh": 9.68,
+          "biasGustKmh": 7.72,
+          "dirWithin22Pct": 24,
+          "bftExactPct": 55,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 2,
+        "newCloserWhenDisagree": 1,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "λίγα",
+        "verdict": "λίγα",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2478,
@@ -540,7 +1772,21 @@
       "excludedCell": "36.375_27.375",
       "candidateCell": "36.4375_27.4375",
       "keptCell": "36.375_27.375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kos",
+          "km": 54.9
+        },
+        "nearestMetar": {
+          "icao": "LGKO",
+          "name": "Κως",
+          "km": 50.2
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 3014,
@@ -549,7 +1795,59 @@
       "excludedCell": "39.6875_19.6875",
       "candidateCell": "39.625_19.6875",
       "keptCell": "39.6875_19.6875",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Αχαράβη_Κέρκυρας",
+        "km": 15.7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "ριπή σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 2.38,
+          "biasMeanKmh": 2.32,
+          "maeGustKmh": 9.33,
+          "biasGustKmh": 6.85,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.45,
+          "biasMeanKmh": 4.38,
+          "maeGustKmh": 7.92,
+          "biasGustKmh": 3.42,
+          "dirWithin22Pct": 9,
+          "bftExactPct": 38,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "όργανο ύποπτο",
+        "metar": {
+          "icao": "LGKR",
+          "km": 19,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ο σταθμός Αχαράβη_Κέρκυρας βλέπει ριπή 0.63× του μοντέλου και διεύθυνση ±22° 6% — δεν ψηφίζει",
+          "METAR LGKR (19 χλμ, 620 ώρες) λέει ισοπαλία → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2116,
@@ -558,7 +1856,47 @@
       "excludedCell": "36.6875_25.125",
       "candidateCell": "36.625_25.125",
       "keptCell": "36.6875_25.125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "ios",
+        "km": 16.4,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.46,
+          "biasMeanKmh": -1.12,
+          "maeGustKmh": 9.29,
+          "biasGustKmh": -5.92,
+          "dirWithin22Pct": 91,
+          "bftExactPct": 57,
+          "strongDays": 29,
+          "strongUnder": 0.276
+        },
+        "new": {
+          "maeMeanKmh": 3.83,
+          "biasMeanKmh": -1.1,
+          "maeGustKmh": 15.18,
+          "biasGustKmh": -14.71,
+          "dirWithin22Pct": 89,
+          "bftExactPct": 52,
+          "strongDays": 29,
+          "strongUnder": 0.31
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 7,
+        "newCloserWhenDisagree": 0.286,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1660,
@@ -567,16 +1905,21 @@
       "excludedCell": "36.8125_25.875",
       "candidateCell": "36.8125_25.9375",
       "keptCell": "36.8125_25.875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
-    },
-    {
-      "beachId": 1298,
-      "name": "Kerame",
-      "region": "north-aegean-ikaria",
-      "excludedCell": "37.6875_26.3125",
-      "candidateCell": "37.6875_26.375",
-      "keptCell": "37.6875_26.3125",
-      "reason": "σταθμός χωρίς δεδομένα"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "koufonisia",
+          "km": 28.6
+        },
+        "nearestMetar": {
+          "icao": "LGNX",
+          "name": "Νάξος",
+          "km": 55.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2611,
@@ -585,7 +1928,49 @@
       "excludedCell": "39.25_23.9375",
       "candidateCell": "39.25_24",
       "keptCell": "39.25_23.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "σταθμός alonnisos με 31 κοινές μέρες (<40) — χωρίς κρίση δεν αλλάζει",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "alonnisos",
+        "km": 6.2,
+        "days": 31,
+        "period": "2026-08-01…2026-08-31",
+        "stationFlags": [
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 3.92,
+          "biasMeanKmh": 2.51,
+          "maeGustKmh": 11.05,
+          "biasGustKmh": 9.69,
+          "dirWithin22Pct": 24,
+          "bftExactPct": 52,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.09,
+          "biasMeanKmh": 3.25,
+          "maeGustKmh": 6.38,
+          "biasGustKmh": -1.51,
+          "dirWithin22Pct": 33,
+          "bftExactPct": 48,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 2,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "λίγα",
+        "verdict": "λίγα",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1657,
@@ -594,7 +1979,21 @@
       "excludedCell": "36.8125_25.875",
       "candidateCell": "36.8125_25.9375",
       "keptCell": "36.8125_25.875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "koufonisia",
+          "km": 28.5
+        },
+        "nearestMetar": {
+          "icao": "LGNX",
+          "name": "Νάξος",
+          "km": 55.7
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1801,
@@ -603,7 +2002,47 @@
       "excludedCell": "36.6875_25.375",
       "candidateCell": "36.625_25.3125",
       "keptCell": "36.6875_25.375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "ios",
+        "km": 6.4,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 3.01,
+          "biasMeanKmh": -1.71,
+          "maeGustKmh": 8.17,
+          "biasGustKmh": -2.67,
+          "dirWithin22Pct": 92,
+          "bftExactPct": 61,
+          "strongDays": 29,
+          "strongUnder": 0.345
+        },
+        "new": {
+          "maeMeanKmh": 3.73,
+          "biasMeanKmh": -2.12,
+          "maeGustKmh": 16.81,
+          "biasGustKmh": -16.81,
+          "dirWithin22Pct": 81,
+          "bftExactPct": 57,
+          "strongDays": 29,
+          "strongUnder": 0.31
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 12,
+        "newCloserWhenDisagree": 0.417,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 627,
@@ -612,7 +2051,47 @@
       "excludedCell": "34.9375_24.75",
       "candidateCell": "34.875_24.75",
       "keptCell": "34.9375_24.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "lentas",
+        "km": 15.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 6.29,
+          "biasMeanKmh": -4.6,
+          "maeGustKmh": 22.76,
+          "biasGustKmh": -19.35,
+          "dirWithin22Pct": 4,
+          "bftExactPct": 38,
+          "strongDays": 11,
+          "strongUnder": 1
+        },
+        "new": {
+          "maeMeanKmh": 6.26,
+          "biasMeanKmh": -2.41,
+          "maeGustKmh": 23.95,
+          "biasGustKmh": -22.06,
+          "dirWithin22Pct": 10,
+          "bftExactPct": 34,
+          "strongDays": 11,
+          "strongUnder": 0.909
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 19,
+        "newCloserWhenDisagree": 0.474,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 336,
@@ -621,7 +2100,21 @@
       "excludedCell": "38.375_22.375",
       "candidateCell": "38.3125_22.3125",
       "keptCell": "38.375_22.375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skiathos-xanemos",
+          "km": 137
+        },
+        "nearestMetar": {
+          "icao": "LGRX",
+          "name": "Άραξος",
+          "km": 84.4
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 131,
@@ -630,7 +2123,20 @@
       "excludedCell": "36.25_23.0625",
       "candidateCell": "36.25_23.125",
       "keptCell": "36.25_23.0625",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "METAR",
+        "station": "LGKC",
+        "km": 5.6,
+        "hours": 305,
+        "verdict": "παλιό",
+        "nearestMeteoGr": {
+          "station": "falasarna",
+          "km": 97
+        },
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 134,
@@ -639,7 +2145,20 @@
       "excludedCell": "36.25_23.0625",
       "candidateCell": "36.1875_23.0625",
       "keptCell": "36.25_23.0625",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "METAR",
+        "station": "LGKC",
+        "km": 7,
+        "hours": 305,
+        "verdict": "ισοπαλία",
+        "nearestMeteoGr": {
+          "station": "falasarna",
+          "km": 93.9
+        },
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 621,
@@ -648,7 +2167,47 @@
       "excludedCell": "34.9375_24.75",
       "candidateCell": "34.875_24.8125",
       "keptCell": "34.9375_24.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "lentas",
+        "km": 14.5,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 6.29,
+          "biasMeanKmh": -4.6,
+          "maeGustKmh": 22.76,
+          "biasGustKmh": -19.35,
+          "dirWithin22Pct": 4,
+          "bftExactPct": 38,
+          "strongDays": 11,
+          "strongUnder": 1
+        },
+        "new": {
+          "maeMeanKmh": 7.2,
+          "biasMeanKmh": -4.59,
+          "maeGustKmh": 27.13,
+          "biasGustKmh": -25.24,
+          "dirWithin22Pct": 6,
+          "bftExactPct": 30,
+          "strongDays": 11,
+          "strongUnder": 1
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 8,
+        "newCloserWhenDisagree": 0.125,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 135,
@@ -657,7 +2216,20 @@
       "excludedCell": "36.25_23.0625",
       "candidateCell": "36.1875_23.0625",
       "keptCell": "36.25_23.0625",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "METAR",
+        "station": "LGKC",
+        "km": 7,
+        "hours": 305,
+        "verdict": "ισοπαλία",
+        "nearestMeteoGr": {
+          "station": "falasarna",
+          "km": 93.9
+        },
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2387,
@@ -666,7 +2238,21 @@
       "excludedCell": "36.5625_27.1875",
       "candidateCell": "36.5625_27.25",
       "keptCell": "36.5625_27.1875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kos",
+          "km": 35.4
+        },
+        "nearestMetar": {
+          "icao": "LGKO",
+          "name": "Κως",
+          "km": 24.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 181,
@@ -675,7 +2261,21 @@
       "excludedCell": "37.5625_23.25",
       "candidateCell": "37.625_23.25",
       "keptCell": "37.5625_23.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 102.8
+        },
+        "nearestMetar": {
+          "icao": "LGKL",
+          "name": "Καλαμάτα",
+          "km": 121.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 156,
@@ -684,7 +2284,21 @@
       "excludedCell": "37.5_23.5",
       "candidateCell": "37.5625_23.5",
       "keptCell": "37.5_23.5",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 81
+        },
+        "nearestMetar": {
+          "icao": "LGML",
+          "name": "Μήλος",
+          "km": 127.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 475,
@@ -693,7 +2307,21 @@
       "excludedCell": "39.9375_23.9375",
       "candidateCell": "39.9375_24.0625",
       "keptCell": "39.9375_23.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "alonnisos",
+          "km": 85.2
+        },
+        "nearestMetar": {
+          "icao": "LGSK",
+          "name": "Σκιάθος",
+          "km": 96.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 665,
@@ -702,7 +2330,47 @@
       "excludedCell": "34.9375_25",
       "candidateCell": "34.875_25",
       "keptCell": "34.9375_25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "lentas",
+        "km": 7.8,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 4.97,
+          "biasMeanKmh": -2.18,
+          "maeGustKmh": 18.49,
+          "biasGustKmh": -15.65,
+          "dirWithin22Pct": 90,
+          "bftExactPct": 43,
+          "strongDays": 11,
+          "strongUnder": 0.818
+        },
+        "new": {
+          "maeMeanKmh": 6.5,
+          "biasMeanKmh": -3.88,
+          "maeGustKmh": 24.6,
+          "biasGustKmh": -23.63,
+          "dirWithin22Pct": 26,
+          "bftExactPct": 39,
+          "strongDays": 11,
+          "strongUnder": 0.909
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 18,
+        "newCloserWhenDisagree": 0.167,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2647,
@@ -711,7 +2379,53 @@
       "excludedCell": "39.125_23.75",
       "candidateCell": "39.1875_23.6875",
       "keptCell": "39.125_23.75",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "skopelos",
+        "km": 2.5,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 1.66,
+          "biasMeanKmh": 0.67,
+          "maeGustKmh": 6.4,
+          "biasGustKmh": 1.66,
+          "dirWithin22Pct": 31,
+          "bftExactPct": 64,
+          "strongDays": 3,
+          "strongUnder": 0
+        },
+        "new": {
+          "maeMeanKmh": 1.52,
+          "biasMeanKmh": 0.95,
+          "maeGustKmh": 6.25,
+          "biasGustKmh": -4.54,
+          "dirWithin22Pct": 41,
+          "bftExactPct": 79,
+          "strongDays": 3,
+          "strongUnder": 0
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 14,
+        "newCloserWhenDisagree": 0.857,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "ισοπαλία",
+        "metar": {
+          "icao": "LGSK",
+          "km": 18.8,
+          "hours": 620,
+          "verdict": "ισοπαλία"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1222,
@@ -720,7 +2434,47 @@
       "excludedCell": "38.3125_20.75",
       "candidateCell": "38.3125_20.8125",
       "keptCell": "38.3125_20.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 9,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 1.74,
+          "biasMeanKmh": 1.44,
+          "maeGustKmh": 11.32,
+          "biasGustKmh": -10.32,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 55,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 2.63,
+          "biasMeanKmh": 2.6,
+          "maeGustKmh": 14.79,
+          "biasGustKmh": -14.37,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 41,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 11,
+        "newCloserWhenDisagree": 0.182,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 910,
@@ -729,7 +2483,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.5_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 27.2
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 34
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 918,
@@ -738,7 +2506,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.5_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 27.4
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 34.3
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 912,
@@ -747,7 +2529,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.4375_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 29.8
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 32.4
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 915,
@@ -756,7 +2552,21 @@
       "excludedCell": "39.4375_20.25",
       "candidateCell": "39.4375_20.1875",
       "keptCell": "39.4375_20.25",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Παξοί",
+          "km": 29.4
+        },
+        "nearestMetar": {
+          "icao": "LGKR",
+          "name": "Κέρκυρα",
+          "km": 32.9
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2667,
@@ -765,7 +2575,21 @@
       "excludedCell": "39.125_23.0625",
       "candidateCell": "39.1875_23.125",
       "keptCell": "39.125_23.0625",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "skiathos-xanemos",
+          "km": 35.7
+        },
+        "nearestMetar": {
+          "icao": "LGBL",
+          "name": "Ν. Αγχίαλος",
+          "km": 27.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 98,
@@ -774,7 +2598,21 @@
       "excludedCell": "37.6875_23.375",
       "candidateCell": "37.75_23.375",
       "keptCell": "37.6875_23.375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 101.1
+        },
+        "nearestMetar": {
+          "icao": "LGKL",
+          "name": "Καλαμάτα",
+          "km": 137.3
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1223,
@@ -783,7 +2621,49 @@
       "excludedCell": "38.3125_20.75",
       "candidateCell": "38.375_20.8125",
       "keptCell": "38.3125_20.75",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 7.6,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 1.74,
+          "biasMeanKmh": 1.44,
+          "maeGustKmh": 11.32,
+          "biasGustKmh": -10.32,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 55,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 3.49,
+          "biasMeanKmh": 3.49,
+          "maeGustKmh": 8.29,
+          "biasGustKmh": -7.65,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 23,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 23,
+        "newCloserWhenDisagree": 0.087,
+        "votes": {
+          "gust": "νέο",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "ισοπαλία",
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ριπή λέει νέο, μέσος λέει παλιό — αντίφαση"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 447,
@@ -792,7 +2672,21 @@
       "excludedCell": "40.5625_23.8125",
       "candidateCell": "40.625_23.8125",
       "keptCell": "40.5625_23.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Θάσος",
+          "km": 79.6
+        },
+        "nearestMetar": {
+          "icao": "LGTS",
+          "name": "Θεσσαλονίκη",
+          "km": 70.5
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1553,
@@ -801,7 +2695,21 @@
       "excludedCell": "36.875_23.0625",
       "candidateCell": "36.875_23.125",
       "keptCell": "36.875_23.0625",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 118.3
+        },
+        "nearestMetar": {
+          "icao": "LGKC",
+          "name": "Κύθηρα",
+          "km": 65
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1241,
@@ -810,7 +2718,47 @@
       "excludedCell": "38.4375_20.6875",
       "candidateCell": "38.5_20.6875",
       "keptCell": "38.4375_20.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 7,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 2.85,
+          "biasMeanKmh": 2.85,
+          "maeGustKmh": 5.66,
+          "biasGustKmh": -2.2,
+          "dirWithin22Pct": 87,
+          "bftExactPct": 25,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.73,
+          "biasMeanKmh": 4.73,
+          "maeGustKmh": 5.61,
+          "biasGustKmh": -3.36,
+          "dirWithin22Pct": 53,
+          "bftExactPct": 9,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0.077,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1247,
@@ -819,7 +2767,58 @@
       "excludedCell": "38.5_26.125",
       "candidateCell": "38.5_26.1875",
       "keptCell": "38.5_26.125",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "chios-kardamyla",
+        "km": 3.8,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 10.02,
+          "biasMeanKmh": 9.94,
+          "maeGustKmh": 10.5,
+          "biasGustKmh": 7.56,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 13,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 11.86,
+          "biasMeanKmh": 11.64,
+          "maeGustKmh": 9.26,
+          "biasGustKmh": 5.06,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 9,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 10,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "νέο",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "νέο",
+        "metar": {
+          "icao": "LGHI",
+          "km": 19.5,
+          "hours": 615,
+          "verdict": "παλιό"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.45× του μοντέλου",
+          "METAR LGHI (19.5 χλμ, 615 ώρες) λέει παλιό → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1233,
@@ -828,7 +2827,47 @@
       "excludedCell": "38.4375_20.6875",
       "candidateCell": "38.4375_20.75",
       "keptCell": "38.4375_20.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 3,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 2.85,
+          "biasMeanKmh": 2.85,
+          "maeGustKmh": 5.66,
+          "biasGustKmh": -2.2,
+          "dirWithin22Pct": 87,
+          "bftExactPct": 25,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 2.97,
+          "biasMeanKmh": 2.97,
+          "maeGustKmh": 10.77,
+          "biasGustKmh": -10.64,
+          "dirWithin22Pct": 93,
+          "bftExactPct": 23,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 5,
+        "newCloserWhenDisagree": 0.4,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1239,
@@ -837,7 +2876,47 @@
       "excludedCell": "38.4375_20.6875",
       "candidateCell": "38.5_20.6875",
       "keptCell": "38.4375_20.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 6.6,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 2.85,
+          "biasMeanKmh": 2.85,
+          "maeGustKmh": 5.66,
+          "biasGustKmh": -2.2,
+          "dirWithin22Pct": 87,
+          "bftExactPct": 25,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 4.73,
+          "biasMeanKmh": 4.73,
+          "maeGustKmh": 5.61,
+          "biasGustKmh": -3.36,
+          "dirWithin22Pct": 53,
+          "bftExactPct": 9,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 13,
+        "newCloserWhenDisagree": 0.077,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "παλιό"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1246,
@@ -846,7 +2925,58 @@
       "excludedCell": "38.5_26.125",
       "candidateCell": "38.5_26.1875",
       "keptCell": "38.5_26.125",
-      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "chios-kardamyla",
+        "km": 4.2,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο"
+        ],
+        "old": {
+          "maeMeanKmh": 10.02,
+          "biasMeanKmh": 9.94,
+          "maeGustKmh": 10.5,
+          "biasGustKmh": 7.56,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 13,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 11.86,
+          "biasMeanKmh": 11.64,
+          "maeGustKmh": 9.26,
+          "biasGustKmh": 5.06,
+          "dirWithin22Pct": 100,
+          "bftExactPct": 9,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 10,
+        "newCloserWhenDisagree": 0,
+        "votes": {
+          "gust": "νέο",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "νέο",
+        "metar": {
+          "icao": "LGHI",
+          "km": 18.9,
+          "hours": 615,
+          "verdict": "παλιό"
+        },
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ψήφος μέσου υπέρ του ηπιότερου (παλιό) σβήνει — μέσος σταθμού 0.45× του μοντέλου",
+          "METAR LGHI (18.9 χλμ, 615 ώρες) λέει παλιό → τελικό ισοπαλία"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1746,
@@ -855,7 +2985,52 @@
       "excludedCell": "36.625_24.9375",
       "candidateCell": "36.5625_24.9375",
       "keptCell": "36.625_24.9375",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "folegandros",
+        "km": 4.4,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [
+          "μέσος σε απάγκιο",
+          "διεύθυνση ύποπτη"
+        ],
+        "old": {
+          "maeMeanKmh": 8.95,
+          "biasMeanKmh": 8.93,
+          "maeGustKmh": 6.47,
+          "biasGustKmh": -0.51,
+          "dirWithin22Pct": 2,
+          "bftExactPct": 21,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 8.29,
+          "biasMeanKmh": 8.28,
+          "maeGustKmh": 6.91,
+          "biasGustKmh": -5.24,
+          "dirWithin22Pct": 2,
+          "bftExactPct": 21,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "νέο",
+        "disagreeDays": 9,
+        "newCloserWhenDisagree": 0.889,
+        "votes": {
+          "gust": "ισοπαλία",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "ισοπαλία",
+        "verdict": "ισοπαλία",
+        "notes": [
+          "ψήφος μέσου υπέρ του ηπιότερου (νέο) σβήνει — μέσος σταθμού 0.53× του μοντέλου"
+        ],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 453,
@@ -864,7 +3039,21 @@
       "excludedCell": "40.5625_23.8125",
       "candidateCell": "40.625_23.8125",
       "keptCell": "40.5625_23.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Θάσος",
+          "km": 79
+        },
+        "nearestMetar": {
+          "icao": "LGTS",
+          "name": "Θεσσαλονίκη",
+          "km": 71.1
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 2302,
@@ -873,7 +3062,21 @@
       "excludedCell": "35.6875_27.125",
       "candidateCell": "35.625_27.0625",
       "keptCell": "35.6875_27.125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kasos",
+          "km": 35.7
+        },
+        "nearestMetar": {
+          "icao": "LGKP",
+          "name": "Κάρπαθος",
+          "km": 27
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 85,
@@ -882,7 +3085,21 @@
       "excludedCell": "37.6875_23.5",
       "candidateCell": "37.625_23.5",
       "keptCell": "37.6875_23.5",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 89.9
+        },
+        "nearestMetar": {
+          "icao": "LGML",
+          "name": "Μήλος",
+          "km": 140.5
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 1234,
@@ -891,7 +3108,47 @@
       "excludedCell": "38.4375_20.6875",
       "candidateCell": "38.4375_20.75",
       "keptCell": "38.4375_20.6875",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)",
+      "stationJudge": {
+        "source": "meteo.gr",
+        "station": "Ιθάκη",
+        "km": 3.4,
+        "days": 56,
+        "period": "2026-07-07…2026-08-31",
+        "stationFlags": [],
+        "old": {
+          "maeMeanKmh": 2.85,
+          "biasMeanKmh": 2.85,
+          "maeGustKmh": 5.66,
+          "biasGustKmh": -2.2,
+          "dirWithin22Pct": 87,
+          "bftExactPct": 25,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "new": {
+          "maeMeanKmh": 2.97,
+          "biasMeanKmh": 2.97,
+          "maeGustKmh": 10.77,
+          "biasGustKmh": -10.64,
+          "dirWithin22Pct": 93,
+          "bftExactPct": 23,
+          "strongDays": 0,
+          "strongUnder": null
+        },
+        "calmerCell": "παλιό",
+        "disagreeDays": 5,
+        "newCloserWhenDisagree": 0.4,
+        "votes": {
+          "gust": "παλιό",
+          "mean": "ισοπαλία"
+        },
+        "verdictMeteoGr": "παλιό",
+        "verdict": "παλιό",
+        "notes": [],
+        "report": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 174,
@@ -900,7 +3157,21 @@
       "excludedCell": "37.25_23.125",
       "candidateCell": "37.25_23.1875",
       "keptCell": "37.25_23.125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "kea-limani",
+          "km": 103.8
+        },
+        "nearestMetar": {
+          "icao": "LGKL",
+          "name": "Καλαμάτα",
+          "km": 100.7
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     },
     {
       "beachId": 502,
@@ -909,7 +3180,21 @@
       "excludedCell": "40.5625_23.8125",
       "candidateCell": "40.625_23.8125",
       "keptCell": "40.5625_23.8125",
-      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)",
+      "stationJudge": {
+        "source": "none",
+        "verdict": "κανένας σταθμός ≤20 χλμ",
+        "nearestMeteoGr": {
+          "station": "Θάσος",
+          "km": 80
+        },
+        "nearestMetar": {
+          "icao": "LGTS",
+          "name": "Θεσσαλονίκη",
+          "km": 69.8
+        },
+        "judgedAt": "2026-09-13T18:36:23.707Z"
+      }
     }
   ],
   "unresolved": [
@@ -1056,5 +3341,7 @@
       "candidatesTried": 0,
       "bestPathMaxElevM": null
     }
-  ]
+  ],
+  "meteoGrJudgeReport": "reports/quality/sea-wind-cell-meteogr-judge-2026-09-13.json",
+  "updatedAt": "2026-09-13T18:36:23.707Z"
 }
