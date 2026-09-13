@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-09-13T07:08:42.634Z",
+  "dayIndex": 1,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "KEY_BEACH_HOURS.end 18 → 20 (utils/beachDayWindow) — ετυμηγορία, ριπές, βροχή, απογευματινό δυνάμωμα",
+  "verdict": {
+    "changed": 4,
+    "stricter": 4,
+    "softer": 0,
+    "moves": {
+      "good → caution": 2,
+      "caution → avoid_swimming": 2
+    }
+  },
+  "causes": {
+    "stricter": {
+      "άλλο (βροχή / κύμα ώρας / πόντοι)": 4
+    },
+    "softer": {},
+    "note": "13/09/2026: «άνεμος 19-20» = ο μέσος άνεμος κορυφώνει μετά τις 18 (χειρότερη ώρα / δυνάμωμα)· «ριπή 19-20» = το άλμα ριπής των 19-20 περνάει το όριο του σκαλιού (34/32/26/22)· «άλλο» = βροχή, κύμα της ώρας ή μόνο πόντοι."
+  },
+  "score": {
+    "down": 62,
+    "up": 0,
+    "unchanged": 2794,
+    "medianDownDelta": -2
+  },
+  "distributionBefore": {
+    "excellent": 719,
+    "good": 1129,
+    "caution": 411,
+    "avoid": 0,
+    "avoid_swimming": 597
+  },
+  "distributionAfter": {
+    "excellent": 719,
+    "good": 1127,
+    "caution": 411,
+    "avoid": 0,
+    "avoid_swimming": 599
+  },
+  "softerSamples": [],
+  "stricterSamples": [
+    {
+      "beachId": 770,
+      "name": "Chiona Palaikastrou",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "good",
+        "score": 62,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 57,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 16,
+        "addedWindKmh": 14,
+        "coreSpreadKmh": 25,
+        "addedSpreadKmh": 27,
+        "baseBft": 3,
+        "stepT": 34
+      }
+    },
+    {
+      "beachId": 771,
+      "name": "Psili Ammos Vai",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "good",
+        "score": 62,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 57,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 16,
+        "addedWindKmh": 14,
+        "coreSpreadKmh": 25,
+        "addedSpreadKmh": 27,
+        "baseBft": 3,
+        "stepT": 34
+      }
+    },
+    {
+      "beachId": 2496,
+      "name": "Paralia Potha",
+      "regionId": "south-aegean-telendos",
+      "before": {
+        "comfort": "caution",
+        "score": 48,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 43,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 23,
+        "addedWindKmh": 17,
+        "coreSpreadKmh": 23,
+        "addedSpreadKmh": 24,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 2497,
+      "name": "Paralia Parantais",
+      "regionId": "south-aegean-telendos",
+      "before": {
+        "comfort": "caution",
+        "score": 48,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 43,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 23,
+        "addedWindKmh": 17,
+        "coreSpreadKmh": 23,
+        "addedSpreadKmh": 24,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    }
+  ],
+  "note": "Δ8 (§Γ81): μία μέρα με τον καιρό που έτυχε. Το «ηπιότερο» μπορεί να προέρχεται μόνο από τη βροχή σε όλες τις κρίσιμες ώρες — έλεγξέ το στα softerSamples."
+}

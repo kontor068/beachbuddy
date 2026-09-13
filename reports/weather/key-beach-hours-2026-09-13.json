@@ -1,0 +1,456 @@
+{
+  "generatedAt": "2026-09-13T07:03:30.883Z",
+  "dayIndex": 0,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "KEY_BEACH_HOURS.end 18 → 20 (utils/beachDayWindow) — ετυμηγορία, ριπές, βροχή, απογευματινό δυνάμωμα",
+  "verdict": {
+    "changed": 17,
+    "stricter": 17,
+    "softer": 0,
+    "moves": {
+      "good → caution": 12,
+      "caution → avoid_swimming": 5
+    }
+  },
+  "causes": {
+    "stricter": {
+      "ριπή 19-20 (σκαλί +1)": 14,
+      "άλλο (βροχή / κύμα ώρας / πόντοι)": 3
+    },
+    "softer": {},
+    "note": "13/09/2026: «άνεμος 19-20» = ο μέσος άνεμος κορυφώνει μετά τις 18 (χειρότερη ώρα / δυνάμωμα)· «ριπή 19-20» = το άλμα ριπής των 19-20 περνάει το όριο του σκαλιού (34/32/26/22)· «άλλο» = βροχή, κύμα της ώρας ή μόνο πόντοι."
+  },
+  "score": {
+    "down": 118,
+    "up": 0,
+    "unchanged": 2738,
+    "medianDownDelta": -5
+  },
+  "distributionBefore": {
+    "excellent": 768,
+    "good": 912,
+    "caution": 435,
+    "avoid": 0,
+    "avoid_swimming": 741
+  },
+  "distributionAfter": {
+    "excellent": 768,
+    "good": 900,
+    "caution": 442,
+    "avoid": 0,
+    "avoid_swimming": 746
+  },
+  "softerSamples": [],
+  "stricterSamples": [
+    {
+      "beachId": 1606,
+      "name": "Ammoudi",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1609,
+      "name": "Vourlia",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1612,
+      "name": "Glyfada",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "caution",
+        "score": 32,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 23,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1615,
+      "name": "Zagka",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1616,
+      "name": "Kalamaki",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1619,
+      "name": "Koumpares",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1622,
+      "name": "Lampes",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "caution",
+        "score": 32,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 23,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1625,
+      "name": "Loutsa",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "caution",
+        "score": 32,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 23,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1627,
+      "name": "Mavrovouni",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1629,
+      "name": "Memi",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1630,
+      "name": "Mikro Marathi",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "caution",
+        "score": 32,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 23,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1637,
+      "name": "Paralia Methonis",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1649,
+      "name": "Selitsa",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 54,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 1651,
+      "name": "Tsapi",
+      "regionId": "peloponnese-messinia-mainland",
+      "before": {
+        "comfort": "caution",
+        "score": 32,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 23,
+        "effBft": null
+      },
+      "cause": "ριπή 19-20 (σκαλί +1)",
+      "signals": {
+        "coreWindKmh": 28,
+        "addedWindKmh": 24,
+        "coreSpreadKmh": 31,
+        "addedSpreadKmh": 33,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 2265,
+      "name": "Paralia Kantouni",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "good",
+        "score": 60,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 24,
+        "addedWindKmh": 20,
+        "coreSpreadKmh": 23,
+        "addedSpreadKmh": 31,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "good",
+        "score": 60,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 24,
+        "addedWindKmh": 20,
+        "coreSpreadKmh": 23,
+        "addedSpreadKmh": 31,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    },
+    {
+      "beachId": 2495,
+      "name": "Paralia Chochlakas",
+      "regionId": "south-aegean-telendos",
+      "before": {
+        "comfort": "good",
+        "score": 60,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      },
+      "cause": "άλλο (βροχή / κύμα ώρας / πόντοι)",
+      "signals": {
+        "coreWindKmh": 21,
+        "addedWindKmh": 19,
+        "coreSpreadKmh": 21,
+        "addedSpreadKmh": 28,
+        "baseBft": 4,
+        "stepT": 32
+      }
+    }
+  ],
+  "note": "Δ8 (§Γ81): μία μέρα με τον καιρό που έτυχε. Το «ηπιότερο» μπορεί να προέρχεται μόνο από τη βροχή σε όλες τις κρίσιμες ώρες — έλεγξέ το στα softerSamples."
+}
