@@ -1,5 +1,65 @@
 {
-  "generatedAt": "2026-09-13T18:48:28.847Z",
+  "decisionA": {
+    "rule": "Α (13/09): κόψιμο του δαπέδου μόνο σε όρμους <3 χλμ, ΑΝ κρατήσει στα 4 καλοκαίρια — κριτήριο δηλωμένο πριν τα δεδομένα",
+    "clean": {
+      "days": 47,
+      "beaches": 19,
+      "surfRate": 0,
+      "stripRate": 0.043,
+      "medianFoamOuter": 0.004,
+      "medianFoam": 0.059,
+      "medianWindKmh": 38.4,
+      "medianFetchKm": 0.2,
+      "medianHs": 1.1
+    },
+    "calmSameCleanCoves": {
+      "days": 24,
+      "beaches": 15,
+      "surfRate": 0,
+      "stripRate": 0,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.022,
+      "medianWindKmh": 5.5,
+      "medianFetchKm": 0.44,
+      "medianHs": 0.11
+    },
+    "positiveControl": {
+      "days": 197,
+      "beaches": 128,
+      "surfRate": 0.31,
+      "stripRate": 0.711,
+      "medianFoamOuter": 0.1,
+      "medianFoam": 0.284,
+      "medianWindKmh": 35.6,
+      "medianFetchKm": 10.08,
+      "medianHs": 1.61
+    },
+    "checks": {
+      "enoughDays": {
+        "need": "≥150",
+        "got": 47,
+        "ok": false
+      },
+      "surfLow": {
+        "need": "≤0.10",
+        "got": 0,
+        "ok": true
+      },
+      "stripLikeCalm": {
+        "need": "≤0.124 (2× ήρεμη όλων των όρμων 0.052 + 0,02)",
+        "got": 0.043,
+        "ok": true
+      },
+      "instrumentSees": {
+        "need": "surf ≥0.25 & strip ≥0.60",
+        "got": "0.31 / 0.711",
+        "ok": true
+      }
+    },
+    "holds": false,
+    "verdict": "ΛΙΓΑ ΑΚΟΜΑ — περιμένει τα 2022-2025"
+  },
+  "generatedAt": "2026-09-13T19:10:33.626Z",
   "years": [
     2026
   ],

@@ -258,7 +258,31 @@ for (const id of coveIds) {
   perBeach.push({ id, name: mine[0].name, region: mine[0].region, seaCell: mine[0].seaCell, floorDays: mine.length, surfDays: mine.filter(r => r.surf).length, stripDays: mine.filter(r => r.strip).length, calmDays: calm.length, calmSurfDays: calm.filter(r => r.surf).length, medianFetchKm: num(median(mine.map(r => r.fetchKm)), 2), medianWindKmh: num(median(mine.map(r => r.windKmh)), 1), days: mine.map(r => `${r.day} ${r.windKmh}km/h ${r.sector} f${r.fetchKm} ${r.exposure} floor${r.floor} Hs${r.hs}×${r.kd} outer${r.beachFoamOuter}`) });
 }
 perBeach.sort((a, b) => b.floorDays - a.floorDays);
+// ── Το κριτήριο «κρατάει» της απόφασης Α (Μίλτος, 13/09 βράδυ), γραμμένο ΠΡΙΝ μπουν τα 2022-2025 ──────────────
+// Καθαρή κλάση = δάπεδο ≥0,8 σε όρμο <3 χλμ ΚΑΙ μέρα «closed» του κριτή (η σκιά αληθινή, το 0,8 βγαίνει ΜΟΝΟ από το δάπεδο).
+// Κρατάει αν: (1) ≥150 τέτοιες μέρες συνολικά, (2) αφρός θραύσης ≤10% (η ήρεμη άμμος έχει ~1%), (3) λωρίδα ≤ 2× της ήρεμης
+// βάσης + 2 μονάδες — βάση = η ήρεμη άμμος ΟΛΩΝ των όρμων-στόχων (1.703 μέρες, σταθερή· η ήρεμη των ίδιων 19 όρμων είναι 0% σε
+// λίγες μέρες και θα έκοβε το κριτήριο από θόρυβο — διορθώθηκε ΠΡΙΝ φορτωθούν τα 2022-2025), (4) ο θετικός έλεγχος στέκει (πραγματικό ≥0,8: θραύση ≥25%, λωρίδα ≥60%) — αλλιώς το όργανο
+// δεν βλέπει και το «όχι αφρός» δεν λέει τίποτα. Αν κρατάει → η υποψήφια «δάπεδο ≤ SMB(ριπή, fetch)» ΜΟΝΟ για fetch < 3 χλμ.
+const clean = cove08.filter(r => r.s2class === 'closed');
+const cleanIds = new Set(clean.map(r => r.id));
+const calmClean = rows.filter(r => r.cls === 'calm' && cleanIds.has(r.id));
+const cleanStat = stat(clean), calmCleanStat = stat(calmClean), posStat = classes['measured-0.8'];
+const decisionA = {
+  rule: 'Α (13/09): κόψιμο του δαπέδου μόνο σε όρμους <3 χλμ, ΑΝ κρατήσει στα 4 καλοκαίρια — κριτήριο δηλωμένο πριν τα δεδομένα',
+  clean: cleanStat, calmSameCleanCoves: calmCleanStat, positiveControl: posStat,
+  checks: {
+    enoughDays: { need: '≥150', got: cleanStat.days, ok: cleanStat.days >= 150 },
+    surfLow: { need: '≤0.10', got: cleanStat.surfRate, ok: cleanStat.surfRate !== null && cleanStat.surfRate <= 0.10 },
+    stripLikeCalm: { need: `≤${num(2 * (classes.calm.stripRate ?? 0) + 0.02)} (2× ήρεμη όλων των όρμων ${classes.calm.stripRate} + 0,02)`, got: cleanStat.stripRate, ok: cleanStat.stripRate !== null && classes.calm.stripRate !== null && cleanStat.stripRate <= 2 * classes.calm.stripRate + 0.02 },
+    instrumentSees: { need: 'surf ≥0.25 & strip ≥0.60', got: `${posStat.surfRate} / ${posStat.stripRate}`, ok: posStat.surfRate !== null && posStat.surfRate >= 0.25 && posStat.stripRate >= 0.60 },
+  },
+};
+decisionA.holds = Object.values(decisionA.checks).every(c => c.ok);
+decisionA.verdict = decisionA.holds ? 'ΚΡΑΤΑΕΙ — η υποψήφια μπαίνει για fetch < 3 χλμ (θέλει υλοποίηση + μέτρηση επίπτωσης + πύλες)' : decisionA.checks.enoughDays.ok ? 'ΔΕΝ ΚΡΑΤΑΕΙ — το δάπεδο μένει' : 'ΛΙΓΑ ΑΚΟΜΑ — περιμένει τα 2022-2025';
+
 const report = {
+  decisionA,
   generatedAt: new Date().toISOString(), years: YEARS, targets: targetList.length, targetsWithSeaCell: targetList.filter(t => t.point.sea).length, noisyExcluded: noisyBeaches.size, rowsJudged: rows.length, noWind,
   question: 'αφρός στην άμμο τις μέρες που το δάπεδο ψιλοκύματος δίνει ≥0,80 μ. σε όρμο με fetch < 3 χλμ — σαν τις ήρεμες μέρες της ίδιας άμμου, ή σαν τις μέρες με πραγματικό κύμα 0,8;',
   foamRule: `surf = εξωτερική λωρίδα ≥ ${FOAM_DAY} · strip = όλη η λωρίδα ≥ ${FOAM_DAY} · θορυβώδεις (ήρεμες μέρες με strip > ${NOISY_CALM}) έξω`,
@@ -290,4 +314,7 @@ console.log('  ανά έκθεση (όρμοι ≥0,8): ' + Object.entries(repor
 console.log('  ανά πηγή ανέμου (όρμοι ≥0,8): ' + Object.entries(report.coveFloor08BySeaCell).map(([k, v]) => `${k}: ${v.days}, ${v.surfRate === null ? '—' : (100 * v.surfRate).toFixed(0) + '%'}`).join(' · '));
 console.log(`  όρμοι με ≥3 μέρες δαπέδου 0,8: ${perBeach.length}`);
 for (const b of perBeach.slice(0, 15)) console.log(`    #${String(b.id).padEnd(5)} ${String(b.name).slice(0, 26).padEnd(26)} ${b.region.slice(0, 26).padEnd(26)} δάπεδο ${b.floorDays} μέρες → αφρός ${b.surfDays} · ήρεμες ${b.calmDays} → αφρός ${b.calmSurfDays} · fetch ${b.medianFetchKm} · άνεμος ${b.medianWindKmh}`);
+console.log(`
+  ΑΠΟΦΑΣΗ Α — κριτήριο: ${Object.entries(decisionA.checks).map(([k, c]) => `${k} ${c.ok ? '✅' : '❌'} (${c.got} / ${c.need})`).join(' · ')}`);
+console.log(`  → ${decisionA.verdict}`);
 console.log(`→ ${path.relative(root, OUT)}`);
