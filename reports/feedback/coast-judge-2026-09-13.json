@@ -1,0 +1,604 @@
+{
+  "generatedAt": "2026-09-13T10:56:27.743Z",
+  "input": "C:/Users/Miltos/Desktop/beach/.tmp/feedback-export.json",
+  "segments": "reports/feedback/coast-segments-2026-09-13.json",
+  "pastDays": 92,
+  "judge": "Open-Meteo past_days (πληρωμένοι hosts) στο σημείο της παραλίας + θαλάσσιο σημείο της σελίδας — αρχείο μοντέλου, ΟΧΙ όργανο",
+  "summary": {
+    "attica-athens-area-mainland ΝΔ": {
+      "records": 7,
+      "hourCertain": 4,
+      "windUnderShown": 1,
+      "windAgreed": 2,
+      "windOverShown": 4,
+      "seaUnderShown": 0,
+      "seaAgreed": 2,
+      "offshoreStrong": 1,
+      "swellIntoOffshoreWind": 0,
+      "regionPointDiffers": 1
+    },
+    "ionian-islands-lefkada Δ": {
+      "records": 3,
+      "hourCertain": 2,
+      "windUnderShown": 0,
+      "windAgreed": 3,
+      "windOverShown": 0,
+      "seaUnderShown": 0,
+      "seaAgreed": 3,
+      "offshoreStrong": 0,
+      "swellIntoOffshoreWind": 0,
+      "regionPointDiffers": 1
+    }
+  },
+  "rows": [
+    {
+      "beachId": 6,
+      "name": "Agios Kosmas",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 216,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-08-07",
+      "hour": 7,
+      "hourCertain": false,
+      "observedTiming": null,
+      "shown": {
+        "bft": 1,
+        "bftShown": null,
+        "dir": "West",
+        "exposure": "exposed",
+        "seaM": 0.28,
+        "shoreM": null
+      },
+      "archive": {
+        "beach": {
+          "kmh": 4.9,
+          "bft": 1,
+          "dirDeg": 17,
+          "gustKmh": 11.2,
+          "dayMaxKmh10to18": 13.5
+        },
+        "region": {
+          "kmh": 4.9,
+          "bft": 1,
+          "dirDeg": 17,
+          "gustKmh": 11.2,
+          "dayMaxKmh10to18": 13.5
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0,
+          "hsM": 0,
+          "dirDeg": 331,
+          "periodS": 1.7,
+          "swellM": 0,
+          "swellDirDeg": 331,
+          "swellPeriodS": 1.7,
+          "windWaveM": 0,
+          "point": {
+            "lat": 37.8172,
+            "lon": 23.6541
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: σελίδα και αρχείο συμφωνούν (1 ≈ 1 Μπφ, ριπή 11.2)",
+        "ΚΥΜΑ: σελίδα 0.28 μ. > αρχείο 0 μ. — υπερ-έδειξε",
+        "ώρα αβέβαιη (πριν από 29/08 χωρίς ώρα οθόνης) — κρίθηκε η ώρα του κλικ"
+      ]
+    },
+    {
+      "beachId": 1162,
+      "name": "Kavalikevta",
+      "region": "ionian-islands-lefkada",
+      "sector": "Δ",
+      "facingDeg": 285,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-08-13",
+      "hour": 11,
+      "hourCertain": false,
+      "observedTiming": null,
+      "shown": {
+        "bft": 3,
+        "bftShown": null,
+        "dir": "Northeast",
+        "exposure": "protected",
+        "seaM": 0.35,
+        "shoreM": null
+      },
+      "archive": {
+        "beach": {
+          "kmh": 16.3,
+          "bft": 3,
+          "dirDeg": 35,
+          "gustKmh": 32,
+          "dayMaxKmh10to18": 22.9
+        },
+        "region": {
+          "kmh": 14.9,
+          "bft": 3,
+          "dirDeg": 37,
+          "gustKmh": 36.4,
+          "dayMaxKmh10to18": 27.2
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.3,
+          "hsM": 0.3,
+          "dirDeg": 24,
+          "periodS": 2.7,
+          "swellM": 0.2,
+          "swellDirDeg": 310,
+          "swellPeriodS": 3.9,
+          "windWaveM": 0.3,
+          "point": {
+            "lat": 38.7754,
+            "lon": 20.4768
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: σελίδα και αρχείο συμφωνούν (3 ≈ 3 Μπφ, ριπή 32)",
+        "ΚΥΜΑ: σελίδα 0.35 μ. ≈ αρχείο 0.3 μ. (T 2.7 s, φουσκοθαλασσιά 0.2 μ. από 310°)",
+        "ώρα αβέβαιη (πριν από 29/08 χωρίς ώρα οθόνης) — κρίθηκε η ώρα του κλικ"
+      ]
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 228,
+      "verdict": "too_windy",
+      "alsoReported": [],
+      "date": "2026-08-14",
+      "hour": 10,
+      "hourCertain": false,
+      "observedTiming": null,
+      "shown": {
+        "bft": 1,
+        "bftShown": null,
+        "dir": "Northeast",
+        "exposure": "protected",
+        "seaM": 0.34,
+        "shoreM": null
+      },
+      "archive": {
+        "beach": {
+          "kmh": 10.7,
+          "bft": 2,
+          "dirDeg": 12,
+          "gustKmh": 27,
+          "dayMaxKmh10to18": 19.4
+        },
+        "region": {
+          "kmh": 15.7,
+          "bft": 3,
+          "dirDeg": 16,
+          "gustKmh": 34.9,
+          "dayMaxKmh10to18": 28
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.4,
+          "hsM": 0.4,
+          "dirDeg": 335,
+          "periodS": 2.5,
+          "swellM": 0,
+          "swellDirDeg": 277,
+          "swellPeriodS": 2.7,
+          "windWaveM": 0.4,
+          "point": {
+            "lat": 37.8628,
+            "lon": 23.6082
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: η σελίδα έδειξε 1 Μπφ, το αρχείο στην παραλία λέει 2 Μπφ (10.7 χλμ/ώ, ριπή 27) — υπο-έδειξε κατά 1",
+        "σημείο περιοχής 3 Μπφ ≠ σημείο παραλίας 2 Μπφ",
+        "ΚΥΜΑ: σελίδα 0.34 μ. ≈ αρχείο 0.4 μ. (T 2.5 s, φουσκοθαλασσιά 0 μ. από 277°)",
+        "ώρα αβέβαιη (πριν από 29/08 χωρίς ώρα οθόνης) — κρίθηκε η ώρα του κλικ"
+      ]
+    },
+    {
+      "beachId": 8,
+      "name": "Paralia Glyfadas Akti A",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 211,
+      "verdict": "too_windy",
+      "alsoReported": [],
+      "date": "2026-08-14",
+      "hour": 11,
+      "hourCertain": false,
+      "observedTiming": null,
+      "shown": {
+        "bft": 5,
+        "bftShown": null,
+        "dir": "Northeast",
+        "exposure": "protected",
+        "seaM": 0.7,
+        "shoreM": null
+      },
+      "archive": {
+        "beach": {
+          "kmh": 22,
+          "bft": 4,
+          "dirDeg": 18,
+          "gustKmh": 47.5,
+          "dayMaxKmh10to18": 28
+        },
+        "region": {
+          "kmh": 22,
+          "bft": 4,
+          "dirDeg": 18,
+          "gustKmh": 47.5,
+          "dayMaxKmh10to18": 28
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.4,
+          "hsM": 0.4,
+          "dirDeg": 326,
+          "periodS": 2.6,
+          "swellM": 0.2,
+          "swellDirDeg": 300,
+          "swellPeriodS": 2.9,
+          "windWaveM": 0.3,
+          "point": {
+            "lat": 37.815,
+            "lon": 23.6883
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: η σελίδα έδειξε 5 Μπφ, το αρχείο 4 Μπφ — υπερ-έδειξε κατά 1",
+        "απόγειος ≥4 Μπφ: ήρεμο νερό αλλά αέρας στην άμμο — η λέξη «προστατευμένη» διαβάζεται ως «απάνεμη»",
+        "ριπές 47.5 χλμ/ώ",
+        "ΚΥΜΑ: σελίδα 0.7 μ. > αρχείο 0.4 μ. — υπερ-έδειξε",
+        "ώρα αβέβαιη (πριν από 29/08 χωρίς ώρα οθόνης) — κρίθηκε η ώρα του κλικ"
+      ]
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 228,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-08-18",
+      "hour": 14,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 3,
+        "bftShown": null,
+        "dir": "West",
+        "exposure": "partial",
+        "seaM": 0.46,
+        "shoreM": 0.46
+      },
+      "archive": {
+        "beach": {
+          "kmh": 9.8,
+          "bft": 2,
+          "dirDeg": 204,
+          "gustKmh": 27,
+          "dayMaxKmh10to18": 10.2
+        },
+        "region": {
+          "kmh": 10,
+          "bft": 2,
+          "dirDeg": 193,
+          "gustKmh": 24.8,
+          "dayMaxKmh10to18": 11.2
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.1,
+          "hsM": 0.1,
+          "dirDeg": 179,
+          "periodS": 2.4,
+          "swellM": 0.1,
+          "swellDirDeg": 184,
+          "swellPeriodS": 3,
+          "windWaveM": 0.1,
+          "point": {
+            "lat": 37.8628,
+            "lon": 23.6082
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: η σελίδα έδειξε 3 Μπφ, το αρχείο 2 Μπφ — υπερ-έδειξε κατά 1",
+        "ΚΥΜΑ: σελίδα 0.46 μ. > αρχείο 0.1 μ. — υπερ-έδειξε"
+      ]
+    },
+    {
+      "beachId": 11,
+      "name": "Paralia Glyfadas Akti D",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 239,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-08-19",
+      "hour": 13,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 2,
+        "bftShown": null,
+        "dir": "East",
+        "exposure": "partial",
+        "seaM": 0.1,
+        "shoreM": 0.1
+      },
+      "archive": {
+        "beach": {
+          "kmh": 9.2,
+          "bft": 2,
+          "dirDeg": 191,
+          "gustKmh": 23,
+          "dayMaxKmh10to18": 10.9
+        },
+        "region": {
+          "kmh": 9.2,
+          "bft": 2,
+          "dirDeg": 191,
+          "gustKmh": 23,
+          "dayMaxKmh10to18": 10.9
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.1,
+          "hsM": 0.1,
+          "dirDeg": 183,
+          "periodS": 2.5,
+          "swellM": 0.1,
+          "swellDirDeg": 183,
+          "swellPeriodS": 2.7,
+          "windWaveM": 0,
+          "point": {
+            "lat": 37.8276,
+            "lon": 23.6793
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: σελίδα και αρχείο συμφωνούν (2 ≈ 2 Μπφ, ριπή 23)",
+        "ΚΥΜΑ: σελίδα 0.1 μ. ≈ αρχείο 0.1 μ. (T 2.5 s, φουσκοθαλασσιά 0.1 μ. από 183°)"
+      ]
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 228,
+      "verdict": "too_windy",
+      "alsoReported": [],
+      "date": "2026-08-25",
+      "hour": 15,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 3,
+        "bftShown": null,
+        "dir": "North",
+        "exposure": "protected",
+        "seaM": 1.08,
+        "shoreM": 0.11
+      },
+      "archive": {
+        "beach": {
+          "kmh": 5.2,
+          "bft": 2,
+          "dirDeg": 192,
+          "gustKmh": 20.5,
+          "dayMaxKmh10to18": 13
+        },
+        "region": {
+          "kmh": 7.1,
+          "bft": 2,
+          "dirDeg": 131,
+          "gustKmh": 20.2,
+          "dayMaxKmh10to18": 18.6
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0,
+          "hsM": 0,
+          "dirDeg": 193,
+          "periodS": 1.5,
+          "swellM": 0,
+          "swellDirDeg": 201,
+          "swellPeriodS": 1.6,
+          "windWaveM": 0,
+          "point": {
+            "lat": 37.8628,
+            "lon": 23.6082
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: η σελίδα έδειξε 3 Μπφ, το αρχείο 2 Μπφ — υπερ-έδειξε κατά 1",
+        "ΚΥΜΑ: σελίδα 1.08 μ. > αρχείο 0 μ. — υπερ-έδειξε"
+      ]
+    },
+    {
+      "beachId": 1157,
+      "name": "Gialos",
+      "region": "ionian-islands-lefkada",
+      "sector": "Δ",
+      "facingDeg": 267,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-08-26",
+      "hour": 17,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 3,
+        "bftShown": "3",
+        "dir": "Northwest",
+        "exposure": "exposed",
+        "seaM": 0.88,
+        "shoreM": 0.88
+      },
+      "archive": {
+        "beach": {
+          "kmh": 18.4,
+          "bft": 3,
+          "dirDeg": 318,
+          "gustKmh": 53.3,
+          "dayMaxKmh10to18": 20.8
+        },
+        "region": {
+          "kmh": 22.1,
+          "bft": 4,
+          "dirDeg": 296,
+          "gustKmh": 64.8,
+          "dayMaxKmh10to18": 22.1
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 1,
+          "hsM": 1,
+          "dirDeg": 291,
+          "periodS": 4,
+          "swellM": 0.3,
+          "swellDirDeg": 242,
+          "swellPeriodS": 4.9,
+          "windWaveM": 1,
+          "point": {
+            "lat": 38.6599,
+            "lon": 20.4426
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: σελίδα και αρχείο συμφωνούν (3 ≈ 3 Μπφ, ριπή 53.3)",
+        "σημείο περιοχής 4 Μπφ ≠ σημείο παραλίας 3 Μπφ",
+        "ριπές 53.3 χλμ/ώ",
+        "ΚΥΜΑ: σελίδα 0.88 μ. ≈ αρχείο 1 μ. (T 4 s, φουσκοθαλασσιά 0.3 μ. από 242°)"
+      ]
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "facingDeg": 228,
+      "verdict": "accurate",
+      "alsoReported": [],
+      "date": "2026-08-28",
+      "hour": 14,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 3,
+        "bftShown": "3–4",
+        "dir": "Southeast",
+        "exposure": "exposed",
+        "seaM": 0.36,
+        "shoreM": 0.36
+      },
+      "archive": {
+        "beach": {
+          "kmh": 7.6,
+          "bft": 2,
+          "dirDeg": 172,
+          "gustKmh": 26.3,
+          "dayMaxKmh10to18": 13.1
+        },
+        "region": {
+          "kmh": 9.7,
+          "bft": 2,
+          "dirDeg": 158,
+          "gustKmh": 23.8,
+          "dayMaxKmh10to18": 17
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0,
+          "hsM": 0,
+          "dirDeg": 158,
+          "periodS": 1.4,
+          "swellM": 0,
+          "swellDirDeg": 231,
+          "swellPeriodS": 1.7,
+          "windWaveM": 0,
+          "point": {
+            "lat": 37.8628,
+            "lon": 23.6082
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: η σελίδα έδειξε 3 Μπφ, το αρχείο 2 Μπφ — υπερ-έδειξε κατά 1",
+        "ΚΥΜΑ: σελίδα 0.36 μ. > αρχείο 0 μ. — υπερ-έδειξε"
+      ]
+    },
+    {
+      "beachId": 1160,
+      "name": "Kathisma",
+      "region": "ionian-islands-lefkada",
+      "sector": "Δ",
+      "facingDeg": 286,
+      "verdict": "had_waves",
+      "alsoReported": [],
+      "date": "2026-09-02",
+      "hour": 11,
+      "hourCertain": true,
+      "observedTiming": "now",
+      "shown": {
+        "bft": 2,
+        "bftShown": "2",
+        "dir": "Northeast",
+        "exposure": "protected",
+        "seaM": 0.32,
+        "shoreM": 0.32
+      },
+      "archive": {
+        "beach": {
+          "kmh": 5.2,
+          "bft": 2,
+          "dirDeg": 25,
+          "gustKmh": 12.6,
+          "dayMaxKmh10to18": 14
+        },
+        "region": {
+          "kmh": 5.1,
+          "bft": 2,
+          "dirDeg": 51,
+          "gustKmh": 14,
+          "dayMaxKmh10to18": 8.5
+        },
+        "sea": {
+          "model": "ewam",
+          "ewamHsM": 0.3,
+          "hsM": 0.3,
+          "dirDeg": 289,
+          "periodS": 3.7,
+          "swellM": 0.3,
+          "swellDirDeg": 289,
+          "swellPeriodS": 3.7,
+          "windWaveM": 0,
+          "point": {
+            "lat": 38.8005,
+            "lon": 20.4883
+          }
+        }
+      },
+      "judgement": [
+        "ΑΝΕΜΟΣ: σελίδα και αρχείο συμφωνούν (2 ≈ 2 Μπφ, ριπή 12.6)",
+        "ΚΥΜΑ: σελίδα 0.32 μ. ≈ αρχείο 0.3 μ. (T 3.7 s, φουσκοθαλασσιά 0.3 μ. από 289°)"
+      ]
+    }
+  ]
+}
