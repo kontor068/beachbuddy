@@ -5,6 +5,8 @@ import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+import { latestChangelogEntry } from './landing/changelog';
+import { hasUnseenMenuUpdate, markMenuUpdateSeen } from '../utils/menuUpdateSeen';
 
 // The account panel is 27 KB of markup nobody sees until they click their own avatar,
 // and the header renders on every single page. Loading it eagerly put the whole
@@ -129,6 +131,10 @@ const Header: React.FC<HeaderProps> = ({
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
+  // Ανάβει όσο υπάρχει εγγραφή στο ημερολόγιο («τι φτιάξαμε») που αυτή η
+  // συσκευή δεν έχει δει ακόμα — σβήνει μόλις ανοίξει το μενού μία φορά.
+  const latestWork = latestChangelogEntry();
+  const [hasUnseenUpdate, setHasUnseenUpdate] = useState(() => hasUnseenMenuUpdate(latestWork.date));
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const mainMenuRef = useRef<HTMLDivElement>(null);
   const accountLabels = getLocalizedCopy(language, accountCopy);
@@ -410,8 +416,14 @@ const Header: React.FC<HeaderProps> = ({
             <div ref={mainMenuRef} className="relative">
               <button
                 type="button"
-                onClick={() => setIsMainMenuOpen(open => !open)}
-                className="inline-flex min-h-10 items-center justify-center rounded-full px-2.5 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                onClick={() => {
+                  setIsMainMenuOpen(open => !open);
+                  if (hasUnseenUpdate) {
+                    markMenuUpdateSeen(latestWork.date);
+                    setHasUnseenUpdate(false);
+                  }
+                }}
+                className="relative inline-flex min-h-10 items-center justify-center rounded-full px-2.5 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
                 aria-label={menuLabel}
                 aria-haspopup="dialog"
                 aria-expanded={isMainMenuOpen}
@@ -419,6 +431,13 @@ const Header: React.FC<HeaderProps> = ({
                 {isMainMenuOpen
                   ? <X className="h-5 w-5 text-[#007a83]" aria-hidden="true" />
                   : <MenuIcon className="h-5 w-5 text-[#007a83]" aria-hidden="true" />}
+                {/* Διακριτική κουκκίδα, όχι ασφυκτικό μπάτζ: κεντρίζει χωρίς να ουρλιάζει "AI". */}
+                {!isMainMenuOpen && hasUnseenUpdate && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#ff6b57] ring-2 ring-white"
+                  />
+                )}
               </button>
 
               {isMainMenuOpen && (

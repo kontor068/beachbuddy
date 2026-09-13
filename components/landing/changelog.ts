@@ -31,6 +31,15 @@ export type ChangelogEntry = {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-09-13',
+    tag: 'new',
+    text: {
+      gr: 'Στο σχόλιο «πιο κύμα / πιο αέρα / πιο ήρεμα» μπορείς τώρα να στείλεις και μια φωτογραφία της θάλασσας εκείνη τη στιγμή. Δεν δημοσιεύεται πουθενά — τη βλέπουμε μόνο εμείς, για να καταλάβουμε πού πέσαμε έξω.',
+      en: 'When you tell us the sea has more waves, more wind, or is calmer, you can now attach a photo of it right then. It is never published — only we see it, to understand where our forecast missed.',
+    },
+    short: { gr: 'Φωτογραφία της θάλασσας στο σχόλιο', en: 'A photo of the sea with your comment' },
+  },
+  {
     date: '2026-09-04',
     tag: 'beta',
     text: {
