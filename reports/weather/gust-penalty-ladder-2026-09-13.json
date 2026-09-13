@@ -1,0 +1,2043 @@
+{
+  "generatedAt": "2026-09-13T06:42:34.147Z",
+  "dayIndex": 0,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "Σκάλα πόντων ριπής στο swimmingScore (services/recommendationService, ≥3 Μπφ βάσης): ≥14/≥22/≥35 → −5/−10/−18 (protected −2/−4/−8). Μετράται μετατόπιση των σκαλοπατιών κατά τη φούσκα της Δ5 ανά Μποφόρ βάσης (+12/+10/+4/0). Το σκαλί «+1 ενεργό Μποφόρ» (ήδη ανά Μποφόρ, LIVE 13/09) και όλα τα υπόλοιπα μένουν όπως στην παραγωγή.",
+  "evidence": "Δ5 §Γ81: gust-spread-vs-stations-2026-09-12.json — ριπή μοντέλου − οργάνου ανά Μποφόρ οργάνου: 3 +11,9 · 4 +9,8 · 5 +4,5 · 6 −0,9 · 7 −5,7 · 8 −10,4. Όριο: η φούσκα μετρήθηκε ανά Μποφόρ ΟΡΓΑΝΟΥ, η σκάλα κρίνει με Μποφόρ ΜΟΝΤΕΛΟΥ.",
+  "production": {
+    "ladder": [
+      14,
+      22,
+      35
+    ],
+    "distribution": {
+      "excellent": 768,
+      "good": 891,
+      "caution": 429,
+      "avoid": 0,
+      "avoid_swimming": 768
+    },
+    "byBaseBeaufort": {
+      "1": 5,
+      "2": 732,
+      "3": 1054,
+      "4": 905,
+      "5": 160
+    }
+  },
+  "variants": {
+    "bftShift": {
+      "ladder": {
+        "3": [
+          26,
+          34,
+          47
+        ],
+        "4": [
+          24,
+          32,
+          45
+        ],
+        "5": [
+          18,
+          26,
+          39
+        ],
+        "≥6": [
+          14,
+          22,
+          35
+        ]
+      },
+      "verdict": {
+        "changed": 31,
+        "softer": 31,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "avoid_swimming → caution": 22,
+          "caution → good": 9
+        },
+        "softerByExposure": {
+          "partial": 30,
+          "protected": 1
+        },
+        "softerByBaseBeaufort": {
+          "3": 19,
+          "4": 12
+        },
+        "avoidLifted": {
+          "count": 22,
+          "byBaseBeaufort": {
+            "3": 10,
+            "4": 12
+          },
+          "byExposure": {
+            "partial": 21,
+            "protected": 1
+          }
+        }
+      },
+      "score": {
+        "up": 1059,
+        "down": 0,
+        "medianUpDelta": 4,
+        "upByBaseBeaufort": {
+          "3": 636,
+          "4": 390,
+          "5": 33
+        }
+      },
+      "distributionAfter": {
+        "excellent": 768,
+        "good": 900,
+        "caution": 442,
+        "avoid": 0,
+        "avoid_swimming": 746
+      },
+      "softerSamples": [
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 590,
+          "name": "Aptera",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 598,
+          "name": "Georgioupoli",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 973,
+          "name": "Mandraki",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 998,
+          "name": "Paralia Bouka",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1296,
+          "name": "Iero",
+          "regionId": "north-aegean-ikaria",
+          "before": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 55,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1450,
+          "name": "Kallithea",
+          "regionId": "north-aegean-lemnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1288,
+          "name": "Apiganou",
+          "regionId": "north-aegean-oinousses",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1289,
+          "name": "Fokia",
+          "regionId": "north-aegean-oinousses",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1659,
+          "name": "Kalokataritissa",
+          "regionId": "south-aegean-amorgos",
+          "before": {
+            "comfort": "caution",
+            "score": 58,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 63,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 973,
+          "name": "Mandraki",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "shiftAll": {
+      "ladder": [
+        26,
+        34,
+        47
+      ],
+      "verdict": {
+        "changed": 33,
+        "softer": 33,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "avoid_swimming → caution": 24,
+          "caution → good": 9
+        },
+        "softerByExposure": {
+          "partial": 32,
+          "protected": 1
+        },
+        "softerByBaseBeaufort": {
+          "3": 19,
+          "4": 14
+        },
+        "avoidLifted": {
+          "count": 24,
+          "byBaseBeaufort": {
+            "3": 10,
+            "4": 14
+          },
+          "byExposure": {
+            "partial": 23,
+            "protected": 1
+          }
+        }
+      },
+      "score": {
+        "up": 1222,
+        "down": 0,
+        "medianUpDelta": 4,
+        "upByBaseBeaufort": {
+          "3": 636,
+          "4": 482,
+          "5": 104
+        }
+      },
+      "distributionAfter": {
+        "excellent": 768,
+        "good": 900,
+        "caution": 444,
+        "avoid": 0,
+        "avoid_swimming": 744
+      },
+      "softerSamples": [
+        {
+          "beachId": 134,
+          "name": "Paralia Palaiopoli",
+          "regionId": "attica-kythira",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 36,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 590,
+          "name": "Aptera",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 598,
+          "name": "Georgioupoli",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 973,
+          "name": "Mandraki",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 998,
+          "name": "Paralia Bouka",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1296,
+          "name": "Iero",
+          "regionId": "north-aegean-ikaria",
+          "before": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 55,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1450,
+          "name": "Kallithea",
+          "regionId": "north-aegean-lemnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1288,
+          "name": "Apiganou",
+          "regionId": "north-aegean-oinousses",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1289,
+          "name": "Fokia",
+          "regionId": "north-aegean-oinousses",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 134,
+          "name": "Paralia Palaiopoli",
+          "regionId": "attica-kythira",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 36,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 45,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "none": {
+      "ladder": "none",
+      "verdict": {
+        "changed": 38,
+        "softer": 38,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "avoid_swimming → caution": 24,
+          "caution → good": 14
+        },
+        "softerByExposure": {
+          "partial": 36,
+          "protected": 2
+        },
+        "softerByBaseBeaufort": {
+          "3": 23,
+          "4": 15
+        },
+        "avoidLifted": {
+          "count": 24,
+          "byBaseBeaufort": {
+            "3": 10,
+            "4": 14
+          },
+          "byExposure": {
+            "partial": 23,
+            "protected": 1
+          }
+        }
+      },
+      "score": {
+        "up": 1237,
+        "down": 0,
+        "medianUpDelta": 5,
+        "upByBaseBeaufort": {
+          "3": 636,
+          "4": 497,
+          "5": 104
+        }
+      },
+      "distributionAfter": {
+        "excellent": 768,
+        "good": 905,
+        "caution": 439,
+        "avoid": 0,
+        "avoid_swimming": 744
+      },
+      "softerSamples": [
+        {
+          "beachId": 134,
+          "name": "Paralia Palaiopoli",
+          "regionId": "attica-kythira",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 36,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 590,
+          "name": "Aptera",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 598,
+          "name": "Georgioupoli",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "caution",
+            "score": 52,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 62,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 902,
+          "name": "Mikri Ammos",
+          "regionId": "epirus-thesprotia-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "protected",
+            "windKmh": 19,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "good",
+            "score": 52,
+            "exposure": "protected",
+            "windKmh": 19,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 973,
+          "name": "Mandraki",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 998,
+          "name": "Paralia Bouka",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1296,
+          "name": "Iero",
+          "regionId": "north-aegean-ikaria",
+          "before": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1450,
+          "name": "Kallithea",
+          "regionId": "north-aegean-lemnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1288,
+          "name": "Apiganou",
+          "regionId": "north-aegean-oinousses",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 134,
+          "name": "Paralia Palaiopoli",
+          "regionId": "attica-kythira",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 36,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 26,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 548,
+          "name": "Paralia Agion Apostolon",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 674,
+          "name": "Ammolofi Agiou Pavlou",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3179,
+          "name": "Ammoudi",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 676,
+          "name": "Vlychi Nero",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 685,
+          "name": "Ligkres",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 687,
+          "name": "Mikri Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 709,
+          "name": "Schinaria",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 710,
+          "name": "Triopetra",
+          "regionId": "crete-crete-rethymno",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 19,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 956,
+          "name": "Agia Aikaterini",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 963,
+          "name": "Kalyviotis",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 972,
+          "name": "Maistros",
+          "regionId": "ionian-islands-corfu",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    }
+  },
+  "note": "Μία μέρα με τον καιρό που έτυχε. Μετατόπιση προς τα πάνω = η ποινή πέφτει σπανιότερα → μόνο ηπιότερο· ό,τι αυστηρότερο = ανωμαλία (stricterSamples). Το «none» δείχνει το συνολικό αποτύπωμα της σκάλας, όχι πρόταση."
+}
