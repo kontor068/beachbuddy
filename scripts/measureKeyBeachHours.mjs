@@ -101,8 +101,12 @@ for (const region of regions) {
         const stepT = { 3: 34, 4: 32, 5: 26 }[baseBft] ?? 22;
         const windRose = Number.isFinite(addedWind) && addedWind > coreWind + 0.5;
         const spreadStep = Number.isFinite(addedSpread) && addedSpread > coreSpread && addedSpread >= stepT && baseBft >= 3;
-        row.cause = windRose && spreadStep ? 'άνεμος + ριπή 19-20' : windRose ? 'άνεμος 19-20 (χειρότερη ώρα)' : spreadStep ? 'ριπή 19-20 (σκαλί +1)' : 'άλλο (βροχή / κύμα ώρας / πόντοι)';
-        row.signals = { coreWindKmh: Math.round(coreWind), addedWindKmh: Number.isFinite(addedWind) ? Math.round(addedWind) : null, coreSpreadKmh: Number.isFinite(coreSpread) ? Math.round(coreSpread) : null, addedSpreadKmh: Number.isFinite(addedSpread) ? Math.round(addedSpread) : null, baseBft, stepT };
+        // Η σκάλα πόντων (Δ5-Γ: 14/22/35 + 12/10/4/0 ανά Μποφόρ βάσης) — ένα σκαλοπάτι που το περνάει μόνο η ριπή των 19-20 ρίχνει πόντους.
+        const ladder = [14, 22, 35].map(s => s + ({ 3: 12, 4: 10, 5: 4 }[baseBft] ?? 0));
+        const ladderRung = (v) => (Number.isFinite(v) ? ladder.filter(s => v >= s).length : 0);
+        const spreadLadder = !spreadStep && baseBft >= 3 && Number.isFinite(addedSpread) && addedSpread > coreSpread && ladderRung(addedSpread) > ladderRung(coreSpread);
+        row.cause = windRose && (spreadStep || spreadLadder) ? 'άνεμος + ριπή 19-20' : windRose ? 'άνεμος 19-20 (χειρότερη ώρα)' : spreadStep ? 'ριπή 19-20 (σκαλί +1)' : spreadLadder ? 'ριπή 19-20 (σκάλα πόντων)' : 'άλλο (βροχή / κύμα ώρας / πόντοι)';
+        row.signals = { coreWindKmh: Math.round(coreWind), addedWindKmh: Number.isFinite(addedWind) ? Math.round(addedWind) : null, coreSpreadKmh: Number.isFinite(coreSpread) ? Math.round(coreSpread) : null, addedSpreadKmh: Number.isFinite(addedSpread) ? Math.round(addedSpread) : null, baseBft, stepT, ladder };
       }
       rows.push(row);
     }
