@@ -12,6 +12,8 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import type { SceneHour } from './BeachSeaMotionScene';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
+import { weatherEmojiLabel } from '../utils/weatherEmoji';
+import { WeatherIcon } from './WeatherIcon';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { conditionToneCountPhrase, conditionToneCountLines, causeLinePhrase, type CauseLineWords, type ConditionToneCountLine } from '../utils/conditionToneLabels';
@@ -82,6 +84,10 @@ interface BeachMapProps {
   windSpeed?: number;
   windDirection?: string;
   windDirectionDeg?: number;
+  /** Ο ουρανός ΤΗΝ ΙΔΙΑ ώρα με τον άνεμο/κύμα του ταμπελακιού — `selectedForecast.weather` στο
+   *  App.tsx, ήδη προσαρμοσμένο στην επιλεγμένη ώρα. Επίπεδο περιοχής, δες utils/weatherEmoji. */
+  weatherIcon?: string;
+  weatherMain?: string;
   /** Per-beach local wind (direction deg + speed km/h) keyed by beach id, for the
    *  hover card so a differently-coloured beach is self-explanatory. Optional. */
   beachLocalWinds?: Record<number, { deg: number; speedKmh: number }>;
@@ -683,7 +689,10 @@ const MarkerConditionsPopup: React.FC<{
   /** «Δες το σε κίνηση» / «Κλείσε την κίνηση» — τα προσβάσιμα ονόματα του play. */
   playMotionLabel: string;
   stopMotionLabel: string;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, atDt, hourSeries, playMotionLabel, stopMotionLabel }) => {
+  /** Ο ουρανός αυτή την ώρα, επίπεδο περιοχής — δες utils/weatherEmoji. */
+  weatherIcon?: string;
+  weatherMain?: string;
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, atDt, hourSeries, playMotionLabel, stopMotionLabel, weatherIcon, weatherMain }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -806,6 +815,23 @@ const MarkerConditionsPopup: React.FC<{
             </p>
           )}
         </div>
+        {/* Ο ΟΥΡΑΝΟΣ, ΣΤΟ ΚΕΝΟ ΔΙΠΛΑ ΣΤΙΣ ΔΥΟ ΓΡΑΜΜΕΣ (12/09/2026, Μίλτος: «στο κενό στο λευκό
+            θα ήταν ωραίο να δείχνεις … αν έχει ήλιο, συννεφιά, βροχή»). Μόνο το εικονίδιο —
+            καμία λέξη δίπλα του, όπως ζητήθηκε· η λεζάντα ζει στο title/aria-label για τους
+            αναγνώστες οθόνης. utils/weatherEmoji εξηγεί γιατί δεν είναι δεύτερος υπολογισμός.
+            Ίδιο ζωντανό σχέδιο με τη λωρίδα ημερών (WeatherIcon), όχι emoji: το emoji αλλάζει
+            όψη ανά κινητό και δεν κινείται. Ύψος = οι δύο γραμμές δίπλα (2 × 11 px + κενό), και
+            λεπτότερη γραμμή ώστε να ζυγίζει όσο τα έντονα γράμματα, όχι βαρύτερα. */}
+        {weatherIcon && (
+          <span className="shrink-0" title={weatherEmojiLabel(weatherMain, language)}>
+            <WeatherIcon
+              code={weatherIcon}
+              label={weatherEmojiLabel(weatherMain, language)}
+              strokeWidth={1.75}
+              className={readout.waveWord ? 'h-7 w-7' : 'h-4 w-4'}
+            />
+          </span>
+        )}
         {/* ΤΟ PLAY ΚΑΘΕΤΑΙ ΔΙΠΛΑ ΣΤΙΣ ΔΥΟ ΓΡΑΜΜΕΣ, ΟΧΙ ΣΕ ΔΙΚΗ ΤΟΥ ΣΕΙΡΑ: μηδέν επιπλέον ύψος
             στην κλειστή κάρτα. Στρογγυλό, 28 px — στόχος αφής δίπλα σε κείμενο 11 px.
             Μόνο στις περιοχές του πιλότου (SEA_MOTION_PILOT_REGIONS). */}
@@ -2955,6 +2981,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   windSpeed,
   windDirection,
   windDirectionDeg,
+  weatherIcon,
+  weatherMain,
   beachLocalWinds,
   hourSlots,
   selectedHourDt = null,
@@ -5040,6 +5068,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     hourSeries={sceneHourSeries}
                     playMotionLabel={mapCopy.playMotion[language]}
                     stopMotionLabel={mapCopy.stopMotion[language]}
+                    weatherIcon={weatherIcon}
+                    weatherMain={weatherMain}
                   />
                 </Popup>
               )}

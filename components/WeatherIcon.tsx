@@ -227,9 +227,12 @@ interface WeatherIconProps {
    */
   label?: string;
   className?: string;
+  /** Viewbox units. The 2.25 default suits the 16px day strip; drawn larger, beside small
+   *  bold text, it reads heavier than the letters and needs thinning to match them. */
+  strokeWidth?: number;
 }
 
-export const WeatherIcon: React.FC<WeatherIconProps> = ({ code, label, className }) => {
+export const WeatherIcon: React.FC<WeatherIconProps> = ({ code, label, className, strokeWidth = 2.25 }) => {
   const glyph = (code && GLYPHS[code]) || FALLBACK;
   return (
     <svg
@@ -238,7 +241,7 @@ export const WeatherIcon: React.FC<WeatherIconProps> = ({ code, label, className
       height={24}
       fill="none"
       stroke="currentColor"
-      strokeWidth={2.25}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={`${glyph.className} ${className ?? ''}`}
