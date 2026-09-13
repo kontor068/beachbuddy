@@ -33,6 +33,7 @@ import {
 import { onshoreComponent } from '../utils/geospatialExposureModel';
 import { getBeaufortLevel, applyBeachWindToDailyForecast } from '../utils/weatherUtils';
 import { athensNow, TRIP_PLAN_DAY_ENDS_HOUR } from '../utils/athensTime';
+import { isCoreBeachHour } from '../utils/beachDayWindow';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TRIP PLANNER — "I'm here for N days: which beach on which day?"
@@ -342,11 +343,10 @@ const badWeatherReason = (
 
   const hours = day.hourly || [];
   if (hours.length === 0) return null;
-  // Daytime hours only — overnight rain does not spoil a swim.
-  const daytime = hours.filter(item => {
-    const hour = new Date(item.dt * 1000).getHours();
-    return hour >= 9 && hour <= 19;
-  });
+  // Daytime hours only — overnight rain does not spoil a swim. ΟΙ ΙΔΙΕΣ ώρες με τον κανόνα βροχής της
+  // ετυμηγορίας (utils/beachDayWindow, πυρήνας 10-18): ως 13/09/2026 το πλάνο κοίταζε 09-19 μόνο του, οπότε μια
+  // μπόρα στις 9 ή στις 19 μπορούσε να βάψει «βροχή» μια μέρα που η σελίδα της παραλίας έλεγε στεγνή (§Γ81 Δ8).
+  const daytime = hours.filter(item => isCoreBeachHour(new Date(item.dt * 1000).getHours()));
   if (daytime.length === 0) return null;
   const rainy = daytime.filter(hasHourlyRainRisk).length;
   if (rainy / daytime.length > 0.5) {
