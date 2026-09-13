@@ -1,0 +1,494 @@
+{
+  "generatedAt": "2026-09-13T18:48:28.847Z",
+  "years": [
+    2026
+  ],
+  "targets": 1236,
+  "targetsWithSeaCell": 764,
+  "noisyExcluded": 31,
+  "rowsJudged": 3734,
+  "noWind": 723,
+  "question": "αφρός στην άμμο τις μέρες που το δάπεδο ψιλοκύματος δίνει ≥0,80 μ. σε όρμο με fetch < 3 χλμ — σαν τις ήρεμες μέρες της ίδιας άμμου, ή σαν τις μέρες με πραγματικό κύμα 0,8;",
+  "foamRule": "surf = εξωτερική λωρίδα ≥ 0.2 · strip = όλη η λωρίδα ≥ 0.2 · θορυβώδεις (ήρεμες μέρες με strip > 0.25) έξω",
+  "caveats": [
+    "2026 από past_days=92 της πληρωμένης πόρτας: μέρες πριν τις αρχές Ιουλίου δεν έχουν άνεμο και μένουν έξω (μετριούνται στο noWind)",
+    "ο δορυφόρος είναι τυφλός κάτω από ~0,4 μ. θραύσης: «όχι αφρός» = «όχι κύμα που σκάει ≥ ~0,5 μ.», όχι «0,25 μ.»",
+    "άνεμος 09 UTC από αρχείο best_match, όχι όργανο· έκθεση από τη μηχανή· max() χωρίς ταβάνι/πύλες άφιξης (προσέγγιση)",
+    "στιγμιότυπο μεσημεριού — το απόγευμα του μελτεμιού δεν φαίνεται"
+  ],
+  "headline": {
+    "coveFloor08": {
+      "days": 67,
+      "beaches": 34,
+      "surfRate": 0.045,
+      "stripRate": 0.194,
+      "medianFoamOuter": 0.007,
+      "medianFoam": 0.075,
+      "medianWindKmh": 38.6,
+      "medianFetchKm": 0.4,
+      "medianHs": 1.22
+    },
+    "calmSameCoves": {
+      "days": 47,
+      "beaches": 30,
+      "surfRate": 0,
+      "stripRate": 0.064,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.035,
+      "medianWindKmh": 5.7,
+      "medianFetchKm": 0.6,
+      "medianHs": 0.1
+    },
+    "measured08SameCoves": {
+      "days": 5,
+      "beaches": 2,
+      "surfRate": 0,
+      "stripRate": 0.2,
+      "medianFoamOuter": 0.019,
+      "medianFoam": 0.114,
+      "medianWindKmh": 28.2,
+      "medianFetchKm": 0.16,
+      "medianHs": 1.15
+    },
+    "openFloor08": {
+      "days": 11,
+      "beaches": 8,
+      "surfRate": 0.091,
+      "stripRate": 0.636,
+      "medianFoamOuter": 0.028,
+      "medianFoam": 0.222,
+      "medianWindKmh": 32.6,
+      "medianFetchKm": 14.76,
+      "medianHs": 1.09
+    },
+    "measured08All": {
+      "days": 197,
+      "beaches": 128,
+      "surfRate": 0.31,
+      "stripRate": 0.711,
+      "medianFoamOuter": 0.1,
+      "medianFoam": 0.284,
+      "medianWindKmh": 35.6,
+      "medianFetchKm": 10.08,
+      "medianHs": 1.61
+    },
+    "calmAll": {
+      "days": 1703,
+      "beaches": 1046,
+      "surfRate": 0.007,
+      "stripRate": 0.052,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.05,
+      "medianWindKmh": 6.1,
+      "medianFetchKm": 0.96,
+      "medianHs": 0.12
+    }
+  },
+  "classes": {
+    "floor-0.8-cove": {
+      "days": 67,
+      "beaches": 34,
+      "surfRate": 0.045,
+      "stripRate": 0.194,
+      "medianFoamOuter": 0.007,
+      "medianFoam": 0.075,
+      "medianWindKmh": 38.6,
+      "medianFetchKm": 0.4,
+      "medianHs": 1.22
+    },
+    "floor-0.5-cove": {
+      "days": 961,
+      "beaches": 327,
+      "surfRate": 0.008,
+      "stripRate": 0.037,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.038,
+      "medianWindKmh": 34.6,
+      "medianFetchKm": 0,
+      "medianHs": 0.89
+    },
+    "floor-0.8-open": {
+      "days": 11,
+      "beaches": 8,
+      "surfRate": 0.091,
+      "stripRate": 0.636,
+      "medianFoamOuter": 0.028,
+      "medianFoam": 0.222,
+      "medianWindKmh": 32.6,
+      "medianFetchKm": 14.76,
+      "medianHs": 1.09
+    },
+    "floor-0.5-open": {
+      "days": 12,
+      "beaches": 10,
+      "surfRate": 0,
+      "stripRate": 0.417,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.156,
+      "medianWindKmh": 12.4,
+      "medianFetchKm": 10.16,
+      "medianHs": 0.19
+    },
+    "calm": {
+      "days": 1703,
+      "beaches": 1046,
+      "surfRate": 0.007,
+      "stripRate": 0.052,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.05,
+      "medianWindKmh": 6.1,
+      "medianFetchKm": 0.96,
+      "medianHs": 0.12
+    },
+    "measured-0.8": {
+      "days": 197,
+      "beaches": 128,
+      "surfRate": 0.31,
+      "stripRate": 0.711,
+      "medianFoamOuter": 0.1,
+      "medianFoam": 0.284,
+      "medianWindKmh": 35.6,
+      "medianFetchKm": 10.08,
+      "medianHs": 1.61
+    },
+    "other": {
+      "days": 783,
+      "beaches": 407,
+      "surfRate": 0.011,
+      "stripRate": 0.063,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.046,
+      "medianWindKmh": 20.1,
+      "medianFetchKm": 0,
+      "medianHs": 0.7
+    }
+  },
+  "coveFloor08ByFetchBand": {
+    "1-2": {
+      "days": 11,
+      "beaches": 7,
+      "surfRate": 0.182,
+      "stripRate": 0.545,
+      "medianFoamOuter": 0.04,
+      "medianFoam": 0.201,
+      "medianWindKmh": 41.4,
+      "medianFetchKm": 1.6,
+      "medianHs": 1.05
+    },
+    "2-3": {
+      "days": 7,
+      "beaches": 3,
+      "surfRate": 0,
+      "stripRate": 0,
+      "medianFoamOuter": 0.014,
+      "medianFoam": 0.079,
+      "medianWindKmh": 32.4,
+      "medianFetchKm": 2.52,
+      "medianHs": 0.97
+    },
+    "<1": {
+      "days": 49,
+      "beaches": 24,
+      "surfRate": 0.02,
+      "stripRate": 0.143,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.057,
+      "medianWindKmh": 38.6,
+      "medianFetchKm": 0.12,
+      "medianHs": 1.38
+    }
+  },
+  "coveFloor08ByBeaufort": {
+    "5": {
+      "days": 27,
+      "beaches": 13,
+      "surfRate": 0,
+      "stripRate": 0.074,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.045,
+      "medianWindKmh": 33.2,
+      "medianFetchKm": 0.84,
+      "medianHs": 1.13
+    },
+    "6": {
+      "days": 33,
+      "beaches": 21,
+      "surfRate": 0.091,
+      "stripRate": 0.242,
+      "medianFoamOuter": 0.018,
+      "medianFoam": 0.108,
+      "medianWindKmh": 40.3,
+      "medianFetchKm": 0.28,
+      "medianHs": 1.39
+    },
+    "7": {
+      "days": 7,
+      "beaches": 6,
+      "surfRate": 0,
+      "stripRate": 0.429,
+      "medianFoamOuter": 0.004,
+      "medianFoam": 0.087,
+      "medianWindKmh": 51,
+      "medianFetchKm": 0.4,
+      "medianHs": 1.04
+    }
+  },
+  "coveFloor08ByExposure": {
+    "exposed": {
+      "days": 40,
+      "beaches": 20,
+      "surfRate": 0.05,
+      "stripRate": 0.175,
+      "medianFoamOuter": 0.004,
+      "medianFoam": 0.059,
+      "medianWindKmh": 35.5,
+      "medianFetchKm": 0.84,
+      "medianHs": 1.37
+    },
+    "partial": {
+      "days": 27,
+      "beaches": 15,
+      "surfRate": 0.037,
+      "stripRate": 0.222,
+      "medianFoamOuter": 0.015,
+      "medianFoam": 0.089,
+      "medianWindKmh": 41.1,
+      "medianFetchKm": 0.12,
+      "medianHs": 1.05
+    }
+  },
+  "coveFloor08ByS2Class": {
+    "closed": {
+      "days": 47,
+      "beaches": 19,
+      "surfRate": 0,
+      "stripRate": 0.043,
+      "medianFoamOuter": 0.004,
+      "medianFoam": 0.059,
+      "medianWindKmh": 38.4,
+      "medianFetchKm": 0.2,
+      "medianHs": 1.1
+    },
+    "open": {
+      "days": 1,
+      "beaches": 1,
+      "surfRate": 0,
+      "stripRate": 1,
+      "medianFoamOuter": 0.011,
+      "medianFoam": 0.208,
+      "medianWindKmh": 52.1,
+      "medianFetchKm": 0.76,
+      "medianHs": 0.94
+    },
+    "refused": {
+      "days": 19,
+      "beaches": 16,
+      "surfRate": 0.158,
+      "stripRate": 0.526,
+      "medianFoamOuter": 0.053,
+      "medianFoam": 0.201,
+      "medianWindKmh": 39.2,
+      "medianFetchKm": 0.84,
+      "medianHs": 1.52
+    }
+  },
+  "coveFloor08BySeaCell": {
+    "κελί νερού": {
+      "days": 46,
+      "beaches": 22,
+      "surfRate": 0.043,
+      "stripRate": 0.174,
+      "medianFoamOuter": 0.004,
+      "medianFoam": 0.057,
+      "medianWindKmh": 38.9,
+      "medianFetchKm": 0.2,
+      "medianHs": 1.38
+    },
+    "στεριανό κελί": {
+      "days": 21,
+      "beaches": 12,
+      "surfRate": 0.048,
+      "stripRate": 0.238,
+      "medianFoamOuter": 0.014,
+      "medianFoam": 0.091,
+      "medianWindKmh": 34.6,
+      "medianFetchKm": 0.76,
+      "medianHs": 0.97
+    }
+  },
+  "coveFloor05ByFetchBand": {
+    "1-2": {
+      "days": 24,
+      "beaches": 14,
+      "surfRate": 0.042,
+      "stripRate": 0.125,
+      "medianFoamOuter": 0.006,
+      "medianFoam": 0.087,
+      "medianWindKmh": 30.6,
+      "medianFetchKm": 1.52,
+      "medianHs": 0.83
+    },
+    "2-3": {
+      "days": 8,
+      "beaches": 4,
+      "surfRate": 0,
+      "stripRate": 0,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.046,
+      "medianWindKmh": 26.1,
+      "medianFetchKm": 2.52,
+      "medianHs": 0.94
+    },
+    "<1": {
+      "days": 929,
+      "beaches": 309,
+      "surfRate": 0.008,
+      "stripRate": 0.036,
+      "medianFoamOuter": 0,
+      "medianFoam": 0.037,
+      "medianWindKmh": 34.7,
+      "medianFetchKm": 0,
+      "medianHs": 0.91
+    }
+  },
+  "perBeach": [
+    {
+      "id": 1734,
+      "name": "Παραλία Παναγίας Δεσποτικού",
+      "region": "south-aegean-antiparos",
+      "seaCell": true,
+      "floorDays": 9,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 2,
+      "calmSurfDays": 0,
+      "medianFetchKm": 0.84,
+      "medianWindKmh": 36.4,
+      "days": [
+        "2026-07-15 33.7km/h N f0.84 exposed floor0.9 Hs0.9×0.1 outer0",
+        "2026-07-17 38.7km/h N f0.84 exposed floor1.1 Hs1.39×0.1 outer0",
+        "2026-07-30 46.1km/h N f0.84 exposed floor1.1 Hs2.31×0.1 outer0",
+        "2026-08-09 38.4km/h N f0.84 exposed floor1.1 Hs1.33×0.1 outer0",
+        "2026-08-14 37.3km/h N f0.84 exposed floor0.9 Hs1.75×0.1 outer0",
+        "2026-08-16 35.8km/h N f0.84 exposed floor0.9 Hs1.7×0.1 outer0",
+        "2026-09-03 32.1km/h N f0.84 exposed floor0.9 Hs1.14×0.1 outer0",
+        "2026-09-05 31.4km/h N f0.84 exposed floor0.9 Hs1.22×0.1 outer0",
+        "2026-09-08 36.4km/h N f0.84 exposed floor0.9 Hs1.37×0.1 outer0"
+      ]
+    },
+    {
+      "id": 2393,
+      "name": "Σάψιλα",
+      "region": "south-aegean-patmos",
+      "seaCell": false,
+      "floorDays": 5,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 1,
+      "calmSurfDays": 0,
+      "medianFetchKm": 2.52,
+      "medianWindKmh": 32,
+      "days": [
+        "2026-07-30 33km/h N f2.52 exposed floor0.9 Hs1.04×0.1 outer0.019",
+        "2026-08-14 32.4km/h N f2.52 exposed floor0.9 Hs0.91×0.1 outer0.014",
+        "2026-08-29 32km/h N f2.52 exposed floor0.9 Hs0.97×0.1 outer0.014",
+        "2026-09-03 28.5km/h N f2.52 exposed floor0.9 Hs0.87×0.1 outer0.005",
+        "2026-09-08 30.3km/h N f2.52 exposed floor0.9 Hs0.86×0.1 outer0.01"
+      ]
+    },
+    {
+      "id": 1659,
+      "name": "Καλοκαταρίτισσα",
+      "region": "south-aegean-amorgos",
+      "seaCell": true,
+      "floorDays": 4,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 1,
+      "calmSurfDays": 0,
+      "medianFetchKm": 0,
+      "medianWindKmh": 38.9,
+      "days": [
+        "2026-07-15 38.8km/h N f0 partial floor0.85 Hs1.51×0.1 outer0.021",
+        "2026-07-30 42.7km/h N f0 partial floor0.85 Hs2.3×0.1 outer0.032",
+        "2026-08-14 38.5km/h N f0 partial floor0.85 Hs1.77×0.1 outer0.011",
+        "2026-09-08 38.9km/h N f0 partial floor0.85 Hs1.67×0.1 outer0.018"
+      ]
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "region": "south-aegean-paros",
+      "seaCell": true,
+      "floorDays": 4,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 2,
+      "calmSurfDays": 0,
+      "medianFetchKm": 0.08,
+      "medianWindKmh": 34,
+      "days": [
+        "2026-07-07 33.6km/h N f0.08 exposed floor0.9 Hs1.25×0.1 outer0",
+        "2026-07-25 34km/h N f0.08 exposed floor0.9 Hs1.5×0.1 outer0",
+        "2026-07-30 35.6km/h N f0.08 exposed floor0.9 Hs2.08×0.1 outer0",
+        "2026-09-08 30.6km/h N f0.08 exposed floor0.9 Hs1.43×0.1 outer0"
+      ]
+    },
+    {
+      "id": 2043,
+      "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+      "region": "south-aegean-paros",
+      "seaCell": true,
+      "floorDays": 4,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 2,
+      "calmSurfDays": 0,
+      "medianFetchKm": 0,
+      "medianWindKmh": 42.2,
+      "days": [
+        "2026-07-17 39.6km/h N f0 partial floor0.85 Hs0.73×0.1 outer0",
+        "2026-07-30 44.3km/h N f0 partial floor0.85 Hs1.03×0.1 outer0",
+        "2026-08-09 42.2km/h N f0 partial floor0.85 Hs0.73×0.1 outer0",
+        "2026-09-08 38.2km/h N f0 partial floor0.85 Hs0.71×0.1 outer0"
+      ]
+    },
+    {
+      "id": 1716,
+      "name": "Παραλία Φελού",
+      "region": "south-aegean-andros",
+      "seaCell": true,
+      "floorDays": 3,
+      "surfDays": 0,
+      "stripDays": 0,
+      "calmDays": 0,
+      "calmSurfDays": 0,
+      "medianFetchKm": 0,
+      "medianWindKmh": 51,
+      "days": [
+        "2026-08-12 53km/h N f0 exposed floor1.3 Hs1.42×0.1 outer0.004",
+        "2026-08-27 35.5km/h N f0 exposed floor0.9 Hs0.92×0.1 outer0.004",
+        "2026-09-08 51km/h N f0 exposed floor1.3 Hs1.52×0.1 outer0.004"
+      ]
+    },
+    {
+      "id": 2171,
+      "name": "Μαλλί",
+      "region": "south-aegean-tinos",
+      "seaCell": true,
+      "floorDays": 3,
+      "surfDays": 0,
+      "stripDays": 1,
+      "calmDays": 2,
+      "calmSurfDays": 0,
+      "medianFetchKm": 1.6,
+      "medianWindKmh": 42.1,
+      "days": [
+        "2026-07-25 42.1km/h N f1.6 exposed floor1.1 Hs0.73×0.1 outer0.004",
+        "2026-07-30 49.5km/h N f1.6 exposed floor1.3 Hs1.04×0.1 outer0.04",
+        "2026-08-14 41.4km/h N f1.6 partial floor0.85 Hs1.05×0.1 outer0.038"
+      ]
+    }
+  ],
+  "perBeachCount": 7
+}
