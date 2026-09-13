@@ -135,6 +135,15 @@ const Header: React.FC<HeaderProps> = ({
   // συσκευή δεν έχει δει ακόμα — σβήνει μόλις ανοίξει το μενού μία φορά.
   const latestWork = latestChangelogEntry();
   const [hasUnseenUpdate, setHasUnseenUpdate] = useState(() => hasUnseenMenuUpdate(latestWork.date));
+  // Ζει μόνο ΓΙΑ ΑΥΤΟ το άνοιγμα: πιάνει "ήταν αδιάβαστο τη στιγμή που πατήθηκε" πριν
+  // το hasUnseenUpdate γίνει false, ώστε το MainMenu να ξέρει να το κάνει highlight.
+  const [highlightLatestWork, setHighlightLatestWork] = useState(false);
+  // Ένας δρόμος κλεισίματος, όποιος κι αν τον πατήσει — κλικ έξω, Escape, το ίδιο το
+  // X, ή ένας σύνδεσμος μέσα στο μενού — ώστε το highlight να μη μείνει κολλημένο.
+  const closeMainMenu = () => {
+    setIsMainMenuOpen(false);
+    setHighlightLatestWork(false);
+  };
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const mainMenuRef = useRef<HTMLDivElement>(null);
   const accountLabels = getLocalizedCopy(language, accountCopy);
@@ -223,7 +232,7 @@ const Header: React.FC<HeaderProps> = ({
     // Το πάνελ είναι αγκυρωμένο μέσα σε αυτό το ref σε κάθε πλάτος (δεν βγαίνει
     // σε portal), οπότε ο έλεγχος περιεκτικότητας αρκεί από μόνος του.
     const handlePointerDown = (event: PointerEvent) => {
-      if (!mainMenuRef.current?.contains(event.target as Node)) setIsMainMenuOpen(false);
+      if (!mainMenuRef.current?.contains(event.target as Node)) closeMainMenu();
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
@@ -417,8 +426,13 @@ const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setIsMainMenuOpen(open => !open);
+                  if (isMainMenuOpen) {
+                    closeMainMenu();
+                    return;
+                  }
+                  setIsMainMenuOpen(true);
                   if (hasUnseenUpdate) {
+                    setHighlightLatestWork(true);
                     markMenuUpdateSeen(latestWork.date);
                     setHasUnseenUpdate(false);
                   }
@@ -446,7 +460,8 @@ const Header: React.FC<HeaderProps> = ({
                     language={language}
                     allIslands={allIslands}
                     onAddPhoto={onMenuAddPhoto}
-                    onClose={() => setIsMainMenuOpen(false)}
+                    highlightLatestWork={highlightLatestWork}
+                    onClose={closeMainMenu}
                   />
                 </Suspense>
               )}

@@ -38,6 +38,14 @@ export interface MainMenuProps {
   allIslands?: Island[];
   /** Απών ⇒ δεν προσφέρεται καθόλου η φωτογραφία (π.χ. build χωρίς λογαριασμούς). */
   onAddPhoto?: () => void;
+  /**
+   * true όταν το άνοιγμα αυτό οφείλεται στην κόκκινη κουκκίδα του κουμπιού: ο
+   * επισκέπτης πάτησε επειδή είδε "κάτι νέο" και πρέπει να ξέρει ΠΟΙΑ γραμμή
+   * είναι αυτή. Χωρίς αυτό, το μενού ανοίγει σε μια λίστα ίδια με κάθε άλλη φορά
+   * και το «τι φτιάξαμε» χάνεται μέσα στα άρθρα — αυτό ακριβώς ανέφερε ο Μίλτος
+   * (13/09/2026): «το πατάει και δεν καταλαβαίνει τι πρέπει να διαβάσει».
+   */
+  highlightLatestWork?: boolean;
   onClose: () => void;
 }
 
@@ -47,6 +55,7 @@ type Copy = {
   photo: string;
   photoHint: string;
   work: string;
+  newBadge: string;
 };
 
 // Γραμμένο εδώ και όχι στο translations.ts: εκείνο το αρχείο είναι δικό του
@@ -59,6 +68,7 @@ const menuCopy: Record<LanguageCode, Copy> = {
     photo: 'Ανέβασε φωτογραφία',
     photoHint: 'Από παραλία που ξέρεις',
     work: 'Τι φτιάξαμε τελευταία',
+    newBadge: 'Νέο',
   },
   en: {
     title: 'Menu',
@@ -66,6 +76,7 @@ const menuCopy: Record<LanguageCode, Copy> = {
     photo: 'Add a photo',
     photoHint: 'From a beach you know',
     work: 'What we shipped lately',
+    newBadge: 'New',
   },
   de: {
     title: 'Menü',
@@ -73,6 +84,7 @@ const menuCopy: Record<LanguageCode, Copy> = {
     photo: 'Foto hinzufügen',
     photoHint: 'Von einem Strand, den du kennst',
     work: 'Zuletzt gebaut',
+    newBadge: 'Neu',
   },
   fr: {
     title: 'Menu',
@@ -80,6 +92,7 @@ const menuCopy: Record<LanguageCode, Copy> = {
     photo: 'Ajouter une photo',
     photoHint: 'Une plage que vous connaissez',
     work: 'Nos dernières nouveautés',
+    newBadge: 'Nouveau',
   },
   it: {
     title: 'Menu',
@@ -87,10 +100,11 @@ const menuCopy: Record<LanguageCode, Copy> = {
     photo: 'Aggiungi una foto',
     photoHint: 'Una spiaggia che conosci',
     work: 'Cosa abbiamo fatto di recente',
+    newBadge: 'Nuovo',
   },
 };
 
-export const MainMenu: React.FC<MainMenuProps> = ({ language, allIslands, onAddPhoto, onClose }) => {
+export const MainMenu: React.FC<MainMenuProps> = ({ language, allIslands, onAddPhoto, highlightLatestWork, onClose }) => {
   const copy = getLocalizedCopy(language, menuCopy);
   const links = useMemo(() => getLandingGuideLinks(allIslands ?? [], language), [allIslands, language]);
   const hub = getGuidesHubLink(language);
@@ -198,14 +212,27 @@ export const MainMenu: React.FC<MainMenuProps> = ({ language, allIslands, onAddP
         <a
           href="/#changelog"
           onClick={() => {
-            trackEvent('menu_latest_work_clicked', undefined, { locale: language });
+            trackEvent('menu_latest_work_clicked', undefined, { locale: language, highlighted: highlightLatestWork ? 'yes' : 'no' });
             onClose();
           }}
-          className="mt-1 flex items-start gap-3 rounded-2xl px-3 py-3 text-left transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+          className={`mt-1 flex items-start gap-3 rounded-2xl px-3 py-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
+            highlightLatestWork
+              ? 'bg-teal-50 ring-1 ring-inset ring-teal-200 hover:bg-teal-100/70'
+              : 'hover:bg-slate-50'
+          }`}
         >
-          <Wrench className="mt-0.5 h-[18px] w-[18px] shrink-0 text-slate-400" aria-hidden="true" />
+          <Wrench className={`mt-0.5 h-[18px] w-[18px] shrink-0 ${highlightLatestWork ? 'text-teal-600' : 'text-slate-400'}`} aria-hidden="true" />
           <span className="min-w-0">
-            <span className="block text-[14px] font-bold text-slate-800">{copy.work}</span>
+            <span className="flex items-center gap-1.5">
+              <span className="block text-[14px] font-bold text-slate-800">{copy.work}</span>
+              {/* Αυτό λέει ΤΙ να διαβάσει: χωρίς αυτή την ταμπέλα, η κόκκινη κουκκίδα του
+                  κουμπιού απλώς άνοιγε ένα μενού ίδιο με κάθε άλλη φορά (Μίλτος, 13/09/2026). */}
+              {highlightLatestWork && (
+                <span className="inline-block rounded px-1.5 py-px text-[10px] font-black uppercase tracking-[0.12em] text-teal-700 ring-1 ring-inset ring-teal-300">
+                  {copy.newBadge}
+                </span>
+              )}
+            </span>
             <span className="block text-xs leading-snug text-slate-500">
               <span className="tabular-nums">{formatChangelogDate(latestWork.date, language, todayIso)}</span>
               {' · '}
