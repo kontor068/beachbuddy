@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-13T06:38:18.067Z",
+  "generatedAt": "2026-09-13T07:44:29.181Z",
   "lead4File": "reports\\quality\\horizon-hit\\lead4-2026-09-13.json",
   "lead0File": "reports\\quality\\horizon-hit\\lead0-2026-09-13.json",
-  "joinedBeachDays": 22130,
+  "joinedBeachDays": 28560,
   "dates": [
     "2026-09-03",
     "2026-09-04",
@@ -17,145 +17,146 @@
   ],
   "verdictMatrix_lead4_rows_lead0_cols": {
     "avoid_swimming": {
-      "avoid_swimming": 5475,
-      "good": 267,
-      "caution": 390,
-      "excellent": 40
+      "avoid_swimming": 6352,
+      "good": 342,
+      "caution": 536,
+      "excellent": 51
     },
     "good": {
-      "good": 4260,
-      "excellent": 1116,
-      "avoid_swimming": 260,
-      "caution": 830
+      "good": 5858,
+      "excellent": 1551,
+      "avoid_swimming": 337,
+      "caution": 1033
     },
     "caution": {
-      "good": 731,
-      "excellent": 263,
-      "avoid_swimming": 483,
-      "caution": 2299
+      "good": 1010,
+      "excellent": 338,
+      "avoid_swimming": 577,
+      "caution": 2998
     },
     "excellent": {
-      "good": 1322,
-      "avoid_swimming": 46,
-      "excellent": 4024,
-      "caution": 324
+      "good": 1690,
+      "avoid_swimming": 64,
+      "excellent": 5419,
+      "caution": 404
     }
   },
   "colourMatrix_lead4_rows_lead0_cols": {
     "orange": {
-      "orange": 4274,
-      "yellow": 615,
-      "red": 78,
-      "blue": 183
+      "orange": 5022,
+      "yellow": 842,
+      "red": 97,
+      "blue": 225
     },
     "yellow": {
-      "yellow": 4717,
-      "blue": 988,
-      "red": 26,
-      "orange": 643
+      "yellow": 6295,
+      "blue": 1338,
+      "red": 30,
+      "orange": 799
     },
     "blue": {
-      "blue": 7733,
-      "red": 11,
-      "orange": 61,
-      "yellow": 805
+      "blue": 10483,
+      "red": 12,
+      "orange": 105,
+      "yellow": 1087
     },
     "red": {
-      "orange": 169,
-      "red": 1817,
-      "yellow": 10
+      "orange": 227,
+      "red": 1983,
+      "yellow": 12,
+      "blue": 3
     }
   },
   "headline": {
-    "ideal4": 5716,
-    "heldIdeal": 4024,
-    "heldPct": "70.4%",
-    "becameGood": 1322,
-    "becameGoodPct": "23.1%",
-    "becameWarning": 370,
-    "becameWarningPct": "6.5%",
-    "becameCaution": 324,
-    "becameAvoid": 46,
+    "ideal4": 7577,
+    "heldIdeal": 5419,
+    "heldPct": "71.5%",
+    "becameGood": 1690,
+    "becameGoodPct": "22.3%",
+    "becameWarning": 468,
+    "becameWarningPct": "6.2%",
+    "becameCaution": 404,
+    "becameAvoid": 64,
     "becameAvoidPct": "0.8%",
     "promisedVsDelivered": {
-      "promisedIdeal4": 5716,
-      "idealOnTheDay": 5443,
-      "overPromised": 1692,
-      "underPromised": 1419
+      "promisedIdeal4": 7577,
+      "idealOnTheDay": 7359,
+      "overPromised": 2158,
+      "underPromised": 1940
     },
-    "idealOnTheDay": 5443,
-    "idealOnTheDayNotPromised": 1419,
-    "missedPct": "26.1%",
-    "blue4": 8610,
-    "blueHeld": 7733,
-    "blueHeldPct": "89.8%",
+    "idealOnTheDay": 7359,
+    "idealOnTheDayNotPromised": 1940,
+    "missedPct": "26.4%",
+    "blue4": 11687,
+    "blueHeld": 10483,
+    "blueHeldPct": "89.7%",
     "staticBrakeLead4": {
-      "wouldDemote": 5716,
-      "rightlyDemoted": 1692,
-      "wronglyDemoted": 4024,
-      "wronglyDemotedPct": "70.4%"
+      "wouldDemote": 7577,
+      "rightlyDemoted": 2158,
+      "wronglyDemoted": 5419,
+      "wronglyDemotedPct": "71.5%"
     }
   },
   "byDate": {
     "2026-09-03": {
-      "ideal4": 345,
-      "held": 248,
-      "toGood": 94,
-      "toWarn": 3
+      "ideal4": 439,
+      "held": 295,
+      "toGood": 116,
+      "toWarn": 28
     },
     "2026-09-04": {
-      "ideal4": 164,
-      "held": 59,
+      "ideal4": 214,
+      "held": 101,
       "toGood": 65,
-      "toWarn": 40
+      "toWarn": 48
     },
     "2026-09-05": {
-      "ideal4": 467,
-      "held": 237,
-      "toGood": 200,
-      "toWarn": 30
+      "ideal4": 623,
+      "held": 328,
+      "toGood": 250,
+      "toWarn": 45
     },
     "2026-09-06": {
-      "ideal4": 699,
-      "held": 472,
-      "toGood": 195,
+      "ideal4": 899,
+      "held": 628,
+      "toGood": 239,
       "toWarn": 32
     },
     "2026-09-07": {
-      "ideal4": 183,
-      "held": 135,
-      "toGood": 18,
+      "ideal4": 291,
+      "held": 225,
+      "toGood": 36,
       "toWarn": 30
     },
     "2026-09-08": {
-      "ideal4": 429,
-      "held": 274,
-      "toGood": 123,
-      "toWarn": 32
+      "ideal4": 635,
+      "held": 439,
+      "toGood": 162,
+      "toWarn": 34
     },
     "2026-09-09": {
-      "ideal4": 488,
-      "held": 387,
-      "toGood": 69,
-      "toWarn": 32
+      "ideal4": 720,
+      "held": 601,
+      "toGood": 85,
+      "toWarn": 34
     },
     "2026-09-10": {
-      "ideal4": 801,
-      "held": 533,
-      "toGood": 235,
-      "toWarn": 33
+      "ideal4": 1067,
+      "held": 719,
+      "toGood": 313,
+      "toWarn": 35
     },
     "2026-09-11": {
-      "ideal4": 985,
-      "held": 859,
-      "toGood": 120,
-      "toWarn": 6
+      "ideal4": 1255,
+      "held": 1086,
+      "toGood": 161,
+      "toWarn": 8
     },
     "2026-09-12": {
-      "ideal4": 1155,
-      "held": 820,
-      "toGood": 203,
-      "toWarn": 132
+      "ideal4": 1434,
+      "held": 997,
+      "toGood": 263,
+      "toWarn": 174
     }
   },
   "worstRegions": [
@@ -167,6 +168,13 @@
       "heldPct": 0
     },
     {
+      "regionId": "north-aegean-lemnos",
+      "ideal4": 21,
+      "held": 0,
+      "toWarn": 0,
+      "heldPct": 0
+    },
+    {
       "regionId": "west-greece-aetolia-acarnania-mainland",
       "ideal4": 192,
       "held": 50,
@@ -174,11 +182,25 @@
       "heldPct": 26
     },
     {
+      "regionId": "north-aegean-chios",
+      "ideal4": 64,
+      "held": 18,
+      "toWarn": 9,
+      "heldPct": 28.1
+    },
+    {
       "regionId": "attica-kythira",
       "ideal4": 62,
       "held": 19,
       "toWarn": 2,
       "heldPct": 30.6
+    },
+    {
+      "regionId": "north-aegean-agios-efstratios",
+      "ideal4": 26,
+      "held": 10,
+      "toWarn": 0,
+      "heldPct": 38.5
     },
     {
       "regionId": "south-aegean-rhodes",
@@ -221,27 +243,6 @@
       "held": 31,
       "toWarn": 4,
       "heldPct": 48.4
-    },
-    {
-      "regionId": "south-aegean-lipsi",
-      "ideal4": 43,
-      "held": 21,
-      "toWarn": 0,
-      "heldPct": 48.8
-    },
-    {
-      "regionId": "south-aegean-kimolos",
-      "ideal4": 20,
-      "held": 10,
-      "toWarn": 2,
-      "heldPct": 50
-    },
-    {
-      "regionId": "attica-salamina",
-      "ideal4": 45,
-      "held": 23,
-      "toWarn": 0,
-      "heldPct": 51.1
     }
   ],
   "note": "Δ10-Γ (§Γ81): lead4 = ό,τι έλεγε το μοντέλο 4 μέρες πριν (previous_day4), lead0 = ό,τι είπε την ίδια μέρα. «Κράτησε» = ίδια ετυμηγορία. Το φρένο lead≥4 θα υποβάθμιζε ΟΛΕΣ τις «Ιδανική» της +4: σωστά όσες δεν κράτησαν, λάθος όσες κράτησαν. Μόνο μέτρηση — αλλάζει δόγμα (§ΑΞ3 κανόνας 3)."
