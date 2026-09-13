@@ -112,6 +112,79 @@ if (!fs.existsSync(MAP_PATH)) {
   if (!ok) failures.push('Α');
 }
 
+// ── Η. Το ledger των εξαιρέσεων Δ9-Α: κελιά πίσω από βουνό ξαναδείχνουν αλλού (13/09/2026) ──
+// Βίβλος §Γ81 Δ9-Β/Δ9-Γ: 98 παραλίες είχαν κελί νερού με στεριά ≥200 μ. ανάμεσα — ο αέρας της άλλης
+// πλευράς της χερσονήσου. Το `data/sea-wind-cell-overrides.json` (findSeaWindCellAlternatives.mjs) τις
+// ξαναδείχνει στο κοντινότερο κελί με καθαρή διαδρομή (<50 μ.) που απαντά η ίδια πόρτα και αντέχει
+// τον έλεγχο echo 0,2° του runtime. Εδώ η πύλη ΞΑΝΑΚΡΙΝΕΙ, δεν εμπιστεύεται το bake:
+//   Η1 κάθε εξαίρεση ψημένη στο επιλεγμένο κελί, ποτέ στο αποκλεισμένο·
+//   Η2 το ledger μεγαλώνει μόνο με απόδειξη (βουνό ≥200 μ., νέα διαδρομή <50 μ., echo ≤0,2°)·
+//   Η3 η σφραγίδα `seaWindCell` επέζησε του build — στο app ΚΑΙ στο summary·
+//   Η4 κανείς δεν χάθηκε από τον χάρτη (πλήθος κλειδιών = beachCount)·
+//   Η5 οι unresolved κρατούν το παλιό τους κελί·
+//   Η6 αυτοσαμποτάζ: μία εξαίρεση γυρισμένη στο αποκλεισμένο κελί ΠΡΕΠΕΙ να πιάνεται.
+const LEDGER_PATH = path.join(root, 'data/sea-wind-cell-overrides.json');
+/** Ίδια λίστα με το `ledgerProblems` του bakeSeaWindCells.mjs, συν την απόδειξη (Η2). */
+const ledgerProblems = (cells, ledger) => {
+  const out = [];
+  const finite = key => String(key).split('_').map(Number).every(Number.isFinite);
+  for (const o of ledger.overrides || []) {
+    const id = String(o.beachId);
+    if (!o.chosenCell || !o.excludedCell || !finite(o.chosenCell) || !finite(o.excludedCell)) out.push(`Η1 #${id}: κελιά χωρίς συντεταγμένες`);
+    else if (o.chosenCell === o.excludedCell) out.push(`Η1 #${id}: το επιλεγμένο κελί ΕΙΝΑΙ το αποκλεισμένο`);
+    else if (!cells[id]) out.push(`Η1 #${id}: στο ledger αλλά όχι στον χάρτη`);
+    else if (cells[id] === o.excludedCell) out.push(`Η1 #${id}: ψημένο στο αποκλεισμένο κελί ${o.excludedCell}`);
+    else if (cells[id] !== o.chosenCell) out.push(`Η1 #${id}: ψημένο στο ${cells[id]} ≠ ledger ${o.chosenCell}`);
+    if (!/^relief≥\d+m$/.test(String(o.reason)) || !(o.maxElevM >= 200)) out.push(`Η2 #${id}: εξαίρεση χωρίς βουνό ≥200 μ. (${o.reason}, ${o.maxElevM})`);
+    if (!(o.pathMaxElevM < 50)) out.push(`Η2 #${id}: η νέα διαδρομή έχει στεριά ${o.pathMaxElevM} μ. (όριο <50)`);
+    if (!(typeof o.echo?.deltaDeg === 'number' && o.echo.deltaDeg <= 0.2)) out.push(`Η2 #${id}: χωρίς επαλήθευση echo ≤0,2°`);
+  }
+  for (const u of ledger.unresolved || []) {
+    const id = String(u.beachId);
+    if (cells[id] && u.keptCell && cells[id] !== u.keptCell) out.push(`Η5 #${id}: unresolved αλλά ψημένο στο ${cells[id]} ≠ ${u.keptCell}`);
+  }
+  return out;
+};
+if (!fs.existsSync(LEDGER_PATH)) {
+  console.log('ΠΑΡΑΛΕΙΨΗ Η. δεν υπάρχει data/sea-wind-cell-overrides.json — καμία εξαίρεση κελιού\n');
+} else if (!fs.existsSync(MAP_PATH)) {
+  console.log('FAIL Η. υπάρχει ledger εξαιρέσεων αλλά όχι ψημένος χάρτης');
+  failures.push('Η');
+} else {
+  const ledger = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+  const baked = JSON.parse(fs.readFileSync(MAP_PATH, 'utf8'));
+  const cells = baked.cells || {};
+  const problems = ledgerProblems(cells, ledger);
+  // Η3: η σφραγίδα επέζησε του build — app και summary.
+  const stamped = new Map();
+  const regionsNeeded = new Set((ledger.overrides || []).map(o => o.region));
+  for (const tier of ['', 'summary']) {
+    for (const regionId of regionsNeeded) {
+      const f = path.join(appDir, tier, `${regionId}.json`);
+      if (!fs.existsSync(f)) { problems.push(`Η3 ${tier || 'app'}/${regionId}.json λείπει`); continue; }
+      let payload;
+      try { payload = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { problems.push(`Η3 ${tier || 'app'}/${regionId}.json δεν διαβάζεται`); continue; }
+      for (const beach of payload.island?.beaches || []) stamped.set(`${tier}|${beach.id}`, beach.seaWindCell ?? null);
+    }
+  }
+  for (const o of ledger.overrides || []) for (const tier of ['', 'summary']) {
+    const v = stamped.get(`${tier}|${o.beachId}`);
+    if (v === undefined) continue; // παραλία που δεν υπάρχει πια στα δεδομένα: το Α το πιάνει
+    if (v !== o.chosenCell) problems.push(`Η3 #${o.beachId} ${tier || 'app'}: seaWindCell ${v} ≠ ${o.chosenCell} — τρέξε buildBeachRegionData`);
+  }
+  if (Object.keys(cells).length !== baked.beachCount) problems.push(`Η4 beachCount ${baked.beachCount} ≠ ${Object.keys(cells).length} κλειδιά`);
+  // Η6 αυτοσαμποτάζ
+  const first = (ledger.overrides || [])[0];
+  if (first) {
+    const sabotaged = ledgerProblems({ ...cells, [String(first.beachId)]: first.excludedCell }, ledger);
+    if (!sabotaged.some(p => p.startsWith(`Η1 #${first.beachId}`))) problems.push('Η6 το αυτοσαμποτάζ πέρασε — ο έλεγχος δεν βλέπει το αποκλεισμένο κελί');
+  }
+  const ok = !problems.length;
+  console.log(`${ok ? 'OK  ' : 'FAIL'} Η. ledger εξαιρέσεων Δ9-Α: ${(ledger.overrides || []).length} παραλίες σε νέο κελί, ${(ledger.unresolved || []).length} κρατούν το παλιό — σφραγίδα σε app+summary, βουνό ≥200 μ. / διαδρομή <50 μ. / echo ≤0,2°`);
+  for (const p of problems.slice(0, 8)) console.log(`       ${p}`);
+  if (!ok) failures.push('Η');
+}
+
 // ── Συνθετικές προγνώσεις, ίδιο σχήμα με του `processForecastData` ───────────
 const MS = kmh => kmh / 3.6;
 const hour = (h, kmh, deg, gustKmh) => ({

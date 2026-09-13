@@ -1,0 +1,2620 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-13T12:43:21.265Z",
+  "purpose": "Δ9-Α (13/09/2026): κελιά ανέμου θάλασσας με στεριά ≥200 μ. ανάμεσα στην παραλία και στο κέντρο τους (reports/quality/sea-wind-cell-relief-2026-09-13.json high[]) ξαναδείχνουν στο επόμενο κελί που «βλέπει» η παραλία. Το διαβάζει το scripts/bakeSeaWindCells.mjs (--apply-overrides και πλήρες ψήσιμο)· το φυλάει το scripts/validateOverWaterWindLayer.mjs (τμήμα Η). Ανά παραλία, όχι ανά κελί.",
+  "rule": "διαδρομή παραλία→κελί με μέγιστο υψόμετρο < 50 μ. (LOW_M του audit), κοντινότερο κελί που απαντά η πόρτα, echo στο κέντρο ≤ 0.2°",
+  "sourceReport": "reports/quality/sea-wind-cell-relief-2026-09-13.json",
+  "alternativesReport": "reports/quality/sea-wind-cell-alternatives-2026-09-13.json",
+  "overrides": [
+    {
+      "beachId": 1108,
+      "name": "Lygia Farson",
+      "region": "ionian-islands-kefalonia",
+      "excludedCell": "38.25_20.5",
+      "reason": "relief≥200m",
+      "maxElevM": 719,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.125_20.4375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.21587471851983,
+        "lon": 20.44237006852859,
+        "bearingDeg": 235,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 12.18,
+      "fetchKmAtBearing": 7.3,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 38.125,
+        "lon": 20.4375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 375,
+      "name": "Paralia Koromili",
+      "region": "central-greece-viotia-mainland",
+      "excludedCell": "38.1875_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 605,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "38.125_23.0625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.13858070364487,
+        "lon": 23.090940000000046,
+        "bearingDeg": 180,
+        "km": 6,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 28,
+      "chosenDistanceKm": 7.91,
+      "fetchKmAtBearing": 11.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.125,
+        "lon": 23.0625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2108,
+      "name": "Spilia",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 457,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37_24.625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.011094859092374,
+        "lon": 24.653155509990597,
+        "bearingDeg": 325,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.4,
+      "fetchKmAtBearing": 10.2,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37,
+        "lon": 24.625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2101,
+      "name": "Kamares",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 456,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "37_24.625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.996036539689584,
+        "lon": 24.656145797359613,
+        "bearingDeg": 288,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.79,
+      "fetchKmAtBearing": 9.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37,
+        "lon": 24.625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2109,
+      "name": "Toso Nero",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 434,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "36.9375_24.625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.958262421737366,
+        "lon": 24.654920172422635,
+        "bearingDeg": 213,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.47,
+      "fetchKmAtBearing": 22.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.9375,
+        "lon": 24.625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1720,
+      "name": "Platanistos",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 430,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37.9375_24.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.908400773864905,
+        "lon": 24.939325342169468,
+        "bearingDeg": 74,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 48,
+      "chosenDistanceKm": 4.88,
+      "fetchKmAtBearing": 7.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.9375,
+        "lon": 24.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1678,
+      "name": "Livoskopos",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "reason": "relief≥200m",
+      "maxElevM": 425,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "36.4375_25.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.41298643211838,
+        "lon": 25.776759999999967,
+        "bearingDeg": 0,
+        "km": 2,
+        "via": "sector≥5:N"
+      },
+      "pathMaxElevM": 37,
+      "chosenDistanceKm": 5.3,
+      "fetchKmAtBearing": 2,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 36.4375,
+        "lon": 25.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "36.9375_26.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 412,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37_26.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.972325218128645,
+        "lon": 26.899420107347055,
+        "bearingDeg": 270,
+        "km": 3,
+        "via": "sector≥10:W"
+      },
+      "pathMaxElevM": 34,
+      "chosenDistanceKm": 6.01,
+      "fetchKmAtBearing": 5.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37,
+        "lon": 26.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2260,
+      "name": "Paralia Alexis",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 387,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37.0625_26.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.0588855024788,
+        "lon": 26.90500919221097,
+        "bearingDeg": 322,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 7,
+      "chosenDistanceKm": 4.38,
+      "fetchKmAtBearing": 5.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.0625,
+        "lon": 26.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1187,
+      "name": "Kalamaki",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 384,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37.6875_20.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.71013840259023,
+        "lon": 20.907816781963902,
+        "bearingDeg": 181,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.07,
+      "fetchKmAtBearing": 18.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.6875,
+        "lon": 20.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2265,
+      "name": "Paralia Kantouni",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "36.9375_26.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 378,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37_26.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.971661277820544,
+        "lon": 26.900513056702493,
+        "bearingDeg": 273,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.22,
+      "fetchKmAtBearing": 9.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37,
+        "lon": 26.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1684,
+      "name": "Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 376,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "36.3125_25.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.338713185563044,
+        "lon": 25.798809552343982,
+        "bearingDeg": 165,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.16,
+      "fetchKmAtBearing": 23.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1676,
+      "name": "Katsouni",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "reason": "relief≥200m",
+      "maxElevM": 375,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "36.3125_25.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.33520678394081,
+        "lon": 25.780669999999986,
+        "bearingDeg": 180,
+        "km": 1,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.47,
+      "fetchKmAtBearing": 20.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 891,
+      "name": "Gallikos Molos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 375,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "39.375_20.25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.40437054599617,
+        "lon": 20.22837004498524,
+        "bearingDeg": 225,
+        "km": 1,
+        "via": "sector≥5:SW"
+      },
+      "pathMaxElevM": 16,
+      "chosenDistanceKm": 4.14,
+      "fetchKmAtBearing": 3.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.375,
+        "lon": 20.25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1698,
+      "name": "Gyalia",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 375,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37.875_25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.85243253892803,
+        "lon": 24.97330714966938,
+        "bearingDeg": 91,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.89,
+      "fetchKmAtBearing": 16.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.875,
+        "lon": 25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1692,
+      "name": "Achla",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 367,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "37.875_25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.89955496597742,
+        "lon": 24.97290336210756,
+        "bearingDeg": 71,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.76,
+      "fetchKmAtBearing": 11.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.875,
+        "lon": 25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1718,
+      "name": "Piso Gyalia",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 367,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37.8125_25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.83985870124073,
+        "lon": 24.96707232012932,
+        "bearingDeg": 127,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 7.17,
+      "fetchKmAtBearing": 16,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.8125,
+        "lon": 25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1703,
+      "name": "Nimporio",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 367,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "37.875_25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.848146849950524,
+        "lon": 24.979884782939962,
+        "bearingDeg": 81,
+        "km": 4,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.76,
+      "fetchKmAtBearing": 11.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.875,
+        "lon": 25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 348,
+      "name": "Paralia Agiou Andrea",
+      "region": "central-greece-fokida-mainland",
+      "excludedCell": "38.3125_22.5625",
+      "reason": "relief≥200m",
+      "maxElevM": 361,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "38.3125_22.625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.302000163709046,
+        "lon": 22.599560792177726,
+        "bearingDeg": 107,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 5,
+      "chosenDistanceKm": 3.3,
+      "fetchKmAtBearing": 7.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.3125,
+        "lon": 22.625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 372,
+      "name": "Gyalini Ammos",
+      "region": "central-greece-viotia-mainland",
+      "excludedCell": "38.3125_22.5625",
+      "reason": "relief≥200m",
+      "maxElevM": 361,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "38.25_22.5625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.27827678394082,
+        "lon": 22.57847000000004,
+        "bearingDeg": 180,
+        "km": 1,
+        "via": "sector≥5:S"
+      },
+      "pathMaxElevM": 31,
+      "chosenDistanceKm": 4.37,
+      "fetchKmAtBearing": 3,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 38.25,
+        "lon": 22.5625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 928,
+      "name": "Agias Triades Beach",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 357,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.625_19.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.654239874573335,
+        "lon": 19.690221123017295,
+        "bearingDeg": 225,
+        "km": 3,
+        "via": "sector≥5:SW"
+      },
+      "pathMaxElevM": 7,
+      "chosenDistanceKm": 5.87,
+      "fetchKmAtBearing": 3.1,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 39.625,
+        "lon": 19.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 892,
+      "name": "Dei",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 356,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "39.4375_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.41456909303653,
+        "lon": 20.207654300460035,
+        "bearingDeg": 266,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.43,
+      "fetchKmAtBearing": 12.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.4375,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 893,
+      "name": "Dei plous",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 356,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "39.4375_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.41547804978071,
+        "lon": 20.218136999537478,
+        "bearingDeg": 259,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.26,
+      "fetchKmAtBearing": 12.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.4375,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1677,
+      "name": "Klisidi",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "reason": "relief≥200m",
+      "maxElevM": 352,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "36.3125_25.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.33565967058708,
+        "lon": 25.775521458932417,
+        "bearingDeg": 187,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.31,
+      "fetchKmAtBearing": 20.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 991,
+      "name": "Paralia Klimatia",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 342,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "39.625_19.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.653610501678685,
+        "lon": 19.70804089902731,
+        "bearingDeg": 225,
+        "km": 2,
+        "via": "sector≥10:SW"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.58,
+      "fetchKmAtBearing": 10,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.625,
+        "lon": 19.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 213,
+      "name": "Vythouri",
+      "region": "central-greece-evia",
+      "excludedCell": "38.6875_23.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 339,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "38.6875_23.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.70670494776389,
+        "lon": 23.844517126551636,
+        "bearingDeg": 45,
+        "km": 3,
+        "via": "sector≥10:NE"
+      },
+      "pathMaxElevM": 39,
+      "chosenDistanceKm": 4.77,
+      "fetchKmAtBearing": 10,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.6875,
+        "lon": 23.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1792,
+      "name": "Santoriniko",
+      "region": "south-aegean-ios",
+      "excludedCell": "36.6875_25.375",
+      "reason": "relief≥200m",
+      "maxElevM": 338,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "36.625_25.375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.650035942258256,
+        "lon": 25.37103273144794,
+        "bearingDeg": 143,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.71,
+      "fetchKmAtBearing": 14.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.625,
+        "lon": 25.375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1680,
+      "name": "Mikros Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 338,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "36.3125_25.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.33791104904364,
+        "lon": 25.797906289219327,
+        "bearingDeg": 150,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.11,
+      "fetchKmAtBearing": 23.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1673,
+      "name": "Exo Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 337,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "36.3125_25.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.33624136247201,
+        "lon": 25.792697084882093,
+        "bearingDeg": 165,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.14,
+      "fetchKmAtBearing": 23.2,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2276,
+      "name": "Evgonymos",
+      "region": "south-aegean-karpathos",
+      "excludedCell": "35.6875_27.1875",
+      "reason": "relief≥200m",
+      "maxElevM": 333,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "35.75_27.125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 35.73072613174556,
+        "lon": 27.154472591753006,
+        "bearingDeg": 316,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.41,
+      "fetchKmAtBearing": 24.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 35.75,
+        "lon": 27.125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1685,
+      "name": "Flamourou",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 332,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "36.3125_25.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.33595555531129,
+        "lon": 25.784920140968552,
+        "bearingDeg": 172,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.45,
+      "fetchKmAtBearing": 17.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1220,
+      "name": "Sekania",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 331,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37.6875_20.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.71661967654139,
+        "lon": 20.934087281505754,
+        "bearingDeg": 201,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.17,
+      "fetchKmAtBearing": 20.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.6875,
+        "lon": 20.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1186,
+      "name": "Dafni",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 330,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "37.6875_20.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.71228907738438,
+        "lon": 20.950921881211457,
+        "bearingDeg": 200,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4,
+      "fetchKmAtBearing": 12.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.6875,
+        "lon": 20.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2471,
+      "name": "Paralia Agiou Georgiou",
+      "region": "south-aegean-symi",
+      "excludedCell": "36.625_27.875",
+      "reason": "relief≥200m",
+      "maxElevM": 327,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "36.5625_27.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.59199708061729,
+        "lon": 27.91541647064355,
+        "bearingDeg": 100,
+        "km": 4,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 7.12,
+      "fetchKmAtBearing": 8.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.5625,
+        "lon": 27.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 993,
+      "name": "Paralia Limni",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 326,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "39.625_19.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.652790501712765,
+        "lon": 19.707351094976843,
+        "bearingDeg": 225,
+        "km": 2,
+        "via": "sector≥10:SW"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.48,
+      "fetchKmAtBearing": 13.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.625,
+        "lon": 19.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 3093,
+      "name": "Megali Ammos",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 320,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.25_24",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.22095953208514,
+        "lon": 23.97170125882394,
+        "bearingDeg": 126,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.54,
+      "fetchKmAtBearing": 7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 24,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 984,
+      "name": "Paralia Ampelaki",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 320,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.625_19.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.653489874643476,
+        "lon": 19.675851391859396,
+        "bearingDeg": 225,
+        "km": 3,
+        "via": "sector≥10:SW"
+      },
+      "pathMaxElevM": 31,
+      "chosenDistanceKm": 5.41,
+      "fetchKmAtBearing": 4,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 39.625,
+        "lon": 19.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1675,
+      "name": "Katalimatsa",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 320,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "36.3125_25.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.34037783141145,
+        "lon": 25.804033248445535,
+        "bearingDeg": 156,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.18,
+      "fetchKmAtBearing": 18.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.3125,
+        "lon": 25.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 628,
+      "name": "Poros",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "reason": "relief≥200m",
+      "maxElevM": 316,
+      "maxElevAtKm": 0.25,
+      "chosenCell": "34.875_24.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 34.90260518142555,
+        "lon": 24.734021881442004,
+        "bearingDeg": 214,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.56,
+      "fetchKmAtBearing": 25,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 34.875,
+        "lon": 24.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2591,
+      "name": "Kalyvia Stamatiou",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 314,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "39.1875_23.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.217514783940814,
+        "lon": 23.94923600000004,
+        "bearingDeg": 180,
+        "km": 1,
+        "via": "sector≥5:S"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.45,
+      "fetchKmAtBearing": 7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.1875,
+        "lon": 23.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2478,
+      "name": "Livadia",
+      "region": "south-aegean-tilos",
+      "excludedCell": "36.375_27.375",
+      "reason": "relief≥200m",
+      "maxElevM": 314,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "36.4375_27.4375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.42018002128439,
+        "lon": 27.397926443693336,
+        "bearingDeg": 27,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.89,
+      "fetchKmAtBearing": 17,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.4375,
+        "lon": 27.4375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 3014,
+      "name": "Palaiokastritsa",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 313,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "39.625_19.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.65030760709506,
+        "lon": 19.700322067522734,
+        "bearingDeg": 199,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.02,
+      "fetchKmAtBearing": 15.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.625,
+        "lon": 19.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2116,
+      "name": "Agios Panteleimonas",
+      "region": "south-aegean-sikinos",
+      "excludedCell": "36.6875_25.125",
+      "reason": "relief≥200m",
+      "maxElevM": 311,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "36.625_25.125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.650520969838105,
+        "lon": 25.124268148267788,
+        "bearingDeg": 172,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.83,
+      "fetchKmAtBearing": 24.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.625,
+        "lon": 25.125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1660,
+      "name": "Kampi",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.8125_25.875",
+      "reason": "relief≥200m",
+      "maxElevM": 307,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "36.8125_25.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.8205597498187,
+        "lon": 25.916878936300577,
+        "bearingDeg": 101,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.02,
+      "fetchKmAtBearing": 24,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.8125,
+        "lon": 25.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1298,
+      "name": "Kerame",
+      "region": "north-aegean-ikaria",
+      "excludedCell": "37.6875_26.3125",
+      "reason": "relief≥200m",
+      "maxElevM": 303,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "37.6875_26.375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.65844945531819,
+        "lon": 26.34996984997167,
+        "bearingDeg": 90,
+        "km": 1,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 19,
+      "chosenDistanceKm": 4.55,
+      "fetchKmAtBearing": 9.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.6875,
+        "lon": 26.375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2611,
+      "name": "Strovili",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 300,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.25_24",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.235074694597266,
+        "lon": 23.979909560476244,
+        "bearingDeg": 90,
+        "km": 2,
+        "via": "sector≥5:E"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.08,
+      "fetchKmAtBearing": 5.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 24,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1657,
+      "name": "Agia Anna",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.8125_25.875",
+      "reason": "relief≥200m",
+      "maxElevM": 296,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "36.8125_25.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.82157617684841,
+        "lon": 25.91695582733132,
+        "bearingDeg": 106,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.07,
+      "fetchKmAtBearing": 24.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.8125,
+        "lon": 25.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1801,
+      "name": "Trypiti",
+      "region": "south-aegean-ios",
+      "excludedCell": "36.6875_25.375",
+      "reason": "relief≥200m",
+      "maxElevM": 279,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "36.625_25.3125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.65048647070131,
+        "lon": 25.33956596632254,
+        "bearingDeg": 226,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.72,
+      "fetchKmAtBearing": 19.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.625,
+        "lon": 25.3125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 627,
+      "name": "Martsalo",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "reason": "relief≥200m",
+      "maxElevM": 278,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "34.875_24.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 34.904794927681536,
+        "lon": 24.758614091477966,
+        "bearingDeg": 201,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.39,
+      "fetchKmAtBearing": 16.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 34.875,
+        "lon": 24.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 336,
+      "name": "Agios Vasilios",
+      "region": "central-greece-fokida-mainland",
+      "excludedCell": "38.375_22.375",
+      "reason": "relief≥200m",
+      "maxElevM": 273,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "38.3125_22.3125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.34088764724326,
+        "lon": 22.33737302801842,
+        "bearingDeg": 248,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.6,
+      "fetchKmAtBearing": 14,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.3125,
+        "lon": 22.3125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 131,
+      "name": "Diakofti",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 265,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "36.25_23.125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.262617929008,
+        "lon": 23.100206972420096,
+        "bearingDeg": 90,
+        "km": 2,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.45,
+      "fetchKmAtBearing": 13,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.25,
+        "lon": 23.125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 134,
+      "name": "Paralia Palaiopoli",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 265,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "36.1875_23.0625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.21607824912281,
+        "lon": 23.069013428371477,
+        "bearingDeg": 158,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.11,
+      "fetchKmAtBearing": 15.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.1875,
+        "lon": 23.0625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 621,
+      "name": "Agiofarango",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "reason": "relief≥200m",
+      "maxElevM": 265,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "34.875_24.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 34.908774842865824,
+        "lon": 24.78631845480652,
+        "bearingDeg": 159,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.43,
+      "fetchKmAtBearing": 25,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 34.875,
+        "lon": 24.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 135,
+      "name": "Paralia Limni (Palaiopoli)",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 265,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "36.1875_23.0625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.21393381918292,
+        "lon": 23.064581653482946,
+        "bearingDeg": 134,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.67,
+      "fetchKmAtBearing": 14.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.1875,
+        "lon": 23.0625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2387,
+      "name": "Pachia Ammos",
+      "region": "south-aegean-nisyros",
+      "excludedCell": "36.5625_27.1875",
+      "reason": "relief≥200m",
+      "maxElevM": 259,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "36.5625_27.25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.5902594760179,
+        "lon": 27.21963065417208,
+        "bearingDeg": 90,
+        "km": 1,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.83,
+      "fetchKmAtBearing": 11.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.5625,
+        "lon": 27.25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 181,
+      "name": "Nisiza",
+      "region": "attica-methana",
+      "excludedCell": "37.5625_23.25",
+      "reason": "relief≥200m",
+      "maxElevM": 257,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "37.625_23.25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.601106026726285,
+        "lon": 23.23352144152682,
+        "bearingDeg": 341,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.62,
+      "fetchKmAtBearing": 17.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.625,
+        "lon": 23.25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 156,
+      "name": "Vagionia",
+      "region": "attica-poros",
+      "excludedCell": "37.5_23.5",
+      "reason": "relief≥200m",
+      "maxElevM": 255,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "37.5625_23.5",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.538920698504654,
+        "lon": 23.488973351786058,
+        "bearingDeg": 31,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.78,
+      "fetchKmAtBearing": 10,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.5625,
+        "lon": 23.5,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 475,
+      "name": "Paralia Ampelos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "39.9375_23.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 254,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "39.9375_24.0625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.94609290353817,
+        "lon": 24.033315546759354,
+        "bearingDeg": 110,
+        "km": 6,
+        "via": "facing"
+      },
+      "pathMaxElevM": 6,
+      "chosenDistanceKm": 8.66,
+      "fetchKmAtBearing": 8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.9375,
+        "lon": 24.0625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 665,
+      "name": "Salamias",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_25",
+      "reason": "relief≥200m",
+      "maxElevM": 252,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "34.875_25",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 34.90042640440531,
+        "lon": 25.024062634124107,
+        "bearingDeg": 178,
+        "km": 4,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 7.13,
+      "fetchKmAtBearing": 19.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 34.875,
+        "lon": 25,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2647,
+      "name": "Glysteri",
+      "region": "thessaly-skopelos",
+      "excludedCell": "39.125_23.75",
+      "reason": "relief≥200m",
+      "maxElevM": 247,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "39.1875_23.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.16111499368968,
+        "lon": 23.717445054817745,
+        "bearingDeg": 360,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.57,
+      "fetchKmAtBearing": 6.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.1875,
+        "lon": 23.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1222,
+      "name": "Pera Pigadi",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.3125_20.75",
+      "reason": "relief≥200m",
+      "maxElevM": 245,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "38.3125_20.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.327311072825246,
+        "lon": 20.791205632550486,
+        "bearingDeg": 90,
+        "km": 4,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.09,
+      "fetchKmAtBearing": 9.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.3125,
+        "lon": 20.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 910,
+      "name": "Paralia Galazios Kolpos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 244,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "39.5_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.469602008452824,
+        "lon": 20.218389339407395,
+        "bearingDeg": 315,
+        "km": 4,
+        "via": "sector≥10:NW"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 8.28,
+      "fetchKmAtBearing": 11,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.5,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 918,
+      "name": "Paralia Navtilos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 244,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "39.5_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.4883381474729,
+        "lon": 20.213961338694162,
+        "bearingDeg": 324,
+        "km": 6,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 8.46,
+      "fetchKmAtBearing": 13.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.5,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 912,
+      "name": "Paralia Elia",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 244,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "39.4375_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.44432579691636,
+        "lon": 20.21280086485274,
+        "bearingDeg": 227,
+        "km": 4,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.18,
+      "fetchKmAtBearing": 8.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.4375,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 915,
+      "name": "Paralia Kokkinos Vrachos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "reason": "relief≥200m",
+      "maxElevM": 244,
+      "maxElevAtKm": 3.25,
+      "chosenCell": "39.4375_20.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.46423477035684,
+        "lon": 20.216893240968147,
+        "bearingDeg": 270,
+        "km": 3,
+        "via": "sector≥10:W"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.27,
+      "fetchKmAtBearing": 8.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.4375,
+        "lon": 20.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2667,
+      "name": "Izgkoud (Trikeri)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.125_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 239,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.1875_23.125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.1600283247089,
+        "lon": 23.09814113759853,
+        "bearingDeg": 13,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.72,
+      "fetchKmAtBearing": 4,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 39.1875,
+        "lon": 23.125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 98,
+      "name": "Paralia Megalochoriou",
+      "region": "attica-agistri",
+      "excludedCell": "37.6875_23.375",
+      "reason": "relief≥200m",
+      "maxElevM": 235,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37.75_23.375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.71978020863165,
+        "lon": 23.356244046507527,
+        "bearingDeg": 17,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.73,
+      "fetchKmAtBearing": 19.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.75,
+        "lon": 23.375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1223,
+      "name": "Paralia Kaminia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.3125_20.75",
+      "reason": "relief≥200m",
+      "maxElevM": 233,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.375_20.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.35023715567403,
+        "lon": 20.782070284601332,
+        "bearingDeg": 72,
+        "km": 4,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 7.59,
+      "fetchKmAtBearing": 16.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.375,
+        "lon": 20.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 447,
+      "name": "Totos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 231,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "40.625_23.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 40.59485574083611,
+        "lon": 23.817890436064772,
+        "bearingDeg": 46,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.84,
+      "fetchKmAtBearing": 16,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 40.625,
+        "lon": 23.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1553,
+      "name": "Vlychada",
+      "region": "peloponnese-lakonia-mainland",
+      "excludedCell": "36.875_23.0625",
+      "reason": "relief≥200m",
+      "maxElevM": 228,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "36.875_23.125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.848398179382905,
+        "lon": 23.1045336267714,
+        "bearingDeg": 101,
+        "km": 6,
+        "via": "facing"
+      },
+      "pathMaxElevM": 26,
+      "chosenDistanceKm": 7.92,
+      "fetchKmAtBearing": 7.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.875,
+        "lon": 23.125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1241,
+      "name": "Prota Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 223,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.5_20.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.47277572144933,
+        "lon": 20.68303627485409,
+        "bearingDeg": 36,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.9,
+      "fetchKmAtBearing": 9.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.5,
+        "lon": 20.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1247,
+      "name": "Paralia Pyrgia (vorios ormos)",
+      "region": "north-aegean-chios",
+      "excludedCell": "38.5_26.125",
+      "reason": "relief≥200m",
+      "maxElevM": 222,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.5_26.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.51898264772233,
+        "lon": 26.16214753627321,
+        "bearingDeg": 84,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.78,
+      "fetchKmAtBearing": 16.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.5,
+        "lon": 26.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1233,
+      "name": "Liano Nisaki",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 219,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "38.4375_20.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.40781011328493,
+        "lon": 20.725112823803215,
+        "bearingDeg": 135,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.46,
+      "fetchKmAtBearing": 14.8,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.4375,
+        "lon": 20.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1239,
+      "name": "Trita Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 218,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.5_20.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.47387260715955,
+        "lon": 20.675622609482616,
+        "bearingDeg": 4,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.04,
+      "fetchKmAtBearing": 7.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.5,
+        "lon": 20.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2710,
+      "name": "Paralia Kritharia",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.3125_22.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 215,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.25_22.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.27644756788162,
+        "lon": 22.905029000000013,
+        "bearingDeg": 180,
+        "km": 2,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 6,
+      "chosenDistanceKm": 5.58,
+      "fetchKmAtBearing": 7.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 22.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1246,
+      "name": "Paralia Pyrgia (notios ormos)",
+      "region": "north-aegean-chios",
+      "excludedCell": "38.5_26.125",
+      "reason": "relief≥200m",
+      "maxElevM": 213,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "38.5_26.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.5144820172531,
+        "lon": 26.16189200061308,
+        "bearingDeg": 80,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 3.52,
+      "fetchKmAtBearing": 5.7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.5,
+        "lon": 26.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1746,
+      "name": "Katergo",
+      "region": "south-aegean-folegandros",
+      "excludedCell": "36.625_24.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 211,
+      "maxElevAtKm": 3.75,
+      "chosenCell": "36.5625_24.9375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 36.58877714757631,
+        "lon": 24.957492675428284,
+        "bearingDeg": 132,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 41,
+      "chosenDistanceKm": 3.73,
+      "fetchKmAtBearing": 21.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 36.5625,
+        "lon": 24.9375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 4,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1163,
+      "name": "Kaminia",
+      "region": "ionian-islands-lefkada",
+      "excludedCell": "38.8125_20.625",
+      "reason": "relief≥200m",
+      "maxElevM": 209,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "38.875_20.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.84278619889883,
+        "lon": 20.662736488573955,
+        "bearingDeg": 5,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.09,
+      "fetchKmAtBearing": 14.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.875,
+        "lon": 20.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 453,
+      "name": "Voreas Limani",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 208,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "40.625_23.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 40.59771448351371,
+        "lon": 23.812530461604183,
+        "bearingDeg": 10,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.02,
+      "fetchKmAtBearing": 17.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 40.625,
+        "lon": 23.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2302,
+      "name": "Agia Irini",
+      "region": "south-aegean-karpathos",
+      "excludedCell": "35.6875_27.125",
+      "reason": "relief≥200m",
+      "maxElevM": 207,
+      "maxElevAtKm": 0.75,
+      "chosenCell": "35.625_27.0625",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 35.64389749565933,
+        "lon": 27.10165703666064,
+        "bearingDeg": 224,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 7.05,
+      "fetchKmAtBearing": 14.9,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 35.625,
+        "lon": 27.0625,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 85,
+      "name": "Klidi",
+      "region": "attica-aegina",
+      "excludedCell": "37.6875_23.5",
+      "reason": "relief≥200m",
+      "maxElevM": 206,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "37.625_23.5",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.65096035182244,
+        "lon": 23.478110000000015,
+        "bearingDeg": 180,
+        "km": 3,
+        "via": "sector≥5:S"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 6.19,
+      "fetchKmAtBearing": 5.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.625,
+        "lon": 23.5,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 2671,
+      "name": "Plakes (Volos)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.3125_22.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 204,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "39.25_22.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.28237778394081,
+        "lon": 22.903007000000002,
+        "bearingDeg": 180,
+        "km": 1,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.19,
+      "fetchKmAtBearing": 11.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 22.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 1234,
+      "name": "Kritami",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "reason": "relief≥200m",
+      "maxElevM": 203,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "38.4375_20.75",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.42433522689356,
+        "lon": 20.72448572164319,
+        "bearingDeg": 111,
+        "km": 2,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.15,
+      "fetchKmAtBearing": 18.6,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.4375,
+        "lon": 20.75,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 174,
+      "name": "Ligoneri",
+      "region": "attica-spetses",
+      "excludedCell": "37.25_23.125",
+      "reason": "relief≥200m",
+      "maxElevM": 203,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "37.25_23.1875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 37.27849516473355,
+        "lon": 23.165126772951567,
+        "bearingDeg": 90,
+        "km": 3,
+        "via": "sector≥10:E"
+      },
+      "pathMaxElevM": 18,
+      "chosenDistanceKm": 5.9,
+      "fetchKmAtBearing": 7,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 37.25,
+        "lon": 23.1875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    },
+    {
+      "beachId": 502,
+      "name": "Sykia Olympiadas",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "reason": "relief≥200m",
+      "maxElevM": 200,
+      "maxElevAtKm": 2.75,
+      "chosenCell": "40.625_23.8125",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 40.60014232525797,
+        "lon": 23.793181717983657,
+        "bearingDeg": 9,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 4.15,
+      "fetchKmAtBearing": 14.5,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 40.625,
+        "lon": 23.8125,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 1,
+      "verifiedAt": "2026-09-13T12:43:21.265Z"
+    }
+  ],
+  "unresolved": [
+    {
+      "beachId": 3186,
+      "name": "Aigiali",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.875_26",
+      "keptCell": "36.875_26",
+      "maxElevM": 444,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 3,
+      "bestPathMaxElevM": 173
+    },
+    {
+      "beachId": 189,
+      "name": "Paralia Porto Germeno",
+      "region": "attica-west-attica-mainland",
+      "excludedCell": "38.125_23.1875",
+      "keptCell": "38.125_23.1875",
+      "maxElevM": 392,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 1662,
+      "name": "Levrosos",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.9375_26",
+      "keptCell": "36.9375_26",
+      "maxElevM": 365,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 182
+    },
+    {
+      "beachId": 2261,
+      "name": "Paralia Arginonta",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 328,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 2257,
+      "name": "Tichi",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 325,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 145
+    },
+    {
+      "beachId": 190,
+      "name": "Paralia Porto Germeno (notio tmima)",
+      "region": "attica-west-attica-mainland",
+      "excludedCell": "38.125_23.1875",
+      "keptCell": "38.125_23.1875",
+      "maxElevM": 321,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 187
+    },
+    {
+      "beachId": 895,
+      "name": "Zeri",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "keptCell": "39.4375_20.25",
+      "maxElevM": 319,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 51
+    },
+    {
+      "beachId": 2254,
+      "name": "Kalimies",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 315,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 145
+    },
+    {
+      "beachId": 981,
+      "name": "Paralia Agios Spyridonas",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "maxElevM": 311,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 50
+    },
+    {
+      "beachId": 930,
+      "name": "Alipa beach",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "maxElevM": 304,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 913,
+      "name": "Paralia Kalami",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "keptCell": "39.4375_20.25",
+      "maxElevM": 244,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 1867,
+      "name": "Apokrousis",
+      "region": "south-aegean-kythnos",
+      "excludedCell": "37.4375_24.375",
+      "keptCell": "37.4375_24.375",
+      "maxElevM": 229,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 57
+    },
+    {
+      "beachId": 2581,
+      "name": "Gerakas",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "keptCell": "39.25_23.9375",
+      "maxElevM": 212,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    }
+  ]
+}

@@ -1,0 +1,820 @@
+{
+  "generatedAt": "2026-09-13T12:55:58.357Z",
+  "ledger": "reports/quality/sea-wind-cell-overrides-proposed-2026-09-13.json",
+  "maxKm": 20,
+  "pastDays": 92,
+  "hoursLocal": "10-18",
+  "judge": "METAR (Iowa ASOS) αεροδρομίων ≤20 χλμ — όργανο στο αεροδρόμιο, όχι στην άμμο",
+  "summary": {
+    "beaches": 20,
+    "verdicts": {
+      "νέο": 4,
+      "παλιό": 3,
+      "ισοπαλία": 11,
+      "λίγα": 2
+    },
+    "meanMaeKmh": {
+      "old": 4.98,
+      "new": 5.05
+    },
+    "meanBiasKmh": {
+      "old": -2.12,
+      "new": -0.58
+    },
+    "meanDirMaeDeg": {
+      "old": 43.83,
+      "new": 43.39
+    },
+    "meanBftExact": {
+      "old": 0.39,
+      "new": 0.38
+    },
+    "meanStrongUnder": {
+      "old": 0.62,
+      "new": 0.48
+    },
+    "newCloserWhenDisagree": 0.495
+  },
+  "perBeach": [
+    {
+      "beachId": 1108,
+      "name": "Lygia Farson",
+      "region": "ionian-islands-kefalonia",
+      "station": {
+        "icao": "LGKF",
+        "name": "Κεφαλονιά",
+        "lat": 38.1201,
+        "lon": 20.5005,
+        "km": 12.7
+      },
+      "oldCell": "38.25_20.5",
+      "newCell": "38.125_20.4375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.94,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 41,
+        "bftExact": 0.408,
+        "bftUnder": 0.315,
+        "strongUnder": 0.917
+      },
+      "new": {
+        "maeKmh": 4.13,
+        "biasKmh": 1.98,
+        "dirMaeDeg": 23,
+        "bftExact": 0.498,
+        "bftUnder": 0.148,
+        "strongUnder": 0.344
+      },
+      "disagreeHours": 292,
+      "newCloserWhenDisagree": 0.606,
+      "strongHours": 96,
+      "verdict": "νέο"
+    },
+    {
+      "beachId": 2260,
+      "name": "Paralia Alexis",
+      "region": "south-aegean-kalymnos",
+      "station": {
+        "icao": "LGLE",
+        "name": "Λέρος",
+        "lat": 37.1849,
+        "lon": 26.8003,
+        "km": 18.8
+      },
+      "oldCell": "37.0625_26.9375",
+      "newCell": "37.0625_26.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 0,
+      "old": {
+        "maeKmh": null,
+        "biasKmh": null,
+        "dirMaeDeg": null,
+        "bftExact": null,
+        "bftUnder": null,
+        "strongUnder": null
+      },
+      "new": {
+        "maeKmh": null,
+        "biasKmh": null,
+        "dirMaeDeg": null,
+        "bftExact": null,
+        "bftUnder": null,
+        "strongUnder": null
+      },
+      "disagreeHours": 0,
+      "newCloserWhenDisagree": null,
+      "strongHours": 0,
+      "verdict": "λίγα"
+    },
+    {
+      "beachId": 1187,
+      "name": "Kalamaki",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "icao": "LGZA",
+        "name": "Ζάκυνθος",
+        "lat": 37.7509,
+        "lon": 20.8843,
+        "km": 2.6
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 3.91,
+        "biasKmh": -2.2,
+        "dirMaeDeg": 41,
+        "bftExact": 0.424,
+        "bftUnder": 0.474,
+        "strongUnder": 0.38
+      },
+      "new": {
+        "maeKmh": 4.4,
+        "biasKmh": -1.25,
+        "dirMaeDeg": 63,
+        "bftExact": 0.402,
+        "bftUnder": 0.415,
+        "strongUnder": 0.408
+      },
+      "disagreeHours": 299,
+      "newCloserWhenDisagree": 0.452,
+      "strongHours": 71,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 928,
+      "name": "Agias Triades Beach",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "lat": 39.6019,
+        "lon": 19.9117,
+        "km": 18.6
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.76,
+        "biasKmh": -2.23,
+        "dirMaeDeg": 72,
+        "bftExact": 0.403,
+        "bftUnder": 0.413,
+        "strongUnder": 0.879
+      },
+      "new": {
+        "maeKmh": 5.18,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 70,
+        "bftExact": 0.34,
+        "bftUnder": 0.353,
+        "strongUnder": 0.72
+      },
+      "disagreeHours": 244,
+      "newCloserWhenDisagree": 0.418,
+      "strongHours": 107,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 991,
+      "name": "Paralia Klimatia",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "lat": 39.6019,
+        "lon": 19.9117,
+        "km": 17.6
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.76,
+        "biasKmh": -2.23,
+        "dirMaeDeg": 72,
+        "bftExact": 0.403,
+        "bftUnder": 0.413,
+        "strongUnder": 0.879
+      },
+      "new": {
+        "maeKmh": 5.18,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 70,
+        "bftExact": 0.34,
+        "bftUnder": 0.353,
+        "strongUnder": 0.72
+      },
+      "disagreeHours": 244,
+      "newCloserWhenDisagree": 0.418,
+      "strongHours": 107,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 1220,
+      "name": "Sekania",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "icao": "LGZA",
+        "name": "Ζάκυνθος",
+        "lat": 37.7509,
+        "lon": 20.8843,
+        "km": 5.5
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 3.91,
+        "biasKmh": -2.2,
+        "dirMaeDeg": 41,
+        "bftExact": 0.424,
+        "bftUnder": 0.474,
+        "strongUnder": 0.38
+      },
+      "new": {
+        "maeKmh": 4.4,
+        "biasKmh": -1.25,
+        "dirMaeDeg": 63,
+        "bftExact": 0.402,
+        "bftUnder": 0.415,
+        "strongUnder": 0.408
+      },
+      "disagreeHours": 299,
+      "newCloserWhenDisagree": 0.452,
+      "strongHours": 71,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 1186,
+      "name": "Dafni",
+      "region": "ionian-islands-zakynthos",
+      "station": {
+        "icao": "LGZA",
+        "name": "Ζάκυνθος",
+        "lat": 37.7509,
+        "lon": 20.8843,
+        "km": 7
+      },
+      "oldCell": "37.75_20.9375",
+      "newCell": "37.6875_20.9375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 3.91,
+        "biasKmh": -2.2,
+        "dirMaeDeg": 41,
+        "bftExact": 0.424,
+        "bftUnder": 0.474,
+        "strongUnder": 0.38
+      },
+      "new": {
+        "maeKmh": 4.4,
+        "biasKmh": -1.25,
+        "dirMaeDeg": 63,
+        "bftExact": 0.402,
+        "bftUnder": 0.415,
+        "strongUnder": 0.408
+      },
+      "disagreeHours": 299,
+      "newCloserWhenDisagree": 0.452,
+      "strongHours": 71,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 993,
+      "name": "Paralia Limni",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "lat": 39.6019,
+        "lon": 19.9117,
+        "km": 17.6
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.76,
+        "biasKmh": -2.23,
+        "dirMaeDeg": 72,
+        "bftExact": 0.403,
+        "bftUnder": 0.413,
+        "strongUnder": 0.879
+      },
+      "new": {
+        "maeKmh": 5.18,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 70,
+        "bftExact": 0.34,
+        "bftUnder": 0.353,
+        "strongUnder": 0.72
+      },
+      "disagreeHours": 244,
+      "newCloserWhenDisagree": 0.418,
+      "strongHours": 107,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 984,
+      "name": "Paralia Ampelaki",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "lat": 39.6019,
+        "lon": 19.9117,
+        "km": 19.7
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.76,
+        "biasKmh": -2.23,
+        "dirMaeDeg": 72,
+        "bftExact": 0.403,
+        "bftUnder": 0.413,
+        "strongUnder": 0.879
+      },
+      "new": {
+        "maeKmh": 5.18,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 70,
+        "bftExact": 0.34,
+        "bftUnder": 0.353,
+        "strongUnder": 0.72
+      },
+      "disagreeHours": 244,
+      "newCloserWhenDisagree": 0.418,
+      "strongHours": 107,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 3014,
+      "name": "Palaiokastritsa",
+      "region": "ionian-islands-corfu",
+      "station": {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "lat": 39.6019,
+        "lon": 19.9117,
+        "km": 19
+      },
+      "oldCell": "39.6875_19.6875",
+      "newCell": "39.625_19.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.76,
+        "biasKmh": -2.23,
+        "dirMaeDeg": 72,
+        "bftExact": 0.403,
+        "bftUnder": 0.413,
+        "strongUnder": 0.879
+      },
+      "new": {
+        "maeKmh": 5.18,
+        "biasKmh": -0.11,
+        "dirMaeDeg": 70,
+        "bftExact": 0.34,
+        "bftUnder": 0.353,
+        "strongUnder": 0.72
+      },
+      "disagreeHours": 244,
+      "newCloserWhenDisagree": 0.418,
+      "strongHours": 107,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 1298,
+      "name": "Kerame",
+      "region": "north-aegean-ikaria",
+      "station": {
+        "icao": "LGIK",
+        "name": "Ικαρία",
+        "lat": 37.6827,
+        "lon": 26.347,
+        "km": 2.8
+      },
+      "oldCell": "37.6875_26.3125",
+      "newCell": "37.6875_26.375",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 0,
+      "old": {
+        "maeKmh": null,
+        "biasKmh": null,
+        "dirMaeDeg": null,
+        "bftExact": null,
+        "bftUnder": null,
+        "strongUnder": null
+      },
+      "new": {
+        "maeKmh": null,
+        "biasKmh": null,
+        "dirMaeDeg": null,
+        "bftExact": null,
+        "bftUnder": null,
+        "strongUnder": null
+      },
+      "disagreeHours": 0,
+      "newCloserWhenDisagree": null,
+      "strongHours": 0,
+      "verdict": "λίγα"
+    },
+    {
+      "beachId": 131,
+      "name": "Diakofti",
+      "region": "attica-kythira",
+      "station": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "lat": 36.2743,
+        "lon": 23.017,
+        "km": 5.6
+      },
+      "oldCell": "36.25_23.0625",
+      "newCell": "36.25_23.125",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 305,
+      "old": {
+        "maeKmh": 5.37,
+        "biasKmh": -1.26,
+        "dirMaeDeg": 17,
+        "bftExact": 0.38,
+        "bftUnder": 0.39,
+        "strongUnder": 0.324
+      },
+      "new": {
+        "maeKmh": 6.44,
+        "biasKmh": -2.11,
+        "dirMaeDeg": 17,
+        "bftExact": 0.325,
+        "bftUnder": 0.443,
+        "strongUnder": 0.375
+      },
+      "disagreeHours": 89,
+      "newCloserWhenDisagree": 0.27,
+      "strongHours": 136,
+      "verdict": "παλιό"
+    },
+    {
+      "beachId": 134,
+      "name": "Paralia Palaiopoli",
+      "region": "attica-kythira",
+      "station": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "lat": 36.2743,
+        "lon": 23.017,
+        "km": 7
+      },
+      "oldCell": "36.25_23.0625",
+      "newCell": "36.1875_23.0625",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 305,
+      "old": {
+        "maeKmh": 5.37,
+        "biasKmh": -1.26,
+        "dirMaeDeg": 17,
+        "bftExact": 0.38,
+        "bftUnder": 0.39,
+        "strongUnder": 0.324
+      },
+      "new": {
+        "maeKmh": 5.77,
+        "biasKmh": 0.88,
+        "dirMaeDeg": 19,
+        "bftExact": 0.367,
+        "bftUnder": 0.315,
+        "strongUnder": 0.228
+      },
+      "disagreeHours": 84,
+      "newCloserWhenDisagree": 0.476,
+      "strongHours": 136,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 135,
+      "name": "Paralia Limni (Palaiopoli)",
+      "region": "attica-kythira",
+      "station": {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "lat": 36.2743,
+        "lon": 23.017,
+        "km": 7
+      },
+      "oldCell": "36.25_23.0625",
+      "newCell": "36.1875_23.0625",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 305,
+      "old": {
+        "maeKmh": 5.37,
+        "biasKmh": -1.26,
+        "dirMaeDeg": 17,
+        "bftExact": 0.38,
+        "bftUnder": 0.39,
+        "strongUnder": 0.324
+      },
+      "new": {
+        "maeKmh": 5.77,
+        "biasKmh": 0.88,
+        "dirMaeDeg": 19,
+        "bftExact": 0.367,
+        "bftUnder": 0.315,
+        "strongUnder": 0.228
+      },
+      "disagreeHours": 84,
+      "newCloserWhenDisagree": 0.476,
+      "strongHours": 136,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 2647,
+      "name": "Glysteri",
+      "region": "thessaly-skopelos",
+      "station": {
+        "icao": "LGSK",
+        "name": "Σκιάθος",
+        "lat": 39.1771,
+        "lon": 23.5037,
+        "km": 18.8
+      },
+      "oldCell": "39.125_23.75",
+      "newCell": "39.1875_23.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 4.4,
+        "biasKmh": -1.67,
+        "dirMaeDeg": 27,
+        "bftExact": 0.442,
+        "bftUnder": 0.415,
+        "strongUnder": 0.247
+      },
+      "new": {
+        "maeKmh": 4.42,
+        "biasKmh": -1.56,
+        "dirMaeDeg": 28,
+        "bftExact": 0.431,
+        "bftUnder": 0.429,
+        "strongUnder": 0.272
+      },
+      "disagreeHours": 120,
+      "newCloserWhenDisagree": 0.508,
+      "strongHours": 81,
+      "verdict": "ισοπαλία"
+    },
+    {
+      "beachId": 1247,
+      "name": "Paralia Pyrgia (vorios ormos)",
+      "region": "north-aegean-chios",
+      "station": {
+        "icao": "LGHI",
+        "name": "Χίος",
+        "lat": 38.3432,
+        "lon": 26.1406,
+        "km": 19.5
+      },
+      "oldCell": "38.5_26.125",
+      "newCell": "38.5_26.1875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 615,
+      "old": {
+        "maeKmh": 4.22,
+        "biasKmh": 1.4,
+        "dirMaeDeg": 25,
+        "bftExact": 0.55,
+        "bftUnder": 0.153,
+        "strongUnder": 0.291
+      },
+      "new": {
+        "maeKmh": 4.73,
+        "biasKmh": 2.87,
+        "dirMaeDeg": 35,
+        "bftExact": 0.507,
+        "bftUnder": 0.104,
+        "strongUnder": 0.157
+      },
+      "disagreeHours": 137,
+      "newCloserWhenDisagree": 0.38,
+      "strongHours": 268,
+      "verdict": "παλιό"
+    },
+    {
+      "beachId": 2710,
+      "name": "Paralia Kritharia",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "station": {
+        "icao": "LGBL",
+        "name": "Ν. Αγχίαλος",
+        "lat": 39.2196,
+        "lon": 22.7943,
+        "km": 12.7
+      },
+      "oldCell": "39.3125_22.9375",
+      "newCell": "39.25_22.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 7.34,
+        "biasKmh": -6.74,
+        "dirMaeDeg": 58,
+        "bftExact": 0.147,
+        "bftUnder": 0.792,
+        "strongUnder": 0.995
+      },
+      "new": {
+        "maeKmh": 6.1,
+        "biasKmh": -5.58,
+        "dirMaeDeg": 25,
+        "bftExact": 0.242,
+        "bftUnder": 0.698,
+        "strongUnder": 0.949
+      },
+      "disagreeHours": 160,
+      "newCloserWhenDisagree": 0.831,
+      "strongHours": 216,
+      "verdict": "νέο"
+    },
+    {
+      "beachId": 1246,
+      "name": "Paralia Pyrgia (notios ormos)",
+      "region": "north-aegean-chios",
+      "station": {
+        "icao": "LGHI",
+        "name": "Χίος",
+        "lat": 38.3432,
+        "lon": 26.1406,
+        "km": 18.9
+      },
+      "oldCell": "38.5_26.125",
+      "newCell": "38.5_26.1875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 615,
+      "old": {
+        "maeKmh": 4.22,
+        "biasKmh": 1.4,
+        "dirMaeDeg": 25,
+        "bftExact": 0.55,
+        "bftUnder": 0.153,
+        "strongUnder": 0.291
+      },
+      "new": {
+        "maeKmh": 4.73,
+        "biasKmh": 2.87,
+        "dirMaeDeg": 35,
+        "bftExact": 0.507,
+        "bftUnder": 0.104,
+        "strongUnder": 0.157
+      },
+      "disagreeHours": 137,
+      "newCloserWhenDisagree": 0.38,
+      "strongHours": 268,
+      "verdict": "παλιό"
+    },
+    {
+      "beachId": 1163,
+      "name": "Kaminia",
+      "region": "ionian-islands-lefkada",
+      "station": {
+        "icao": "LGPZ",
+        "name": "Άκτιο",
+        "lat": 38.9255,
+        "lon": 20.7653,
+        "km": 13.6
+      },
+      "oldCell": "38.8125_20.625",
+      "newCell": "38.875_20.6875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 5.53,
+        "biasKmh": -4.24,
+        "dirMaeDeg": 21,
+        "bftExact": 0.321,
+        "bftUnder": 0.595,
+        "strongUnder": 0.912
+      },
+      "new": {
+        "maeKmh": 3.61,
+        "biasKmh": -0.76,
+        "dirMaeDeg": 16,
+        "bftExact": 0.5,
+        "bftUnder": 0.303,
+        "strongUnder": 0.227
+      },
+      "disagreeHours": 366,
+      "newCloserWhenDisagree": 0.708,
+      "strongHours": 181,
+      "verdict": "νέο"
+    },
+    {
+      "beachId": 2671,
+      "name": "Plakes (Volos)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "station": {
+        "icao": "LGBL",
+        "name": "Ν. Αγχίαλος",
+        "lat": 39.2196,
+        "lon": 22.7943,
+        "km": 12.3
+      },
+      "oldCell": "39.3125_22.9375",
+      "newCell": "39.25_22.875",
+      "echo": {
+        "old": true,
+        "new": true
+      },
+      "hours": 620,
+      "old": {
+        "maeKmh": 7.34,
+        "biasKmh": -6.74,
+        "dirMaeDeg": 58,
+        "bftExact": 0.147,
+        "bftUnder": 0.792,
+        "strongUnder": 0.995
+      },
+      "new": {
+        "maeKmh": 6.1,
+        "biasKmh": -5.58,
+        "dirMaeDeg": 25,
+        "bftExact": 0.242,
+        "bftUnder": 0.698,
+        "strongUnder": 0.949
+      },
+      "disagreeHours": 160,
+      "newCloserWhenDisagree": 0.831,
+      "strongHours": 216,
+      "verdict": "νέο"
+    }
+  ]
+}

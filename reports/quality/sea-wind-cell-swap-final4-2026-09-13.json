@@ -1,0 +1,1625 @@
+{
+  "generatedAt": "2026-09-13T12:57:40.287Z",
+  "ledger": "data/sea-wind-cell-overrides.json",
+  "days": [
+    0,
+    1
+  ],
+  "population": 19,
+  "ledgerBeaches": 4,
+  "cellsFetched": 6,
+  "cellsReturned": 6,
+  "missingChosen": [],
+  "missingCurrent": [],
+  "criteria": {
+    "P1_noControlChange": true,
+    "P2_allChosenCellsReturned": true,
+    "P3_physicallyConsistent": false,
+    "P3_calmerHourShare": 0.206,
+    "P4_vetoLandOnly": true,
+    "P5_softerVerdicts": 2
+  },
+  "perDay": {
+    "0": {
+      "ledger": 4,
+      "ledgerChanged": 4,
+      "controlChanged": 0,
+      "verdictSofter": [],
+      "verdictStricter": [
+        "#2671 Plakes (Volos) (thessaly-magnesia-mainland---pelion) σήμερα: excellent → caution",
+        "#2710 Paralia Kritharia (thessaly-magnesia-mainland---pelion) σήμερα: excellent → caution"
+      ],
+      "colourCalmer": [],
+      "colourRougher": [],
+      "bftUp": 3,
+      "bftDown": 0,
+      "calmerHours": 0,
+      "rougherHours": 21,
+      "seesWaterA": 13,
+      "seesWaterB": 14,
+      "hoursCompared": 26,
+      "vetoOff": 0
+    },
+    "1": {
+      "ledger": 4,
+      "ledgerChanged": 4,
+      "controlChanged": 0,
+      "verdictSofter": [
+        "#2671 Plakes (Volos) (thessaly-magnesia-mainland---pelion) +1: avoid_swimming → caution",
+        "#2710 Paralia Kritharia (thessaly-magnesia-mainland---pelion) +1: avoid_swimming → caution"
+      ],
+      "verdictStricter": [],
+      "colourCalmer": [
+        "#2671 Plakes (Volos) (thessaly-magnesia-mainland---pelion) +1: orange → yellow",
+        "#2710 Paralia Kritharia (thessaly-magnesia-mainland---pelion) +1: orange → yellow"
+      ],
+      "colourRougher": [],
+      "bftUp": 1,
+      "bftDown": 2,
+      "calmerHours": 7,
+      "rougherHours": 6,
+      "seesWaterA": 24,
+      "seesWaterB": 23,
+      "hoursCompared": 24,
+      "vetoOff": 0
+    }
+  },
+  "regions": [
+    {
+      "region": "ionian-islands-kefalonia",
+      "population": 8,
+      "vetoPassed": true
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "population": 7,
+      "vetoPassed": true
+    },
+    {
+      "region": "thessaly-magnesia-mainland---pelion",
+      "population": 4,
+      "vetoPassed": true
+    }
+  ],
+  "rows": [
+    {
+      "beachId": 1078,
+      "name": "Xi",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "good",
+            "score": 80,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.1,
+            "seaM": 0.68
+          },
+          "B": {
+            "comfort": "good",
+            "score": 80,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.1,
+            "seaM": 0.68
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 0,
+          "seesWaterB": 0,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "excellent",
+            "score": 96,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.08,
+            "seaM": 0.56
+          },
+          "B": {
+            "comfort": "excellent",
+            "score": 96,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.08,
+            "seaM": 0.56
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 1,
+          "seesWaterB": 1,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1083,
+      "name": "Aspros Vrachos",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 11,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.96,
+            "seaM": 0.96
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 11,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.96,
+            "seaM": 0.96
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 2,
+          "seesWaterB": 2,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 20,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 20,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1092,
+      "name": "Gradakia",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.74,
+            "seaM": 0.74
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.74,
+            "seaM": 0.74
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 9,
+          "seesWaterB": 9,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 30,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.66,
+            "seaM": 0.66
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 30,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.66,
+            "seaM": 0.66
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1108,
+      "name": "Lygia Farson",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": true,
+      "currentCell": "38.25_20.5",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 26,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 21.2,
+            "windDeg": 317,
+            "bft": 4,
+            "shoreM": 0.88,
+            "seaM": 0.88
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 26,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.88,
+            "seaM": 0.88
+          },
+          "changed": true,
+          "hoursCompared": 9,
+          "hoursChanged": 9,
+          "calmerHours": 0,
+          "rougherHours": 6,
+          "seesWaterA": 0,
+          "seesWaterB": 0,
+          "meanSpeedRatio": 1.37,
+          "meanGapDeg": 10
+        },
+        "1": {
+          "A": {
+            "comfort": "caution",
+            "score": 32,
+            "colour": "yellow",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 17.2,
+            "windDeg": 271,
+            "bft": 3,
+            "shoreM": 0.78,
+            "seaM": 0.78
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 42,
+            "colour": "yellow",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.78,
+            "seaM": 0.78
+          },
+          "changed": true,
+          "hoursCompared": 7,
+          "hoursChanged": 7,
+          "calmerHours": 4,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": 0.68,
+          "meanGapDeg": 5
+        }
+      }
+    },
+    {
+      "beachId": 1110,
+      "name": "Makrys Gialos",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "caution",
+            "score": 34,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.48,
+            "seaM": 0.96
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 34,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.48,
+            "seaM": 0.96
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 0,
+          "seesWaterB": 0,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1111,
+      "name": "Megas Lakkos",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "good",
+            "score": 56,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.11,
+            "seaM": 1.08
+          },
+          "B": {
+            "comfort": "good",
+            "score": 56,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.11,
+            "seaM": 1.08
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 0,
+          "seesWaterB": 0,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "good",
+            "score": 57,
+            "colour": "yellow",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.47,
+            "seaM": 0.94
+          },
+          "B": {
+            "comfort": "good",
+            "score": 57,
+            "colour": "yellow",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.47,
+            "seaM": 0.94
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1115,
+      "name": "Paliostafida",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.74,
+            "seaM": 0.74
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.74,
+            "seaM": 0.74
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 9,
+          "seesWaterB": 9,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 30,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.66,
+            "seaM": 0.66
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 30,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.66,
+            "seaM": 0.66
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1126,
+      "name": "Platys Gialos",
+      "region": "ionian-islands-kefalonia",
+      "inLedger": false,
+      "currentCell": "38.125_20.4375",
+      "newCell": "38.125_20.4375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 11,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.96,
+            "seaM": 0.96
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 11,
+            "colour": "orange",
+            "exposure": "partial",
+            "sector": "NW",
+            "windKmh": 25.2,
+            "windDeg": 326,
+            "bft": 4,
+            "shoreM": 0.96,
+            "seaM": 0.96
+          },
+          "changed": false,
+          "hoursCompared": 9,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 0,
+          "seesWaterB": 0,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 20,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 20,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 11.2,
+            "windDeg": 270,
+            "bft": 3,
+            "shoreM": 0.84,
+            "seaM": 0.84
+          },
+          "changed": false,
+          "hoursCompared": 6,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1158,
+      "name": "Gyra (Anna)",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.875_20.6875",
+      "newCell": "38.875_20.6875",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 19.8,
+            "windDeg": 282,
+            "bft": 4,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 19.8,
+            "windDeg": 282,
+            "bft": 4,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "caution",
+            "score": 78,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 7.4,
+            "windDeg": 123,
+            "bft": 2,
+            "shoreM": 0.4,
+            "seaM": 0.4
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 78,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 7.4,
+            "windDeg": 123,
+            "bft": 2,
+            "shoreM": 0.4,
+            "seaM": 0.4
+          },
+          "changed": false,
+          "hoursCompared": 4,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 4,
+          "seesWaterB": 4,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1160,
+      "name": "Kathisma",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.8125_20.625",
+      "newCell": "38.8125_20.625",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 5,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1161,
+      "name": "Kastro",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.875_20.6875",
+      "newCell": "38.875_20.6875",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 19.8,
+            "windDeg": 282,
+            "bft": 4,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 19.8,
+            "windDeg": 282,
+            "bft": 4,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 2,
+            "colour": "orange",
+            "exposure": "protected",
+            "sector": "S",
+            "windKmh": 7.4,
+            "windDeg": 164,
+            "bft": 2,
+            "shoreM": 1.1,
+            "seaM": 1.1
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 2,
+            "colour": "orange",
+            "exposure": "protected",
+            "sector": "S",
+            "windKmh": 7.4,
+            "windDeg": 164,
+            "bft": 2,
+            "shoreM": 1.1,
+            "seaM": 1.1
+          },
+          "changed": false,
+          "hoursCompared": 4,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 4,
+          "seesWaterB": 4,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1163,
+      "name": "Kaminia",
+      "region": "ionian-islands-lefkada",
+      "inLedger": true,
+      "currentCell": "38.8125_20.625",
+      "newCell": "38.875_20.6875",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 28,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "partial",
+            "sector": "W",
+            "windKmh": 19.8,
+            "windDeg": 282,
+            "bft": 4,
+            "shoreM": 1.32,
+            "seaM": 1.32
+          },
+          "changed": true,
+          "hoursCompared": 7,
+          "hoursChanged": 7,
+          "calmerHours": 0,
+          "rougherHours": 5,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": 1.18,
+          "meanGapDeg": 4
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 16,
+            "colour": "orange",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.1,
+            "seaM": 1.1
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 2,
+            "colour": "orange",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 7.4,
+            "windDeg": 123,
+            "bft": 2,
+            "shoreM": 1.1,
+            "seaM": 1.1
+          },
+          "changed": true,
+          "hoursCompared": 5,
+          "hoursChanged": 5,
+          "calmerHours": 1,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 4,
+          "meanSpeedRatio": 0.99,
+          "meanGapDeg": 27
+        }
+      }
+    },
+    {
+      "beachId": 1167,
+      "name": "Mylos",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.8125_20.625",
+      "newCell": "38.8125_20.625",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 5,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1169,
+      "name": "Pevkoulia",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.8125_20.625",
+      "newCell": "38.8125_20.625",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.36,
+            "seaM": 1.36
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 5,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 1172,
+      "name": "Skala Gialou",
+      "region": "ionian-islands-lefkada",
+      "inLedger": false,
+      "currentCell": "38.8125_20.625",
+      "newCell": "38.8125_20.625",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "exposed",
+            "sector": "W",
+            "windKmh": 18.4,
+            "windDeg": 287,
+            "bft": 3,
+            "shoreM": 1.4,
+            "seaM": 1.4
+          },
+          "changed": false,
+          "hoursCompared": 7,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 7,
+          "seesWaterB": 7,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.24,
+            "seaM": 1.24
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 0,
+            "colour": "red",
+            "exposure": "protected",
+            "sector": "SE",
+            "windKmh": 4.6,
+            "windDeg": 123,
+            "bft": 1,
+            "shoreM": 1.24,
+            "seaM": 1.24
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 5,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 2671,
+      "name": "Plakes (Volos)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "inLedger": true,
+      "currentCell": "39.3125_22.9375",
+      "newCell": "39.25_22.875",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 337,
+            "bft": 1,
+            "shoreM": 0.28,
+            "seaM": 0.28
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 78,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 9.4,
+            "windDeg": 337,
+            "bft": 2,
+            "shoreM": 0.28,
+            "seaM": 0.28
+          },
+          "changed": true,
+          "hoursCompared": 5,
+          "hoursChanged": 5,
+          "calmerHours": 0,
+          "rougherHours": 5,
+          "seesWaterA": 3,
+          "seesWaterB": 4,
+          "meanSpeedRatio": 1.55,
+          "meanGapDeg": 26
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.6,
+            "seaM": 0.6
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 66,
+            "colour": "yellow",
+            "exposure": "exposed",
+            "sector": "SE",
+            "windKmh": 10.7,
+            "windDeg": 157,
+            "bft": 2,
+            "shoreM": 0.32,
+            "seaM": 0.32
+          },
+          "changed": true,
+          "hoursCompared": 6,
+          "hoursChanged": 6,
+          "calmerHours": 1,
+          "rougherHours": 3,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": 1.19,
+          "meanGapDeg": 33
+        }
+      }
+    },
+    {
+      "beachId": 2675,
+      "name": "Anavros",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "inLedger": false,
+      "currentCell": "39.3125_22.9375",
+      "newCell": "39.3125_22.9375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 327,
+            "bft": 1,
+            "shoreM": 0.3,
+            "seaM": 0.3
+          },
+          "B": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 327,
+            "bft": 1,
+            "shoreM": 0.3,
+            "seaM": 0.3
+          },
+          "changed": false,
+          "hoursCompared": 2,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 2,
+          "seesWaterB": 2,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.6,
+            "seaM": 0.6
+          },
+          "B": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.6,
+            "seaM": 0.6
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 5,
+          "seesWaterB": 5,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 2677,
+      "name": "Alykes (Volos)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "inLedger": false,
+      "currentCell": "39.3125_22.9375",
+      "newCell": "39.3125_22.9375",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 327,
+            "bft": 1,
+            "shoreM": 0.1,
+            "seaM": 0.14
+          },
+          "B": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "blue",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 327,
+            "bft": 1,
+            "shoreM": 0.1,
+            "seaM": 0.14
+          },
+          "changed": false,
+          "hoursCompared": 2,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 2,
+          "seesWaterB": 2,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        },
+        "1": {
+          "A": {
+            "comfort": "good",
+            "score": 80,
+            "colour": "yellow",
+            "exposure": "partial",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.5,
+            "seaM": 0.5
+          },
+          "B": {
+            "comfort": "good",
+            "score": 80,
+            "colour": "yellow",
+            "exposure": "partial",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.5,
+            "seaM": 0.5
+          },
+          "changed": false,
+          "hoursCompared": 5,
+          "hoursChanged": 0,
+          "calmerHours": 0,
+          "rougherHours": 0,
+          "seesWaterA": 4,
+          "seesWaterB": 4,
+          "meanSpeedRatio": null,
+          "meanGapDeg": null
+        }
+      }
+    },
+    {
+      "beachId": 2710,
+      "name": "Paralia Kritharia",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "inLedger": true,
+      "currentCell": "39.3125_22.9375",
+      "newCell": "39.25_22.875",
+      "vetoPassed": true,
+      "days": {
+        "0": {
+          "A": {
+            "comfort": "excellent",
+            "score": 92,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 4.7,
+            "windDeg": 337,
+            "bft": 1,
+            "shoreM": 0.3,
+            "seaM": 0.3
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 78,
+            "colour": "yellow",
+            "exposure": "protected",
+            "sector": "NW",
+            "windKmh": 9.4,
+            "windDeg": 337,
+            "bft": 2,
+            "shoreM": 0.3,
+            "seaM": 0.3
+          },
+          "changed": true,
+          "hoursCompared": 5,
+          "hoursChanged": 5,
+          "calmerHours": 0,
+          "rougherHours": 5,
+          "seesWaterA": 3,
+          "seesWaterB": 3,
+          "meanSpeedRatio": 1.55,
+          "meanGapDeg": 26
+        },
+        "1": {
+          "A": {
+            "comfort": "avoid_swimming",
+            "score": 32,
+            "colour": "orange",
+            "exposure": "exposed",
+            "sector": "S",
+            "windKmh": 12.2,
+            "windDeg": 180,
+            "bft": 3,
+            "shoreM": 0.6,
+            "seaM": 0.6
+          },
+          "B": {
+            "comfort": "caution",
+            "score": 66,
+            "colour": "yellow",
+            "exposure": "exposed",
+            "sector": "SE",
+            "windKmh": 10.7,
+            "windDeg": 157,
+            "bft": 2,
+            "shoreM": 0.32,
+            "seaM": 0.32
+          },
+          "changed": true,
+          "hoursCompared": 6,
+          "hoursChanged": 6,
+          "calmerHours": 1,
+          "rougherHours": 3,
+          "seesWaterA": 6,
+          "seesWaterB": 6,
+          "meanSpeedRatio": 1.19,
+          "meanGapDeg": 33
+        }
+      }
+    }
+  ]
+}

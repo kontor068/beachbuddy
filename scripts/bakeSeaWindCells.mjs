@@ -35,6 +35,16 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const VERIFY = process.argv.includes('--verify');
+/**
+ * `--apply-overrides` (Δ9-Α, 13/09/2026): ΧΩΡΙΣ δίκτυο, ξαναγράφει τον υπάρχοντα χάρτη με τις εξαιρέσεις του
+ * `data/sea-wind-cell-overrides.json` — 98 παραλίες που το κελί τους κάθεται πίσω από βουνό ≥200 μ.
+ * (βίβλος §Γ81 Δ9-Β) παίρνουν το κελί που «βλέπουν» (findSeaWindCellAlternatives.mjs). Γιατί όχι πλήρες
+ * ψήσιμο: δύο παραλίες βγήκαν από τα δεδομένα μετά τις 25/08 και ένα πλήρες ψήσιμο θα έγραφε 1.831 αντί
+ * για τις 1.833 που καρφώνει το εγχειρίδιο· εδώ το πλήθος μένει ό,τι ήταν. Το πλήρες ψήσιμο διαβάζει ΚΙ
+ * ΑΥΤΟ το ledger (μετά την ανίχνευση, ώστε να φαίνεται αν η πόρτα άλλαξε γνώμη για το αποκλεισμένο κελί).
+ */
+const APPLY_OVERRIDES = process.argv.includes('--apply-overrides');
+const LEDGER = path.join(root, 'data/sea-wind-cell-overrides.json');
 const PACE_MS = 13000;
 const CHUNK = 100;
 
@@ -137,8 +147,101 @@ const readCachedSeaRows = expectedCount => {
   } catch { return null; }
 };
 
+/** Το ledger των εξαιρέσεων (Δ9-Α). `null` όταν δεν υπάρχει — τότε το ψήσιμο είναι ακριβώς το παλιό. */
+const readLedger = () => {
+  if (!fs.existsSync(LEDGER)) return null;
+  const ledger = JSON.parse(fs.readFileSync(LEDGER, 'utf8'));
+  return {
+    overrides: Array.isArray(ledger.overrides) ? ledger.overrides : [],
+    unresolved: Array.isArray(ledger.unresolved) ? ledger.unresolved : [],
+    generatedAt: ledger.generatedAt ?? null,
+  };
+};
+
+/** Τι ΔΕΝ στέκει ανάμεσα σε έναν χάρτη και στο ledger — ίδια λίστα με το τμήμα Η της πύλης. */
+const ledgerProblems = (cells, ledger) => {
+  const out = [];
+  for (const o of ledger.overrides) {
+    const id = String(o.beachId);
+    if (!cells[id]) out.push(`#${id}: στο ledger αλλά όχι στον χάρτη`);
+    else if (cells[id] === o.excludedCell) out.push(`#${id}: ψημένο στο αποκλεισμένο κελί ${o.excludedCell}`);
+    else if (cells[id] !== o.chosenCell) out.push(`#${id}: ψημένο στο ${cells[id]}, το ledger λέει ${o.chosenCell}`);
+  }
+  for (const u of ledger.unresolved) {
+    const id = String(u.beachId);
+    if (cells[id] && u.keptCell && cells[id] !== u.keptCell) out.push(`#${id}: unresolved αλλά ψημένο στο ${cells[id]} ≠ ${u.keptCell}`);
+  }
+  return out;
+};
+
+/**
+ * Εφαρμόζει το ledger πάνω στον χάρτη (στη μνήμη). ΑΝΑ ΠΑΡΑΛΙΑ — τα 98 μοιράζονται 47 κελιά με 82 άλλες
+ * παραλίες που ο έλεγχος βρήκε καθαρές, και εκείνες δεν αγγίζονται. Ποτέ δεν προσθέτει παραλία που δεν
+ * πέρασε την πύλη των 3 χλμ (κανόνας 1 της κεφαλίδας). Αν η πόρτα δίνει πια ΑΛΛΟ κελί από το
+ * αποκλεισμένο, το λέει («drift») — το ledger γράφτηκε απέναντι σε συγκεκριμένη απάντηση της πόρτας.
+ */
+const applyLedger = (cells, ledger, gatedById) => {
+  let applied = 0;
+  const skipped = [];
+  const drift = [];
+  for (const o of ledger.overrides) {
+    const id = String(o.beachId);
+    if (gatedById && !gatedById.has(id)) { skipped.push(`#${id} κάτω από την πύλη`); continue; }
+    if (!cells[id]) { skipped.push(`#${id} όχι στον χάρτη`); continue; }
+    if (cells[id] !== o.excludedCell && cells[id] !== o.chosenCell) drift.push(`#${id}: η πόρτα δίνει πια ${cells[id]} (ledger: ${o.excludedCell} → ${o.chosenCell})`);
+    cells[id] = o.chosenCell;
+    applied += 1;
+  }
+  for (const s of skipped) console.warn(`  ledger: παραλείπεται ${s}`);
+  for (const d of drift) console.warn(`  ledger: ${d}`);
+  return {
+    summary: { path: path.relative(root, LEDGER), ledgerGeneratedAt: ledger.generatedAt, applied, unresolved: ledger.unresolved.length, skipped: skipped.length, drift: drift.length },
+    skipped, drift,
+  };
+};
+
+/** Διακριτά κελιά και απόσταση παραλίας→κελιού, από τον τελικό χάρτη (μετά το ledger). */
+const summarise = (cells, byId) => {
+  const distinct = new Set();
+  const perBeach = [];
+  for (const [id, key] of Object.entries(cells)) {
+    distinct.add(key);
+    const b = byId.get(id);
+    if (!b) continue;
+    const [lat, lon] = key.split('_').map(Number);
+    perBeach.push({ id: b.id, seaCellDistKm: Number(distKm(b.lat, b.lon, lat, lon).toFixed(2)) });
+  }
+  return { distinct, perBeach };
+};
+
 const beaches = readBeaches();
 console.log(`Παραλίες με ψημένο στεριανό κελί: ${beaches.length.toLocaleString('el-GR')}`);
+
+if (APPLY_OVERRIDES) {
+  // Χειρουργικά, χωρίς δίκτυο: ο υπάρχων χάρτης ΕΙΝΑΙ η πύλη (όποιος είναι μέσα, πέρασε τα 3 χλμ όταν
+  // ψήθηκε)· εδώ αλλάζει μόνο ΠΟΥ δείχνουν οι παραλίες του ledger. Πλήθος, gateKm και generatedAt μένουν.
+  const ledger = readLedger();
+  if (!ledger) { console.error(`Δεν υπάρχει ${path.relative(root, LEDGER)} — τρέξε scripts/findSeaWindCellAlternatives.mjs --write`); process.exit(1); }
+  if (!fs.existsSync(OUT)) { console.error('Δεν υπάρχει ψημένος χάρτης — τρέξε πρώτα πλήρες ψήσιμο.'); process.exit(1); }
+  const { cells: oldCells, ...head } = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+  const cells = { ...(oldCells || {}) };
+  const result = applyLedger(cells, ledger, null);
+  const problems = ledgerProblems(cells, ledger);
+  if (problems.length) { problems.forEach(p => console.error(`FAILED: ${p}`)); process.exit(1); }
+  const { distinct, perBeach } = summarise(cells, new Map(beaches.map(b => [String(b.id), b])));
+  const dists = perBeach.map(p => p.seaCellDistKm).sort((a, b) => a - b);
+  fs.writeFileSync(OUT, `${JSON.stringify({
+    ...head,
+    beachCount: Object.keys(cells).length,
+    distinctCells: distinct.size,
+    seaCellDistanceKm: { median: dists[Math.floor(dists.length / 2)], max: dists[dists.length - 1] },
+    overrides: { ...result.summary, appliedAt: new Date().toISOString() },
+    cells,
+  }, null, 2)}\n`);
+  console.log(`Γράφτηκε ${path.relative(root, OUT)} με ${result.summary.applied} εξαιρέσεις (${result.summary.unresolved} κρατούν το παλιό κελί):`
+    + ` ${Object.keys(cells).length} παραλίες, ${distinct.size} διακριτά κελιά (διάμεσος ${dists[Math.floor(dists.length / 2)]} χλμ, μέγιστη ${dists[dists.length - 1]}).`);
+  process.exit(0);
+}
 
 const cachedAll = readCachedSeaRows(beaches.length);
 const gated = beaches.filter(b => b.landCellDistKm >= GATE_KM);
@@ -151,17 +254,18 @@ const seaRows = cachedAll
 if (seaRows.length !== gated.length) throw new Error(`Ασυμφωνία: ${seaRows.length} απαντήσεις για ${gated.length} παραλίες`);
 
 const cells = {};
-const distinct = new Set();
-const perBeach = [];
 gated.forEach((b, i) => {
   const r = seaRows[i];
   const lat = r?.latitude, lon = r?.longitude;
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-  const key = `${lat}_${lon}`;
-  cells[String(b.id)] = key;
-  distinct.add(key);
-  perBeach.push({ id: b.id, seaCellDistKm: Number(distKm(b.lat, b.lon, lat, lon).toFixed(2)) });
+  cells[String(b.id)] = `${lat}_${lon}`;
 });
+// Δ9-Α: οι εξαιρέσεις ΜΕΤΑ την ανίχνευση — τα 98 ανιχνεύονται κανονικά (98 σημεία, κανένα επιπλέον
+// αίτημα) ώστε να φανεί αν η πόρτα άλλαξε γνώμη για το αποκλεισμένο κελί, και μετά ξαναδείχνουν.
+const gatedById = new Map(gated.map(b => [String(b.id), b]));
+const ledger = readLedger();
+const ledgerResult = ledger ? applyLedger(cells, ledger, gatedById) : null;
+const { distinct, perBeach } = summarise(cells, gatedById);
 
 if (VERIFY) {
   const failures = [];
@@ -173,6 +277,8 @@ if (VERIFY) {
     if (baked.gateKm !== GATE_KM) failures.push(`η πύλη άλλαξε: ψημένη ${baked.gateKm}, κώδικας ${GATE_KM}`);
     if (missing.length) failures.push(`${missing.length} παραλίες περνούν την πύλη αλλά λείπουν, π.χ. ${missing.slice(0, 3).map(b => b.name).join(', ')}`);
     if (extra.length) failures.push(`${extra.length} παραλίες στο αρχείο δεν περνούν πια την πύλη, π.χ. ${extra.slice(0, 3).join(', ')}`);
+    // Δ9-Α: ο ψημένος χάρτης πρέπει να σέβεται το ledger — κάθε εξαίρεση στο επιλεγμένο κελί, κάθε unresolved στο παλιό.
+    if (ledger) for (const p of ledgerProblems(baked.cells || {}, ledger)) failures.push(`ledger ${p}`);
   }
   if (failures.length) { failures.forEach(f => console.error(`FAILED: ${f}`)); process.exit(1); }
   console.log(`OK: ο ψημένος χάρτης καλύπτει ${gated.length} παραλίες σε ${distinct.size} κελιά θάλασσας.`);
@@ -190,6 +296,7 @@ fs.writeFileSync(OUT, `${JSON.stringify({
   beachesBelowGate: beaches.length - gated.length,
   distinctCells: distinct.size,
   seaCellDistanceKm: { median: dists[Math.floor(dists.length / 2)], max: dists[dists.length - 1] },
+  ...(ledgerResult ? { overrides: { ...ledgerResult.summary, appliedAt: new Date().toISOString() } } : {}),
   cells,
 }, null, 2)}\n`);
 console.log(`Γράφτηκε ${path.relative(root, OUT)}: ${Object.keys(cells).length} παραλίες, ${distinct.size} διακριτά κελιά θάλασσας`

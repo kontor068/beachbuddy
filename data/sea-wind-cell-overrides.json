@@ -1,0 +1,1060 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-13T12:57:11.761Z",
+  "purpose": "Δ9-Α/Δ9-Δ (13/09/2026): κελιά ανέμου θάλασσας με στεριά ≥200 μ. ανάμεσα στην παραλία και στο κέντρο τους ξαναδείχνουν στο κελί που «βλέπει» η παραλία — ΜΟΝΟ όπου όργανο (METAR ≤20 χλμ, 92 μέρες) λέει ότι το νέο κελί είναι πιο κοντά στην αλήθεια. Τα υπόλοιπα 81 υποψήφια μένουν στο παλιό κελί (deferred): η μέτρηση measureSeaWindCellSwap έδειξε πιο ήρεμο στα 2/3 των ωρών και 33 ηπιότερες ετυμηγορίες, και πιο ήρεμο χωρίς δεύτερη πηγή δεν ανεβαίνει. Το διαβάζει το scripts/bakeSeaWindCells.mjs· το φυλάει το scripts/validateOverWaterWindLayer.mjs (τμήμα Η). Ανά παραλία, όχι ανά κελί.",
+  "rule": "διαδρομή παραλία→κελί με μέγιστο υψόμετρο < 50 μ. (LOW_M του audit), κοντινότερο κελί που απαντά η πόρτα, echo στο κέντρο ≤ 0.2° · ΚΑΙ κριτής METAR: MAE νέου < MAE παλιού − 0,5 χλμ/ώ σε ≥100 ώρες 10-18",
+  "sourceReport": "reports/quality/sea-wind-cell-relief-2026-09-13.json",
+  "alternativesReport": "reports/quality/sea-wind-cell-alternatives-2026-09-13.json",
+  "stationJudgeReport": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json",
+  "swapMeasurementReport": "reports/quality/sea-wind-cell-swap-2026-09-13.json",
+  "overrides": [
+    {
+      "beachId": 1108,
+      "name": "Lygia Farson",
+      "region": "ionian-islands-kefalonia",
+      "excludedCell": "38.25_20.5",
+      "reason": "relief≥200m",
+      "maxElevM": 719,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "38.125_20.4375",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.21587471851983,
+        "lon": 20.44237006852859,
+        "bearingDeg": 235,
+        "km": 3,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 12.18,
+      "fetchKmAtBearing": 7.3,
+      "geometricTrust": "short-fetch",
+      "echo": {
+        "lat": 38.125,
+        "lon": 20.4375,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z",
+      "stationJudge": {
+        "icao": "LGKF",
+        "name": "Κεφαλονιά",
+        "km": 12.7,
+        "hours": 620,
+        "maeKmhOld": 4.94,
+        "maeKmhNew": 4.13,
+        "biasKmhOld": -0.11,
+        "biasKmhNew": 1.98,
+        "strongUnderOld": 0.917,
+        "strongUnderNew": 0.344,
+        "verdict": "νέο",
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json"
+      }
+    },
+    {
+      "beachId": 2710,
+      "name": "Paralia Kritharia",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.3125_22.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 215,
+      "maxElevAtKm": 1.75,
+      "chosenCell": "39.25_22.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.27644756788162,
+        "lon": 22.905029000000013,
+        "bearingDeg": 180,
+        "km": 2,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 6,
+      "chosenDistanceKm": 5.58,
+      "fetchKmAtBearing": 7.3,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 22.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z",
+      "stationJudge": {
+        "icao": "LGBL",
+        "name": "Ν. Αγχίαλος",
+        "km": 12.7,
+        "hours": 620,
+        "maeKmhOld": 7.34,
+        "maeKmhNew": 6.1,
+        "biasKmhOld": -6.74,
+        "biasKmhNew": -5.58,
+        "strongUnderOld": 0.995,
+        "strongUnderNew": 0.949,
+        "verdict": "νέο",
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json"
+      }
+    },
+    {
+      "beachId": 1163,
+      "name": "Kaminia",
+      "region": "ionian-islands-lefkada",
+      "excludedCell": "38.8125_20.625",
+      "reason": "relief≥200m",
+      "maxElevM": 209,
+      "maxElevAtKm": 1.25,
+      "chosenCell": "38.875_20.6875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 38.84278619889883,
+        "lon": 20.662736488573955,
+        "bearingDeg": 5,
+        "km": 1,
+        "via": "facing"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.09,
+      "fetchKmAtBearing": 14.1,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 38.875,
+        "lon": 20.6875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 2,
+      "verifiedAt": "2026-09-13T12:43:21.265Z",
+      "stationJudge": {
+        "icao": "LGPZ",
+        "name": "Άκτιο",
+        "km": 13.6,
+        "hours": 620,
+        "maeKmhOld": 5.53,
+        "maeKmhNew": 3.61,
+        "biasKmhOld": -4.24,
+        "biasKmhNew": -0.76,
+        "strongUnderOld": 0.912,
+        "strongUnderNew": 0.227,
+        "verdict": "νέο",
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json"
+      }
+    },
+    {
+      "beachId": 2671,
+      "name": "Plakes (Volos)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.3125_22.9375",
+      "reason": "relief≥200m",
+      "maxElevM": 204,
+      "maxElevAtKm": 2.25,
+      "chosenCell": "39.25_22.875",
+      "chosenBy": "probe",
+      "probe": {
+        "lat": 39.28237778394081,
+        "lon": 22.903007000000002,
+        "bearingDeg": 180,
+        "km": 1,
+        "via": "sector≥10:S"
+      },
+      "pathMaxElevM": 0,
+      "chosenDistanceKm": 5.19,
+      "fetchKmAtBearing": 11.4,
+      "geometricTrust": "trusted",
+      "echo": {
+        "lat": 39.25,
+        "lon": 22.875,
+        "deltaDeg": 0
+      },
+      "candidatesTried": 3,
+      "verifiedAt": "2026-09-13T12:43:21.265Z",
+      "stationJudge": {
+        "icao": "LGBL",
+        "name": "Ν. Αγχίαλος",
+        "km": 12.3,
+        "hours": 620,
+        "maeKmhOld": 7.34,
+        "maeKmhNew": 6.1,
+        "biasKmhOld": -6.74,
+        "biasKmhNew": -5.58,
+        "strongUnderOld": 0.995,
+        "strongUnderNew": 0.949,
+        "verdict": "νέο",
+        "report": "reports/quality/sea-wind-cell-station-judge-2026-09-13.json"
+      }
+    }
+  ],
+  "deferred": [
+    {
+      "beachId": 375,
+      "name": "Paralia Koromili",
+      "region": "central-greece-viotia-mainland",
+      "excludedCell": "38.1875_23.0625",
+      "candidateCell": "38.125_23.0625",
+      "keptCell": "38.1875_23.0625",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2108,
+      "name": "Spilia",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "candidateCell": "37_24.625",
+      "keptCell": "37_24.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2101,
+      "name": "Kamares",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "candidateCell": "37_24.625",
+      "keptCell": "37_24.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2109,
+      "name": "Toso Nero",
+      "region": "south-aegean-sifnos",
+      "excludedCell": "37_24.6875",
+      "candidateCell": "36.9375_24.625",
+      "keptCell": "37_24.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1720,
+      "name": "Platanistos",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "candidateCell": "37.9375_24.9375",
+      "keptCell": "37.875_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1678,
+      "name": "Livoskopos",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "candidateCell": "36.4375_25.75",
+      "keptCell": "36.375_25.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "36.9375_26.9375",
+      "candidateCell": "37_26.875",
+      "keptCell": "36.9375_26.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2260,
+      "name": "Paralia Alexis",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "candidateCell": "37.0625_26.875",
+      "keptCell": "37.0625_26.9375",
+      "reason": "σταθμός χωρίς δεδομένα"
+    },
+    {
+      "beachId": 1187,
+      "name": "Kalamaki",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "candidateCell": "37.6875_20.9375",
+      "keptCell": "37.75_20.9375",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 2265,
+      "name": "Paralia Kantouni",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "36.9375_26.9375",
+      "candidateCell": "37_26.875",
+      "keptCell": "36.9375_26.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1684,
+      "name": "Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "candidateCell": "36.3125_25.8125",
+      "keptCell": "36.375_25.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1676,
+      "name": "Katsouni",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "candidateCell": "36.3125_25.75",
+      "keptCell": "36.375_25.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 891,
+      "name": "Gallikos Molos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.375_20.25",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1698,
+      "name": "Gyalia",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "candidateCell": "37.875_25",
+      "keptCell": "37.875_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1692,
+      "name": "Achla",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "candidateCell": "37.875_25",
+      "keptCell": "37.875_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1718,
+      "name": "Piso Gyalia",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "candidateCell": "37.8125_25",
+      "keptCell": "37.875_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1703,
+      "name": "Nimporio",
+      "region": "south-aegean-andros",
+      "excludedCell": "37.875_24.9375",
+      "candidateCell": "37.875_25",
+      "keptCell": "37.875_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 348,
+      "name": "Paralia Agiou Andrea",
+      "region": "central-greece-fokida-mainland",
+      "excludedCell": "38.3125_22.5625",
+      "candidateCell": "38.3125_22.625",
+      "keptCell": "38.3125_22.5625",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 372,
+      "name": "Gyalini Ammos",
+      "region": "central-greece-viotia-mainland",
+      "excludedCell": "38.3125_22.5625",
+      "candidateCell": "38.25_22.5625",
+      "keptCell": "38.3125_22.5625",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 928,
+      "name": "Agias Triades Beach",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "candidateCell": "39.625_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 892,
+      "name": "Dei",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.4375_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 893,
+      "name": "Dei plous",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.4375_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1677,
+      "name": "Klisidi",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.75",
+      "candidateCell": "36.3125_25.75",
+      "keptCell": "36.375_25.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 991,
+      "name": "Paralia Klimatia",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "candidateCell": "39.625_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 213,
+      "name": "Vythouri",
+      "region": "central-greece-evia",
+      "excludedCell": "38.6875_23.8125",
+      "candidateCell": "38.6875_23.875",
+      "keptCell": "38.6875_23.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1792,
+      "name": "Santoriniko",
+      "region": "south-aegean-ios",
+      "excludedCell": "36.6875_25.375",
+      "candidateCell": "36.625_25.375",
+      "keptCell": "36.6875_25.375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1680,
+      "name": "Mikros Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "candidateCell": "36.3125_25.8125",
+      "keptCell": "36.375_25.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1673,
+      "name": "Exo Roukounas",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "candidateCell": "36.3125_25.8125",
+      "keptCell": "36.375_25.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2276,
+      "name": "Evgonymos",
+      "region": "south-aegean-karpathos",
+      "excludedCell": "35.6875_27.1875",
+      "candidateCell": "35.75_27.125",
+      "keptCell": "35.6875_27.1875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1685,
+      "name": "Flamourou",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "candidateCell": "36.3125_25.8125",
+      "keptCell": "36.375_25.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1220,
+      "name": "Sekania",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "candidateCell": "37.6875_20.9375",
+      "keptCell": "37.75_20.9375",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 1186,
+      "name": "Dafni",
+      "region": "ionian-islands-zakynthos",
+      "excludedCell": "37.75_20.9375",
+      "candidateCell": "37.6875_20.9375",
+      "keptCell": "37.75_20.9375",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 2471,
+      "name": "Paralia Agiou Georgiou",
+      "region": "south-aegean-symi",
+      "excludedCell": "36.625_27.875",
+      "candidateCell": "36.5625_27.9375",
+      "keptCell": "36.625_27.875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 993,
+      "name": "Paralia Limni",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "candidateCell": "39.625_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 3093,
+      "name": "Megali Ammos",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "candidateCell": "39.25_24",
+      "keptCell": "39.25_23.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 984,
+      "name": "Paralia Ampelaki",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "candidateCell": "39.625_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 1675,
+      "name": "Katalimatsa",
+      "region": "south-aegean-anafi",
+      "excludedCell": "36.375_25.8125",
+      "candidateCell": "36.3125_25.8125",
+      "keptCell": "36.375_25.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 628,
+      "name": "Poros",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "candidateCell": "34.875_24.75",
+      "keptCell": "34.9375_24.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2591,
+      "name": "Kalyvia Stamatiou",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "candidateCell": "39.1875_23.9375",
+      "keptCell": "39.25_23.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2478,
+      "name": "Livadia",
+      "region": "south-aegean-tilos",
+      "excludedCell": "36.375_27.375",
+      "candidateCell": "36.4375_27.4375",
+      "keptCell": "36.375_27.375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 3014,
+      "name": "Palaiokastritsa",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "candidateCell": "39.625_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 2116,
+      "name": "Agios Panteleimonas",
+      "region": "south-aegean-sikinos",
+      "excludedCell": "36.6875_25.125",
+      "candidateCell": "36.625_25.125",
+      "keptCell": "36.6875_25.125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1660,
+      "name": "Kampi",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.8125_25.875",
+      "candidateCell": "36.8125_25.9375",
+      "keptCell": "36.8125_25.875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1298,
+      "name": "Kerame",
+      "region": "north-aegean-ikaria",
+      "excludedCell": "37.6875_26.3125",
+      "candidateCell": "37.6875_26.375",
+      "keptCell": "37.6875_26.3125",
+      "reason": "σταθμός χωρίς δεδομένα"
+    },
+    {
+      "beachId": 2611,
+      "name": "Strovili",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "candidateCell": "39.25_24",
+      "keptCell": "39.25_23.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1657,
+      "name": "Agia Anna",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.8125_25.875",
+      "candidateCell": "36.8125_25.9375",
+      "keptCell": "36.8125_25.875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1801,
+      "name": "Trypiti",
+      "region": "south-aegean-ios",
+      "excludedCell": "36.6875_25.375",
+      "candidateCell": "36.625_25.3125",
+      "keptCell": "36.6875_25.375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 627,
+      "name": "Martsalo",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "candidateCell": "34.875_24.75",
+      "keptCell": "34.9375_24.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 336,
+      "name": "Agios Vasilios",
+      "region": "central-greece-fokida-mainland",
+      "excludedCell": "38.375_22.375",
+      "candidateCell": "38.3125_22.3125",
+      "keptCell": "38.375_22.375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 131,
+      "name": "Diakofti",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "candidateCell": "36.25_23.125",
+      "keptCell": "36.25_23.0625",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+    },
+    {
+      "beachId": 134,
+      "name": "Paralia Palaiopoli",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "candidateCell": "36.1875_23.0625",
+      "keptCell": "36.25_23.0625",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 621,
+      "name": "Agiofarango",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_24.75",
+      "candidateCell": "34.875_24.8125",
+      "keptCell": "34.9375_24.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 135,
+      "name": "Paralia Limni (Palaiopoli)",
+      "region": "attica-kythira",
+      "excludedCell": "36.25_23.0625",
+      "candidateCell": "36.1875_23.0625",
+      "keptCell": "36.25_23.0625",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 2387,
+      "name": "Pachia Ammos",
+      "region": "south-aegean-nisyros",
+      "excludedCell": "36.5625_27.1875",
+      "candidateCell": "36.5625_27.25",
+      "keptCell": "36.5625_27.1875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 181,
+      "name": "Nisiza",
+      "region": "attica-methana",
+      "excludedCell": "37.5625_23.25",
+      "candidateCell": "37.625_23.25",
+      "keptCell": "37.5625_23.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 156,
+      "name": "Vagionia",
+      "region": "attica-poros",
+      "excludedCell": "37.5_23.5",
+      "candidateCell": "37.5625_23.5",
+      "keptCell": "37.5_23.5",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 475,
+      "name": "Paralia Ampelos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "39.9375_23.9375",
+      "candidateCell": "39.9375_24.0625",
+      "keptCell": "39.9375_23.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 665,
+      "name": "Salamias",
+      "region": "crete-crete-heraklion",
+      "excludedCell": "34.9375_25",
+      "candidateCell": "34.875_25",
+      "keptCell": "34.9375_25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2647,
+      "name": "Glysteri",
+      "region": "thessaly-skopelos",
+      "excludedCell": "39.125_23.75",
+      "candidateCell": "39.1875_23.6875",
+      "keptCell": "39.125_23.75",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (ισοπαλία)"
+    },
+    {
+      "beachId": 1222,
+      "name": "Pera Pigadi",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.3125_20.75",
+      "candidateCell": "38.3125_20.8125",
+      "keptCell": "38.3125_20.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 910,
+      "name": "Paralia Galazios Kolpos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.5_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 918,
+      "name": "Paralia Navtilos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.5_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 912,
+      "name": "Paralia Elia",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.4375_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 915,
+      "name": "Paralia Kokkinos Vrachos",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "candidateCell": "39.4375_20.1875",
+      "keptCell": "39.4375_20.25",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2667,
+      "name": "Izgkoud (Trikeri)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "excludedCell": "39.125_23.0625",
+      "candidateCell": "39.1875_23.125",
+      "keptCell": "39.125_23.0625",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 98,
+      "name": "Paralia Megalochoriou",
+      "region": "attica-agistri",
+      "excludedCell": "37.6875_23.375",
+      "candidateCell": "37.75_23.375",
+      "keptCell": "37.6875_23.375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1223,
+      "name": "Paralia Kaminia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.3125_20.75",
+      "candidateCell": "38.375_20.8125",
+      "keptCell": "38.3125_20.75",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 447,
+      "name": "Totos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "candidateCell": "40.625_23.8125",
+      "keptCell": "40.5625_23.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1553,
+      "name": "Vlychada",
+      "region": "peloponnese-lakonia-mainland",
+      "excludedCell": "36.875_23.0625",
+      "candidateCell": "36.875_23.125",
+      "keptCell": "36.875_23.0625",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1241,
+      "name": "Prota Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "candidateCell": "38.5_20.6875",
+      "keptCell": "38.4375_20.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1247,
+      "name": "Paralia Pyrgia (vorios ormos)",
+      "region": "north-aegean-chios",
+      "excludedCell": "38.5_26.125",
+      "candidateCell": "38.5_26.1875",
+      "keptCell": "38.5_26.125",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+    },
+    {
+      "beachId": 1233,
+      "name": "Liano Nisaki",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "candidateCell": "38.4375_20.75",
+      "keptCell": "38.4375_20.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1239,
+      "name": "Trita Kourvoulia",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "candidateCell": "38.5_20.6875",
+      "keptCell": "38.4375_20.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1246,
+      "name": "Paralia Pyrgia (notios ormos)",
+      "region": "north-aegean-chios",
+      "excludedCell": "38.5_26.125",
+      "candidateCell": "38.5_26.1875",
+      "keptCell": "38.5_26.125",
+      "reason": "ο σταθμός δεν προτιμά το νέο κελί (παλιό)"
+    },
+    {
+      "beachId": 1746,
+      "name": "Katergo",
+      "region": "south-aegean-folegandros",
+      "excludedCell": "36.625_24.9375",
+      "candidateCell": "36.5625_24.9375",
+      "keptCell": "36.625_24.9375",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 453,
+      "name": "Voreas Limani",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "candidateCell": "40.625_23.8125",
+      "keptCell": "40.5625_23.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 2302,
+      "name": "Agia Irini",
+      "region": "south-aegean-karpathos",
+      "excludedCell": "35.6875_27.125",
+      "candidateCell": "35.625_27.0625",
+      "keptCell": "35.6875_27.125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 85,
+      "name": "Klidi",
+      "region": "attica-aegina",
+      "excludedCell": "37.6875_23.5",
+      "candidateCell": "37.625_23.5",
+      "keptCell": "37.6875_23.5",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 1234,
+      "name": "Kritami",
+      "region": "ionian-islands-ithaca",
+      "excludedCell": "38.4375_20.6875",
+      "candidateCell": "38.4375_20.75",
+      "keptCell": "38.4375_20.6875",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 174,
+      "name": "Ligoneri",
+      "region": "attica-spetses",
+      "excludedCell": "37.25_23.125",
+      "candidateCell": "37.25_23.1875",
+      "keptCell": "37.25_23.125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    },
+    {
+      "beachId": 502,
+      "name": "Sykia Olympiadas",
+      "region": "central-macedonia-halkidiki-mainland",
+      "excludedCell": "40.5625_23.8125",
+      "candidateCell": "40.625_23.8125",
+      "keptCell": "40.5625_23.8125",
+      "reason": "κανένας σταθμός ≤20 χλμ — χωρίς όργανο δεν αλλάζει (η μέτρηση έδειξε πιο ήρεμο στα 2/3 των ωρών)"
+    }
+  ],
+  "unresolved": [
+    {
+      "beachId": 3186,
+      "name": "Aigiali",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.875_26",
+      "keptCell": "36.875_26",
+      "maxElevM": 444,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 3,
+      "bestPathMaxElevM": 173
+    },
+    {
+      "beachId": 189,
+      "name": "Paralia Porto Germeno",
+      "region": "attica-west-attica-mainland",
+      "excludedCell": "38.125_23.1875",
+      "keptCell": "38.125_23.1875",
+      "maxElevM": 392,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 1662,
+      "name": "Levrosos",
+      "region": "south-aegean-amorgos",
+      "excludedCell": "36.9375_26",
+      "keptCell": "36.9375_26",
+      "maxElevM": 365,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 182
+    },
+    {
+      "beachId": 2261,
+      "name": "Paralia Arginonta",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 328,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 2257,
+      "name": "Tichi",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 325,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 145
+    },
+    {
+      "beachId": 190,
+      "name": "Paralia Porto Germeno (notio tmima)",
+      "region": "attica-west-attica-mainland",
+      "excludedCell": "38.125_23.1875",
+      "keptCell": "38.125_23.1875",
+      "maxElevM": 321,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 187
+    },
+    {
+      "beachId": 895,
+      "name": "Zeri",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "keptCell": "39.4375_20.25",
+      "maxElevM": 319,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 51
+    },
+    {
+      "beachId": 2254,
+      "name": "Kalimies",
+      "region": "south-aegean-kalymnos",
+      "excludedCell": "37.0625_26.9375",
+      "keptCell": "37.0625_26.9375",
+      "maxElevM": 315,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 2,
+      "bestPathMaxElevM": 145
+    },
+    {
+      "beachId": 981,
+      "name": "Paralia Agios Spyridonas",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "maxElevM": 311,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 50
+    },
+    {
+      "beachId": 930,
+      "name": "Alipa beach",
+      "region": "ionian-islands-corfu",
+      "excludedCell": "39.6875_19.6875",
+      "keptCell": "39.6875_19.6875",
+      "maxElevM": 304,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 913,
+      "name": "Paralia Kalami",
+      "region": "epirus-thesprotia-mainland",
+      "excludedCell": "39.4375_20.25",
+      "keptCell": "39.4375_20.25",
+      "maxElevM": 244,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    },
+    {
+      "beachId": 1867,
+      "name": "Apokrousis",
+      "region": "south-aegean-kythnos",
+      "excludedCell": "37.4375_24.375",
+      "keptCell": "37.4375_24.375",
+      "maxElevM": 229,
+      "reason": "κανένας υποψήφιος με διαδρομή <50 μ.",
+      "candidatesTried": 1,
+      "bestPathMaxElevM": 57
+    },
+    {
+      "beachId": 2581,
+      "name": "Gerakas",
+      "region": "thessaly-alonissos",
+      "excludedCell": "39.25_23.9375",
+      "keptCell": "39.25_23.9375",
+      "maxElevM": 212,
+      "reason": "κανένα διαφορετικό κελί σε 6 χλμ",
+      "candidatesTried": 0,
+      "bestPathMaxElevM": null
+    }
+  ]
+}
