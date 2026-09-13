@@ -47,7 +47,18 @@ if (openMeteoKey) {
     const url = typeof input === 'string' ? input : input?.url;
     if (typeof url === 'string') {
       for (const [free, paid] of Object.entries(PAID_HOST)) {
-        if (url.startsWith(free)) return originalFetch(`${paid}${url.slice(free.length)}&apikey=${encodeURIComponent(openMeteoKey)}`, init);
+        if (url.startsWith(free)) {
+          let target = `${paid}${url.slice(free.length)}&apikey=${encodeURIComponent(openMeteoKey)}`;
+          if (globalThis.__CB_ARCHIVE_PAST_DAYS) {
+            // Αρχείο αντί για πρόγνωση: το παράθυρο γίνεται «N μέρες πίσω + σήμερα».
+            const u = new URL(target);
+            for (const k of ['forecast_days', 'past_days', 'start_date', 'end_date']) u.searchParams.delete(k);
+            u.searchParams.set('past_days', String(globalThis.__CB_ARCHIVE_PAST_DAYS));
+            u.searchParams.set('forecast_days', '1');
+            target = u.toString();
+          }
+          return originalFetch(target, init);
+        }
       }
     }
     return originalFetch(input, init);
@@ -79,7 +90,21 @@ const { processForecastData, applyMarineToDailyForecast, getBeaufortLevel } = re
 const { fetchForecastDataBatch, fetchMarineForecastDataBatch, mergeMarineForecastData } = require(path.join(root, 'services/weatherService.ts'));
 
 const args = process.argv.slice(2);
-const DAY_INDEX = Number(args.find(a => a.startsWith('--day='))?.slice(6) ?? 0);
+/**
+ * `--archive=YYYY-MM-DD` (Δ6-Β, 13/09/2026): η ίδια μέτρηση σε ΠΕΡΑΣΜΕΝΗ μέρα — π.χ. μέρα μελτεμιού — από το αρχείο
+ * των πληρωμένων hosts (`past_days` ≤ 92, άνεμος ΚΑΙ κύμα με το ίδιο μοντέλο που σερβίρει η σελίδα). Ο fetch της
+ * σελίδας ζητά `forecast_days=6`· εδώ γίνεται `past_days=N&forecast_days=1`, και μετά τις λήψεις κάθε περιοχής το
+ * ρολόι της εφαρμογής πάει στη μέρα-στόχο (`syncClockFromTrustedInstant`) ώστε το `processForecastData` να τη δώσει ως
+ * days[0] — κάθε απάντηση fetch ξανασυγχρονίζει το ρολόι στο τώρα, γι' αυτό ο συγχρονισμός γίνεται ΜΕΤΑ τις λήψεις
+ * (ίδιο μοτίβο με measureHorizonHitRate.mjs). Είναι το «τι λέει το μοντέλο ότι έγινε», όχι όργανο.
+ */
+const ARCHIVE_DATE = args.find(a => a.startsWith('--archive='))?.slice('--archive='.length) ?? null;
+if (ARCHIVE_DATE && !/^\d{4}-\d{2}-\d{2}$/.test(ARCHIVE_DATE)) { console.error('--archive θέλει YYYY-MM-DD'); process.exit(1); }
+const ARCHIVE_PAST_DAYS = ARCHIVE_DATE ? Math.ceil((Date.now() - Date.parse(`${ARCHIVE_DATE}T00:00:00+03:00`)) / 86400000) + 1 : 0;
+if (ARCHIVE_DATE && (ARCHIVE_PAST_DAYS < 1 || ARCHIVE_PAST_DAYS > 92)) { console.error(`--archive: ${ARCHIVE_DATE} είναι ${ARCHIVE_PAST_DAYS - 1} μέρες πίσω — το αρχείο φτάνει 92`); process.exit(1); }
+const DAY_INDEX = ARCHIVE_DATE ? 0 : Number(args.find(a => a.startsWith('--day='))?.slice(6) ?? 0);
+if (ARCHIVE_DATE) globalThis.__CB_ARCHIVE_PAST_DAYS = ARCHIVE_PAST_DAYS; // ο interceptor του fetch το διαβάζει
+const { syncClockFromTrustedInstant } = require(path.join(root, 'utils/athensTime.ts'));
 const regionFilter = args.find(a => a.startsWith('--regions='))?.slice('--regions='.length).split(',');
 const exposureDir = path.join(root, 'public/data/geospatial/exposure');
 const beachDir = path.join(root, 'public/data/beaches/app');
@@ -157,7 +182,14 @@ for (const region of regions) {
     const wind = windByPoint.get(marinePointKey(region.regionPoint.lat, region.regionPoint.lon));
     if (!wind) { skipped += 1; continue; }
     const regionMarine = marineByPoint.get(resolution.regionKey)?.data ?? [];
+    // Αρχείο: το ρολόι πάει στη μέρα-στόχο ΜΕΤΑ τις λήψεις (κάθε απάντηση το ξαναγυρίζει στο τώρα).
+    if (ARCHIVE_DATE) syncClockFromTrustedInstant(Date.parse(`${ARCHIVE_DATE}T06:00:00+03:00`));
     const regionDay = processForecastData(mergeMarineForecastData(wind.data, regionMarine))[DAY_INDEX];
+    if (ARCHIVE_DATE && regionDay && (regionDay.date instanceof Date ? regionDay.date.toLocaleDateString('en-CA') : String(regionDay.date ?? '')) !== ARCHIVE_DATE) {
+      // Αν η πρώτη μέρα δεν είναι η μέρα-στόχος, κάτι δεν ήρθε από το αρχείο — μη μετρήσεις λάθος μέρα σιωπηλά.
+      process.stderr.write(`\n  ${region.regionId}: η πρώτη μέρα είναι ${regionDay.date} αντί για ${ARCHIVE_DATE} — παραλείπεται\n`);
+      skipped += 1; continue;
+    }
     if (!regionDay) { skipped += 1; continue; }
     const windDeg = regionDay.wind?.deg;
     const sectorKey = typeof windDeg === 'number' ? windSectorFromDegrees(windDeg) : null;
@@ -210,7 +242,9 @@ const report = {
   samples: changed.sort((a, b) => (b.effective - b.effectiveIfCapped) - (a.effective - a.effectiveIfCapped)).slice(0, 25),
   note: 'Δ6 (§Γ81): μέτρηση μίας μέρας με το πραγματικό προϊόν. Δεν λέει ποιος έχει δίκιο — μόνο ποιος αποφασίζει. Έλεγχος με σημαδούρες: επόμενο.',
 };
-const outPath = path.join(root, 'reports/wave-model', `wave-floor-winner-${new Date().toISOString().slice(0, 10)}${DAY_INDEX ? `-d${DAY_INDEX}` : ''}.json`);
+if (ARCHIVE_DATE) syncClockFromTrustedInstant(Date.now());
+report.archiveDate = ARCHIVE_DATE;
+const outPath = path.join(root, 'reports/wave-model', `wave-floor-winner-${new Date().toISOString().slice(0, 10)}${ARCHIVE_DATE ? `-a${ARCHIVE_DATE}` : DAY_INDEX ? `-d${DAY_INDEX}` : ''}.json`);
 mkdirSync(path.dirname(outPath), { recursive: true });
 writeFileSync(outPath, JSON.stringify(report, null, 2));
 

@@ -1,0 +1,765 @@
+{
+  "generatedAt": "2026-09-13T14:18:28.693Z",
+  "dayIndex": 4,
+  "regions": 110,
+  "regionsSkipped": 0,
+  "calls": 28570,
+  "beaches": 2856,
+  "question": "ποιος ισούται με το ενεργό ύψος: μέτρηση ewam / δάπεδο ψιλοκύματος / SMB / ταβάνι γεωμετρίας",
+  "overall": {
+    "n": 28570,
+    "winners": {
+      "floor": 4537,
+      "smb": 2201,
+      "measured": 21752,
+      "ceiling": 80
+    },
+    "floorPct": 15.9,
+    "floorAboveMeasured": 4391
+  },
+  "byExposure": {
+    "exposed": {
+      "n": 8611,
+      "winners": {
+        "floor": 1896,
+        "smb": 1593,
+        "measured": 5103,
+        "ceiling": 19
+      },
+      "floorPct": 22,
+      "floorAboveMeasured": 1856
+    },
+    "protected": {
+      "n": 15409,
+      "winners": {
+        "measured": 13314,
+        "floor": 1847,
+        "ceiling": 55,
+        "smb": 193
+      },
+      "floorPct": 12,
+      "floorAboveMeasured": 1795
+    },
+    "partial": {
+      "n": 4550,
+      "winners": {
+        "measured": 3335,
+        "floor": 794,
+        "smb": 415,
+        "ceiling": 6
+      },
+      "floorPct": 17.5,
+      "floorAboveMeasured": 740
+    }
+  },
+  "byBeaufort": {
+    "1": {
+      "n": 1375,
+      "winners": {
+        "measured": 1281,
+        "smb": 91,
+        "ceiling": 3
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "2": {
+      "n": 6535,
+      "winners": {
+        "measured": 5874,
+        "smb": 656,
+        "ceiling": 5
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "3": {
+      "n": 10602,
+      "winners": {
+        "smb": 1454,
+        "measured": 6747,
+        "floor": 2364,
+        "ceiling": 37
+      },
+      "floorPct": 22.3,
+      "floorAboveMeasured": 2344
+    },
+    "4": {
+      "n": 7634,
+      "winners": {
+        "floor": 1964,
+        "measured": 5635,
+        "ceiling": 35
+      },
+      "floorPct": 25.7,
+      "floorAboveMeasured": 1838
+    },
+    "5": {
+      "n": 2424,
+      "winners": {
+        "floor": 209,
+        "measured": 2215
+      },
+      "floorPct": 8.6,
+      "floorAboveMeasured": 209
+    }
+  },
+  "byFetchBand": {
+    "≥15": {
+      "n": 5170,
+      "winners": {
+        "floor": 1066,
+        "smb": 871,
+        "measured": 3233
+      },
+      "floorPct": 20.6,
+      "floorAboveMeasured": 1055
+    },
+    "<3": {
+      "n": 17510,
+      "winners": {
+        "measured": 14668,
+        "floor": 2335,
+        "smb": 427,
+        "ceiling": 80
+      },
+      "floorPct": 13.3,
+      "floorAboveMeasured": 2267
+    },
+    "8-15": {
+      "n": 3030,
+      "winners": {
+        "floor": 636,
+        "measured": 1868,
+        "smb": 526
+      },
+      "floorPct": 21,
+      "floorAboveMeasured": 624
+    },
+    "3-8": {
+      "n": 2860,
+      "winners": {
+        "floor": 500,
+        "smb": 377,
+        "measured": 1983
+      },
+      "floorPct": 17.5,
+      "floorAboveMeasured": 445
+    }
+  },
+  "byExposureAndBeaufort": {
+    "exposed|4": {
+      "n": 2116,
+      "winners": {
+        "floor": 832,
+        "measured": 1281,
+        "ceiling": 3
+      },
+      "floorPct": 39.3,
+      "floorAboveMeasured": 793
+    },
+    "exposed|3": {
+      "n": 3470,
+      "winners": {
+        "smb": 1072,
+        "measured": 1441,
+        "floor": 948,
+        "ceiling": 9
+      },
+      "floorPct": 27.3,
+      "floorAboveMeasured": 947
+    },
+    "protected|4": {
+      "n": 4312,
+      "winners": {
+        "measured": 3550,
+        "floor": 732,
+        "ceiling": 30
+      },
+      "floorPct": 17,
+      "floorAboveMeasured": 685
+    },
+    "protected|3": {
+      "n": 5581,
+      "winners": {
+        "measured": 4418,
+        "floor": 1052,
+        "ceiling": 25,
+        "smb": 86
+      },
+      "floorPct": 18.8,
+      "floorAboveMeasured": 1047
+    },
+    "partial|3": {
+      "n": 1551,
+      "winners": {
+        "measured": 888,
+        "smb": 296,
+        "floor": 364,
+        "ceiling": 3
+      },
+      "floorPct": 23.5,
+      "floorAboveMeasured": 350
+    },
+    "partial|4": {
+      "n": 1206,
+      "winners": {
+        "measured": 804,
+        "floor": 400,
+        "ceiling": 2
+      },
+      "floorPct": 33.2,
+      "floorAboveMeasured": 360
+    },
+    "protected|2": {
+      "n": 3266,
+      "winners": {
+        "measured": 3195,
+        "smb": 71
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "exposed|1": {
+      "n": 393,
+      "winners": {
+        "measured": 353,
+        "smb": 37,
+        "ceiling": 3
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "partial|2": {
+      "n": 1125,
+      "winners": {
+        "measured": 1023,
+        "smb": 101,
+        "ceiling": 1
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "partial|1": {
+      "n": 257,
+      "winners": {
+        "measured": 239,
+        "smb": 18
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "exposed|2": {
+      "n": 2144,
+      "winners": {
+        "measured": 1656,
+        "smb": 484,
+        "ceiling": 4
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "protected|1": {
+      "n": 725,
+      "winners": {
+        "measured": 689,
+        "smb": 36
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "protected|5": {
+      "n": 1525,
+      "winners": {
+        "floor": 63,
+        "measured": 1462
+      },
+      "floorPct": 4.1,
+      "floorAboveMeasured": 63
+    },
+    "exposed|5": {
+      "n": 488,
+      "winners": {
+        "floor": 116,
+        "measured": 372
+      },
+      "floorPct": 23.8,
+      "floorAboveMeasured": 116
+    },
+    "partial|5": {
+      "n": 411,
+      "winners": {
+        "floor": 30,
+        "measured": 381
+      },
+      "floorPct": 7.3,
+      "floorAboveMeasured": 30
+    }
+  },
+  "candidate": {
+    "rule": "δάπεδο = min(δάπεδο, SMB(ριπή, fetch του τομέα του ανέμου)) — μονόδρομη προς το ηπιότερο, ΔΕΝ μπαίνει χωρίς απόφαση",
+    "floorWins": 4537,
+    "floorWinsBeaches": 1152,
+    "changed": 2729,
+    "changedBeaches": 797,
+    "medianDropM": 0.11,
+    "crossBelowAmber": 21,
+    "crossBelowRough": 0,
+    "changedByFetchBand": {
+      "<3": {
+        "n": 2302,
+        "medianDropM": 0.11,
+        "crossBelowAmber": 15
+      },
+      "8-15": {
+        "n": 129,
+        "medianDropM": 0.06,
+        "crossBelowAmber": 0
+      },
+      "3-8": {
+        "n": 281,
+        "medianDropM": 0.09,
+        "crossBelowAmber": 6
+      },
+      "≥15": {
+        "n": 17,
+        "medianDropM": 0.02,
+        "crossBelowAmber": 0
+      }
+    },
+    "changedByExposure": {
+      "exposed": 614,
+      "protected": 1661,
+      "partial": 454
+    }
+  },
+  "samples": [
+    {
+      "beachId": 2548,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20.1,
+      "gustKmh": 36.7,
+      "fetchKm": 0.04,
+      "sectorLevel": "protected",
+      "measured": null,
+      "smb": 0.2,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.07,
+      "effectiveIfCapped": 0.07
+    },
+    {
+      "beachId": 3139,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0.2,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.42,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.13,
+      "effectiveIfCapped": 0.13
+    },
+    {
+      "beachId": 1633,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.14,
+      "smb": 0.29,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.14
+    },
+    {
+      "beachId": 2531,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20.1,
+      "gustKmh": 36.7,
+      "fetchKm": 0.24,
+      "sectorLevel": "partial",
+      "measured": 0.12,
+      "smb": 0.22,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.14,
+      "effectiveIfCapped": 0.14
+    },
+    {
+      "beachId": 2531,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 21.9,
+      "gustKmh": 39.6,
+      "fetchKm": 0.24,
+      "sectorLevel": "partial",
+      "measured": 0.1,
+      "smb": 0.2,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.15,
+      "effectiveIfCapped": 0.15
+    },
+    {
+      "beachId": 1155,
+      "regionId": "ionian-islands-lefkada",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.2,
+      "gustKmh": 37.1,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.16,
+      "smb": 0.09,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.16
+    },
+    {
+      "beachId": 1617,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.16,
+      "smb": 0.29,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.16
+    },
+    {
+      "beachId": 2545,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20.1,
+      "gustKmh": 36.7,
+      "fetchKm": 0.36,
+      "sectorLevel": "protected",
+      "measured": null,
+      "smb": 0.15,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.16,
+      "effectiveIfCapped": 0.16
+    },
+    {
+      "beachId": 1654,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0.36,
+      "sectorLevel": "protected",
+      "measured": 0.14,
+      "smb": 0.41,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.17,
+      "effectiveIfCapped": 0.17
+    },
+    {
+      "beachId": 1225,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20,
+      "gustKmh": 29.5,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.15,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1228,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20,
+      "gustKmh": 29.5,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.18,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1229,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20,
+      "gustKmh": 29.5,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.15,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1642,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.2,
+      "smb": 0.37,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.2
+    },
+    {
+      "beachId": 2528,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 23.2,
+      "gustKmh": 40,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": 0.2,
+      "smb": 0.29,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.2
+    },
+    {
+      "beachId": 920,
+      "regionId": "epirus-thesprotia-mainland",
+      "exposure": "partial",
+      "beaufort": 4,
+      "windKmh": 19.4,
+      "gustKmh": 40.7,
+      "fetchKm": 0.04,
+      "sectorLevel": "partial",
+      "measured": 0.06,
+      "smb": 0.03,
+      "floor": 0.55,
+      "effective": 0.55,
+      "winner": "floor",
+      "capped": 0.07,
+      "effectiveIfCapped": 0.07
+    },
+    {
+      "beachId": 2548,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "partial",
+      "beaufort": 4,
+      "windKmh": 23.2,
+      "gustKmh": 40,
+      "fetchKm": 0.04,
+      "sectorLevel": "protected",
+      "measured": null,
+      "smb": 0.16,
+      "floor": 0.55,
+      "effective": 0.55,
+      "winner": "floor",
+      "capped": 0.07,
+      "effectiveIfCapped": 0.07
+    },
+    {
+      "beachId": 2548,
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "exposure": "partial",
+      "beaufort": 4,
+      "windKmh": 21.9,
+      "gustKmh": 39.6,
+      "fetchKm": 0.04,
+      "sectorLevel": "protected",
+      "measured": null,
+      "smb": 0.18,
+      "floor": 0.55,
+      "effective": 0.55,
+      "winner": "floor",
+      "capped": 0.07,
+      "effectiveIfCapped": 0.07
+    },
+    {
+      "beachId": 1043,
+      "regionId": "ionian-islands-antipaxos",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 22.7,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.29,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.12
+    },
+    {
+      "beachId": 1621,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 37.1,
+      "fetchKm": 0.08,
+      "sectorLevel": "protected",
+      "measured": 0.22,
+      "smb": 0.41,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.09,
+      "effectiveIfCapped": 0.22
+    },
+    {
+      "beachId": 3139,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 12.6,
+      "gustKmh": 29.2,
+      "fetchKm": 0.2,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.21,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.1,
+      "effectiveIfCapped": 0.12
+    },
+    {
+      "beachId": 3139,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 18.2,
+      "gustKmh": 35.3,
+      "fetchKm": 0.2,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.36,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.12,
+      "effectiveIfCapped": 0.12
+    },
+    {
+      "beachId": 920,
+      "regionId": "epirus-thesprotia-mainland",
+      "exposure": "partial",
+      "beaufort": 4,
+      "windKmh": 19.7,
+      "gustKmh": 41.4,
+      "fetchKm": 0.04,
+      "sectorLevel": "partial",
+      "measured": 0.08,
+      "smb": 0.03,
+      "floor": 0.55,
+      "effective": 0.55,
+      "winner": "floor",
+      "capped": 0.08,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 1227,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20,
+      "gustKmh": 29.5,
+      "fetchKm": 0.4,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.14,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.13,
+      "effectiveIfCapped": 0.13
+    },
+    {
+      "beachId": 3139,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 19,
+      "gustKmh": 36.7,
+      "fetchKm": 0.2,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.41,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.13,
+      "effectiveIfCapped": 0.13
+    },
+    {
+      "beachId": 3139,
+      "regionId": "peloponnese-messinia-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 18.4,
+      "gustKmh": 36,
+      "fetchKm": 0.2,
+      "sectorLevel": "protected",
+      "measured": 0.12,
+      "smb": 0.39,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.13,
+      "effectiveIfCapped": 0.13
+    }
+  ],
+  "note": "Δ6 (§Γ81): μέτρηση μίας μέρας με το πραγματικό προϊόν. Δεν λέει ποιος έχει δίκιο — μόνο ποιος αποφασίζει. Έλεγχος με σημαδούρες: επόμενο.",
+  "archiveDate": null
+}
