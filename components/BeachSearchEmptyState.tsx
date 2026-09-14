@@ -1,5 +1,7 @@
 import React from 'react';
+import { MapPin, Waves } from 'lucide-react';
 import { LanguageCode, Translation } from '../types';
+import type { DirectorySearchSuggestion } from './BeachSearcherHome';
 
 /**
  * WHAT THE VISITOR SEES WHEN THE LIST COMES BACK EMPTY.
@@ -52,6 +54,15 @@ interface BeachSearchEmptyStateProps {
    * on, so the list would silently stop being ordered nearest-first.
    */
   onBackToNearMe?: () => void;
+  /**
+   * The whole-of-Greece matches for the same text — beaches and regions OUTSIDE the one on
+   * screen — shown right inside the card. Measured 17/08–13/09/2026 (GA): 525 of 2.601
+   * visitors (20%) settled on this card after a search, 64% of them on the Athens region, and
+   * the matches they needed were already computed for the search dropdown — which closes the
+   * moment the phone keyboard does. The button below only guessed ONE match; this lists them.
+   */
+  elsewhereSuggestions?: DirectorySearchSuggestion[];
+  onElsewhereSelect?: (suggestion: DirectorySearchSuggestion) => void;
 }
 
 export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
@@ -65,6 +76,8 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
   isNearMe = false,
   foundElsewhereKm,
   onBackToNearMe,
+  elsewhereSuggestions = [],
+  onElsewhereSelect,
 }) => {
   const protectedSortMessage = language === 'gr'
     ? {
@@ -101,6 +114,9 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
     ? t.beachSearchFilters.nearMeSearchTitleWithDistance(trimmedQuery, roundedKm)
     : t.beachSearchFilters.nearMeSearchTitle(trimmedQuery);
 
+  const shownElsewhere = isSearchMiss && onElsewhereSelect ? elsewhereSuggestions.slice(0, 5) : [];
+  const hasElsewhere = shownElsewhere.length > 0;
+
   const title = protectedSortNoResults
     ? sortMessage.title
     : isNearMeMiss
@@ -113,9 +129,13 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
     : isNearMeMiss
       ? t.beachSearchFilters.nearMeSearchDescription
       : isSearchMiss
-        ? t.beachSearchFilters.emptySearchDescription
+        // With the matches listed, "search the whole of Greece" is advice for a step we
+        // already took — the line just introduces the list instead.
+        ? (hasElsewhere ? t.beachSearchFilters.emptySearchFoundElsewhere : t.beachSearchFilters.emptySearchDescription)
         : t.beachSearchFilters.emptyDescription;
-  const showSearchAllRegions = isSearchMiss && Boolean(onSearchAllRegions);
+  // The list IS the whole-of-Greece search, so its button only stays as the fallback for
+  // when that search found nothing to list (or has not answered yet).
+  const showSearchAllRegions = isSearchMiss && !hasElsewhere && Boolean(onSearchAllRegions);
   // In "Near me" the second button goes back to the beaches around the visitor instead of
   // clearing filters they never set.
   const secondaryAction = isNearMeMiss && onBackToNearMe ? onBackToNearMe : onClearSearchAndFilters;
@@ -131,6 +151,35 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
       <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-relaxed text-slate-700 dark:text-slate-600">
         {body}
       </p>
+      {hasElsewhere && (
+        <ul className="mx-auto mt-4 max-w-md space-y-1.5 text-left">
+          {shownElsewhere.map(suggestion => (
+            <li key={suggestion.id}>
+              <button
+                type="button"
+                onClick={() => onElsewhereSelect?.(suggestion)}
+                className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-sky-100 bg-white px-3 py-2 text-left shadow-sm transition hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-cyan-400/70 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+              >
+                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${
+                  suggestion.type === 'region' ? 'bg-cyan-50 text-[#007a83]' : 'bg-sky-50 text-sky-700'
+                }`}>
+                  {suggestion.type === 'region'
+                    ? <MapPin className="h-4 w-4" aria-hidden="true" />
+                    : <Waves className="h-4 w-4" aria-hidden="true" />}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-extrabold leading-tight text-slate-950 dark:text-slate-100">
+                    {suggestion.label}
+                  </span>
+                  <span className="mt-0.5 block truncate text-xs font-semibold leading-tight text-slate-700 dark:text-slate-400">
+                    {suggestion.subtitle}
+                  </span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
         {showSearchAllRegions && (
           <button

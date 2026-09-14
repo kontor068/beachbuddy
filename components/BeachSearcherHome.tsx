@@ -258,7 +258,8 @@ interface BeachSearcherHomeProps {
   /** Takes the text the visitor actually has in the box; without it a fast Enter searches
    *  for the previous keystroke, because the page's own copy lands a beat later. */
   onSearchSubmit: (query?: string) => void;
-  onSearchSuggestionSelect?: (suggestion: DirectorySearchSuggestion) => void;
+  /** `origin` tells analytics which surface the tap came from; omitted = the search dropdown. */
+  onSearchSuggestionSelect?: (suggestion: DirectorySearchSuggestion, origin?: 'empty_state') => void;
   onOpenFilters: () => void;
   onOpenIslandSelector: () => void;
   onUseCurrentLocation?: () => void;
@@ -4907,6 +4908,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 isNearMe={isNearMeRegion}
                 foundElsewhereKm={nearMeMissDistanceKm}
                 onBackToNearMe={onBackToNearMe}
+                // The same matches the search dropdown already fetched for this text, minus
+                // anything in the region on screen — those are exactly what the empty list
+                // could not show. The dropdown closes with the phone keyboard; this does not.
+                elsewhereSuggestions={searchSuggestions.filter(suggestion => suggestion.island.id !== selectedIsland.id)}
+                onElsewhereSelect={onSearchSuggestionSelect
+                  ? (suggestion) => { onSearchSuggestionSelect(suggestion, 'empty_state'); }
+                  : undefined}
               />
             </section>
           )}

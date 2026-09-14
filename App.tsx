@@ -8616,19 +8616,25 @@ export const App: React.FC = () => {
     scrollToBeachResultsSection();
   };
 
-  const handleDirectorySearchSuggestionSelect = async (suggestion: DirectorySearchSuggestion) => {
+  const handleDirectorySearchSuggestionSelect = async (suggestion: DirectorySearchSuggestion, origin?: 'empty_state') => {
     markValuePropSeen();
     setDirectorySearchSuggestions([]);
     setIsDirectorySearchSuggesting(false);
 
-    trackEvent('search_used', undefined, {
+    const suggestionAnalytics = {
       ...analyticsBaseParams,
-      source: 'directory_search_suggestion',
+      source: origin === 'empty_state' ? 'empty_state_suggestion' : 'directory_search_suggestion',
       suggestion_type: suggestion.type,
       region_id: suggestion.island.id,
       beach_id: suggestion.beachId ?? suggestion.beach?.id,
       search_length: beachSearchQuery.trim().length,
-    });
+    };
+    trackEvent('search_used', undefined, suggestionAnalytics);
+    // Its own event name because `source` is renamed to ui_source on the way out and that
+    // name is not a registered GA dimension — an event name is readable with no setup.
+    if (origin === 'empty_state') {
+      trackEvent('search_elsewhere_clicked', undefined, suggestionAnalytics);
+    }
 
     if (suggestion.type === 'region') {
       setBeachSearchQuery('');

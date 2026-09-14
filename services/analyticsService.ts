@@ -31,6 +31,9 @@ export type AnalyticsEvent =
   | 'filter_applied'
   | 'filters_cleared'
   | 'empty_results_shown'
+  // A match from another region, tapped inside the empty-search card (BeachSearchEmptyState).
+  // Read against empty_results_shown users: how many dead ends the list turned into a way out.
+  | 'search_elsewhere_clicked'
   | 'beach_detail_opened'
   // THE conversion. See the block above before changing, renaming or removing it.
   | 'navigation_clicked'

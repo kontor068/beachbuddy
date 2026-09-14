@@ -1109,6 +1109,8 @@ export type Translation = {
     // not done. See docs/team/12-growth-analytics.md (diagnosed 2026-07-28).
     emptySearchTitle: (query: string) => string;
     emptySearchDescription: string;
+    /** Leads the list of whole-of-Greece matches inside the empty-search card. */
+    emptySearchFoundElsewhere: string;
     searchAllRegions: string;
     // Same miss, but the visitor is in "Near me" — a circle around their GPS, not a
     // region they chose. "In this area" names nothing they picked, and "it may belong
