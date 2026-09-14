@@ -106,6 +106,7 @@ const PINS = [
   ['δάπεδο «Ιδανική»', constOf('utils/suitabilityTone.ts', 'IDEAL_MAX_SHORE_SEA_STATE_M'), 'utils/suitabilityTone.ts', (v) => `θάλασσα ακτής\n**<${gr(v.toFixed(2))} μ.**`],
   ['ασήμαντη διαφορά θάλασσας στο βάθρο', constOf('services/topPickRanking.ts', 'PODIUM_SEA_MEANINGFUL_DIFFERENCE_M'), 'services/topPickRanking.ts', (v) => `**<${gr(v)} μ. δεν μετράνε**`],
   ['περίοδος αναφοράς κύματος', constOf('utils/waveCharacter.ts', 'SEA_REFERENCE_PERIOD_S'), 'utils/waveCharacter.ts', (v) => `(${v}δλ / T)`],
+  ['όριο όρμου για το δάπεδο ψιλοκύματος', constOf('utils/waveModel.ts', 'COVE_FETCH_KM'), 'utils/waveModel.ts', (v) => `**${v} χλμ** όριο όρμου`],
   ['δάπεδο τυπωμένου αριθμού ακτής', constOf('utils/shoreWave.ts', 'SHORE_DISPLAY_FLOOR_M'), 'utils/shoreWave.ts', (v) => `Δάπεδο ${gr(v.toFixed(2))} μ.`],
   // Οι πόρτες «απόγειος-γυαλί» — προστέθηκαν 10/09/2026, όταν ο έλεγχος του ημερολογίου βρήκε ότι
   // το εγχειρίδιο έγραφε ακόμα «ένταση <15, onshore ≤ −0,8» για την πόρτα των 5, ενώ από 24/08

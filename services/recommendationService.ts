@@ -856,6 +856,7 @@ const assessHourlyWave = (
     swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
     seaArrival: resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg),
     geometricCeilingM: hourCeiling?.ceilingM,
+    windSectorFetchKm: windAssessment.effectiveFetchKm,
   });
   return {
     dt: item.dt,
@@ -2120,6 +2121,7 @@ export const calculateBeachScore = (
     swell: { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
     seaArrival,
     geometricCeilingM: geometricCeiling?.ceilingM,
+    windSectorFetchKm: windAssessment.effectiveFetchKm,
   });
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
   // Από πού ήρθε ο αριθμός της θάλασσας. Ανέβηκε εδώ (11/09/2026) γιατί ο μάρτυρας ηρεμίας από κάτω τον

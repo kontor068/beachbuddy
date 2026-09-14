@@ -160,6 +160,7 @@ export const resolveDisplayWaveHeightM = ({
   seaArrival,
   geometricCeilingM,
   meanSpeedBeforeGustFloorKmh,
+  windSectorFetchKm,
 }: {
   exposureLevel: WaveExposureLevel;
   /** `WindExposureAssessment.modeledWaveHeightM` — open-water SMB, before damping. */
@@ -184,6 +185,12 @@ export const resolveDisplayWaveHeightM = ({
    * gust-spread test uses it; every other term keeps reading the corrected wind.
    */
   meanSpeedBeforeGustFloorKmh?: number;
+  /**
+   * Open-water fetch (km) in the LIVE wind direction — `WindExposureAssessment.effectiveFetchKm`.
+   * Only the cove cap of the wind-chop floor reads it (see `capWindChopFloorByFetchM`); omitted →
+   * the floor is exactly what it was before 14/09/2026.
+   */
+  windSectorFetchKm?: number;
 }): {
   effectiveWaveHeightM: number;
   modeledWaveHeightM: number;
@@ -197,7 +204,10 @@ export const resolveDisplayWaveHeightM = ({
   // cross-shore beaches see far less of it than a coast facing the fetch head-on.
   const damping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
   const fetchModeledWaveHeightM = Number((modeledWaveHeightM * damping).toFixed(2));
-  const windChopFloorM = getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph, meanSpeedBeforeGustFloorKmh);
+  const windChopFloorM = capWindChopFloorByFetchM(
+    getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph, meanSpeedBeforeGustFloorKmh),
+    { exposureLevel, beaufort, windSpeedKmh, gustKmph, meanSpeedBeforeGustFloorKmh, fetchKm: windSectorFetchKm },
+  );
   const modeled = Number(Math.max(fetchModeledWaveHeightM, windChopFloorM).toFixed(2));
 
   // ⛔ ΕΔΩ ΔΟΚΙΜΑΣΤΗΚΕ ΚΑΙ ΑΠΟΡΡΙΦΘΗΚΕ ένα τρίτο γεωμετρικό φίλτρο (16/08/2026): «αν η γωνία απ'
@@ -228,6 +238,42 @@ export const resolveDisplayWaveHeightM = ({
     realisticMeasuredWaveHeightM: realisticMeasured,
     geometricCeilingApplied: capped < uncapped - 0.005,
   };
+};
+
+/**
+ * ΤΟ ΔΑΠΕΔΟ ΨΙΛΟΚΥΜΑΤΟΣ ΔΕΝ ΙΣΧΥΡΙΖΕΤΑΙ ΚΥΜΑ ΠΟΥ ΤΟ ΝΕΡΟ ΜΠΡΟΣΤΑ ΔΕΝ ΠΡΟΛΑΒΑΙΝΕΙ ΝΑ ΧΤΙΣΕΙ (14/09/2026, βίβλος §Γ81 Δ6-Γ).
+ *
+ * Το δάπεδο (getWindChopWaveFloorM) δίνει 0,80 μ. σε κάθε «εκτεθειμένη» ακτή στα 5 Μποφόρ — ακριβώς το κατώφλι του
+ * κίτρινου — χωρίς να ρωτά πόσο ανοιχτό νερό έχει η παραλία στη διεύθυνση του ανέμου. Σε μέρα μελτεμιού αποφάσιζε το
+ * τυπωμένο ύψος στο 27% των παραλιών (Δ6-Β). Ο κριτής της άμμου (Sentinel-2, 5 καλοκαίρια, 20.869 παραλίες-μέρες,
+ * scripts/judgeChopFloorSentinel2.mjs): στους όρμους με < 3 χλμ νερό, τις μέρες που το δάπεδο τύπωνε ≥ 0,8, η άμμος
+ * έδειχνε αφρό θραύσης 2,0% (ήρεμη μέρα των ίδιων όρμων 0,9%· πραγματικό κύμα ≥ 0,8: 23%)· το ΙΔΙΟ δάπεδο σε ανοιχτό
+ * νερό ≥ 8 χλμ αφρίζει 17% / λωρίδα 64% — εκεί έχει δίκιο. Άρα το δάπεδο λέει ψέματα ΜΟΝΟ όπου δεν έχει νερό μπροστά.
+ *
+ * Ο κανόνας (απόφαση Μίλτου Α, 13-14/09): κάτω από COVE_FETCH_KM το δάπεδο δεν ξεπερνά το SMB που θα έχτιζε η ΡΙΠΗ
+ * πάνω σε αυτό το fetch — αλλά ποτέ κάτω από το δάπεδο της «προστατευμένης» ακτής στα ίδια Μποφόρ (0,4 στα 5), γιατί
+ * στη ζώνη 1-2 χλμ ο δορυφόρος είδε αφρό στο 13% (Πόρτο Ράφτη Αυλάκι 7/8 μέρες): κάτι σκάει, απλώς όχι 0,80.
+ * Μονόδρομη προς το ηπιότερο, μόνο για partial/exposed (η protected παίρνει ήδη το ελάχιστο), μόνο με γνωστό fetch.
+ * Πάνω από COVE_FETCH_KM, ή χωρίς fetch, τίποτα δεν αλλάζει.
+ */
+export const COVE_FETCH_KM = 3;
+export const capWindChopFloorByFetchM = (
+  floorM: number,
+  input: {
+    exposureLevel: WaveExposureLevel;
+    beaufort: number;
+    windSpeedKmh: number;
+    gustKmph?: number;
+    meanSpeedBeforeGustFloorKmh?: number;
+    fetchKm?: number;
+  }
+): number => {
+  if (!(floorM > 0) || input.exposureLevel === 'protected') return floorM;
+  if (typeof input.fetchKm !== 'number' || !Number.isFinite(input.fetchKm) || input.fetchKm >= COVE_FETCH_KM) return floorM;
+  const gustKmh = typeof input.gustKmph === 'number' && input.gustKmph > input.windSpeedKmh ? input.gustKmph : input.windSpeedKmh;
+  const smbAtGustM = estimateFetchLimitedWaveHeightM({ windSpeedKmh: gustKmh, fetchKm: input.fetchKm });
+  const protectedFloorM = getWindChopWaveFloorM('protected', input.beaufort, input.windSpeedKmh, input.gustKmph, input.meanSpeedBeforeGustFloorKmh);
+  return Number(Math.min(floorM, Math.max(smbAtGustM, protectedFloorM)).toFixed(2));
 };
 
 /**
