@@ -1,0 +1,2029 @@
+{
+  "generatedAt": "2026-09-14T07:04:14.022Z",
+  "question": "Σε μέρες ΧΩΡΙΣ μελτέμι, υποδείχνει το μοντέλο τον απογευματινό αέρα περισσότερο απ᾽ ό,τι τον πρωινό — και αν ναι, εθνικά ή σε λίγους τόπους;",
+  "judge": "METAR ASOS, 30 παράκτια αεροδρόμια, καλοκαίρια 2024-2026 — από τη μνήμη της measureWindDiurnalTiming (καμία νέα λήψη)",
+  "rulesDeclaredBeforeRun": {
+    "Α": "bias(απόγευμα)−bias(πρωί) ≤ -2 χλμ/ώ ΚΑΙ falseBlue(απόγευμα) ≥ 2× falseBlue(πρωί)",
+    "Β": "αλλιώς, ≥8/30 σταθμοί περνούν το ίδιο τεστ μόνοι τους (≥200 ώρες/κουβά)",
+    "Γ": "αλλιώς δεν υπάρχει",
+    "φρένο": "≥5 σταθμοί ≤-2 ΚΑΙ ≥5 σταθμοί ≥2 ⇒ καμία εθνική σταθερά, υπερισχύει"
+  },
+  "limits": [
+    "ο κριτής είναι αεροδρόμιο, όχι παραλία — αν η αύρα μπαίνει μόνο στα τελευταία 500 μ. της ακτής δεν φαίνεται εδώ",
+    "10-λεπτος μέσος οργάνου vs στιγμιαία τιμή μοντέλου",
+    "το best_match άλλαξε σύνθεση μέσα στα τρία καλοκαίρια"
+  ],
+  "selfCheck": {
+    "ran": true,
+    "parent": "reports\\weather\\wind-diurnal-timing-2026-09-11.json",
+    "identical": true,
+    "diffs": []
+  },
+  "pairs": 156375,
+  "stationDays": 7599,
+  "quietStationDays": 3972,
+  "national": {
+    "πρωί 08-11": {
+      "n": 15863,
+      "biasKmh": 0.4,
+      "rawBiasKmh": -1.8,
+      "obsMeanKmh": 8.5,
+      "shownMeanKmh": 8.9,
+      "underPct": 26,
+      "overPct": 30.9,
+      "toneCalmerPct": 9.5,
+      "falseBluePct": 7.8
+    },
+    "μεσημέρι 12-16": {
+      "n": 19850,
+      "biasKmh": -0.5,
+      "rawBiasKmh": -2.7,
+      "obsMeanKmh": 14.8,
+      "shownMeanKmh": 14.4,
+      "underPct": 27.3,
+      "overPct": 20.6,
+      "toneCalmerPct": 16.1,
+      "falseBluePct": 11.3
+    },
+    "απόγευμα 17-20": {
+      "n": 15877,
+      "biasKmh": -0.6,
+      "rawBiasKmh": -2.8,
+      "obsMeanKmh": 14.3,
+      "shownMeanKmh": 13.7,
+      "underPct": 28.6,
+      "overPct": 20.7,
+      "toneCalmerPct": 17.3,
+      "falseBluePct": 11.5
+    }
+  },
+  "nationalDelta": {
+    "eveningMinusMorningBiasKmh": -1,
+    "noonMinusMorningBiasKmh": -0.9,
+    "falseBlueRatio": 1.47,
+    "enoughHours": true
+  },
+  "nationalPasses": false,
+  "stationsUsable": 22,
+  "stationsPassing": 4,
+  "stationsNegative": 6,
+  "stationsPositive": 2,
+  "twoSignBrake": false,
+  "verdict": "Γ · ΔΕΝ ΥΠΑΡΧΕΙ συστηματική απογευματινή υποεκτίμηση στο αεροδρόμιο",
+  "groupSummary": {
+    "Νότιο Αιγαίο/Κρήτη": {
+      "σταθμοί": 7,
+      "διάμεσοΧάσμαΑπόγευμαΠρωί": -1.6,
+      "περνούν": 1
+    },
+    "Βόρειο/Ανατ. Αιγαίο": {
+      "σταθμοί": 9,
+      "διάμεσοΧάσμαΑπόγευμαΠρωί": -1.1,
+      "περνούν": 2
+    },
+    "Ιόνιο/δυτικά": {
+      "σταθμοί": 6,
+      "διάμεσοΧάσμαΑπόγευμαΠρωί": -0.1,
+      "περνούν": 1
+    },
+    "υψόμετρο 0 (ωμός μέσος)": {
+      "σταθμοί": 2,
+      "διάμεσοΧάσμαΑπόγευμαΠρωί": -2,
+      "περνούν": 1
+    },
+    "υψόμετρο >0 (αποσυμπίεση)": {
+      "σταθμοί": 20,
+      "διάμεσοΧάσμαΑπόγευμαΠρωί": -0.5,
+      "περνούν": 3
+    }
+  },
+  "perStation": [
+    {
+      "icao": "LGRP",
+      "name": "Ρόδος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 3,
+      "quietDays": 292,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1165,
+          "biasKmh": -4,
+          "rawBiasKmh": -6.3,
+          "obsMeanKmh": 18.6,
+          "shownMeanKmh": 14.7,
+          "underPct": 45.3,
+          "overPct": 6.4,
+          "toneCalmerPct": 37.8,
+          "falseBluePct": 23.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 1460,
+          "biasKmh": -5.9,
+          "rawBiasKmh": -8.3,
+          "obsMeanKmh": 24.7,
+          "shownMeanKmh": 18.8,
+          "underPct": 61.6,
+          "overPct": 2.9,
+          "toneCalmerPct": 59.3,
+          "falseBluePct": 25.6
+        },
+        "απόγευμα 17-20": {
+          "n": 1168,
+          "biasKmh": -8,
+          "rawBiasKmh": -10.4,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 18.7,
+          "underPct": 74.1,
+          "overPct": 1,
+          "toneCalmerPct": 71.3,
+          "falseBluePct": 29.3
+        }
+      },
+      "eveningMinusMorningBiasKmh": -4,
+      "noonMinusMorningBiasKmh": -1.9,
+      "falseBlueRatio": 1.25,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGSA",
+      "name": "Χανιά",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 138,
+      "quietDays": 225,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 900,
+          "biasKmh": 1.5,
+          "rawBiasKmh": -0.9,
+          "obsMeanKmh": 9.7,
+          "shownMeanKmh": 11.2,
+          "underPct": 17.6,
+          "overPct": 31.8,
+          "toneCalmerPct": 6.4,
+          "falseBluePct": 5.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 1125,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 15.7,
+          "shownMeanKmh": 14.8,
+          "underPct": 21.6,
+          "overPct": 13.2,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 10.8
+        },
+        "απόγευμα 17-20": {
+          "n": 900,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -4,
+          "obsMeanKmh": 13.6,
+          "shownMeanKmh": 12,
+          "underPct": 35.6,
+          "overPct": 9.7,
+          "toneCalmerPct": 15.9,
+          "falseBluePct": 12.8
+        }
+      },
+      "eveningMinusMorningBiasKmh": -3.1,
+      "noonMinusMorningBiasKmh": -2.4,
+      "falseBlueRatio": 2.33,
+      "enoughHours": true,
+      "passes": true
+    },
+    {
+      "icao": "LGKR",
+      "name": "Κέρκυρα",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 0,
+      "quietDays": 267,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1068,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -0.8,
+          "obsMeanKmh": 4,
+          "shownMeanKmh": 3.7,
+          "underPct": 29.1,
+          "overPct": 41.8,
+          "toneCalmerPct": 2.8,
+          "falseBluePct": 2.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 1332,
+          "biasKmh": -3,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 11.8,
+          "shownMeanKmh": 8.8,
+          "underPct": 55.3,
+          "overPct": 8.3,
+          "toneCalmerPct": 20.9,
+          "falseBluePct": 18.5
+        },
+        "απόγευμα 17-20": {
+          "n": 1068,
+          "biasKmh": -3.4,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 13.1,
+          "shownMeanKmh": 9.7,
+          "underPct": 54.2,
+          "overPct": 6.2,
+          "toneCalmerPct": 25.8,
+          "falseBluePct": 22
+        }
+      },
+      "eveningMinusMorningBiasKmh": -3.1,
+      "noonMinusMorningBiasKmh": -2.7,
+      "falseBlueRatio": 8.15,
+      "enoughHours": true,
+      "passes": true
+    },
+    {
+      "icao": "LGAL",
+      "name": "Αλεξανδρούπολη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 4,
+      "quietDays": 159,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 636,
+          "biasKmh": 1.4,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 9.2,
+          "shownMeanKmh": 10.6,
+          "underPct": 19,
+          "overPct": 38.5,
+          "toneCalmerPct": 7.6,
+          "falseBluePct": 6.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 795,
+          "biasKmh": -3.1,
+          "rawBiasKmh": -5.5,
+          "obsMeanKmh": 17.5,
+          "shownMeanKmh": 14.4,
+          "underPct": 35.1,
+          "overPct": 8.3,
+          "toneCalmerPct": 25.3,
+          "falseBluePct": 19
+        },
+        "απόγευμα 17-20": {
+          "n": 636,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 14,
+          "shownMeanKmh": 12.3,
+          "underPct": 31,
+          "overPct": 10.8,
+          "toneCalmerPct": 16.2,
+          "falseBluePct": 13.8
+        }
+      },
+      "eveningMinusMorningBiasKmh": -3.1,
+      "noonMinusMorningBiasKmh": -4.5,
+      "falseBlueRatio": 2.03,
+      "enoughHours": true,
+      "passes": true
+    },
+    {
+      "icao": "LGBL",
+      "name": "Ν. Αγχίαλος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 11,
+      "quietDays": 286,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1144,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 7.7,
+          "shownMeanKmh": 8.3,
+          "underPct": 26.8,
+          "overPct": 29.5,
+          "toneCalmerPct": 6.3,
+          "falseBluePct": 6.2
+        },
+        "μεσημέρι 12-16": {
+          "n": 1430,
+          "biasKmh": -2.2,
+          "rawBiasKmh": -4.5,
+          "obsMeanKmh": 17.7,
+          "shownMeanKmh": 15.5,
+          "underPct": 31.5,
+          "overPct": 8.5,
+          "toneCalmerPct": 23,
+          "falseBluePct": 16.9
+        },
+        "απόγευμα 17-20": {
+          "n": 1143,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -4,
+          "obsMeanKmh": 17.5,
+          "shownMeanKmh": 15.8,
+          "underPct": 26,
+          "overPct": 10.4,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 13.5
+        }
+      },
+      "eveningMinusMorningBiasKmh": -2.2,
+      "noonMinusMorningBiasKmh": -2.8,
+      "falseBlueRatio": 2.18,
+      "enoughHours": true,
+      "passes": true
+    },
+    {
+      "icao": "LGNX",
+      "name": "Νάξος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 0,
+      "quietDays": 51,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 202,
+          "biasKmh": -2,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 10.5,
+          "shownMeanKmh": 8.4,
+          "underPct": 48,
+          "overPct": 11.4,
+          "toneCalmerPct": 9.9,
+          "falseBluePct": 9.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 255,
+          "biasKmh": -3.2,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 15.8,
+          "shownMeanKmh": 12.6,
+          "underPct": 46.7,
+          "overPct": 11.4,
+          "toneCalmerPct": 21.2,
+          "falseBluePct": 18.7
+        },
+        "απόγευμα 17-20": {
+          "n": 203,
+          "biasKmh": -4,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 14,
+          "shownMeanKmh": 10,
+          "underPct": 55.7,
+          "overPct": 4.4,
+          "toneCalmerPct": 18.7,
+          "falseBluePct": 17.1
+        }
+      },
+      "eveningMinusMorningBiasKmh": -2,
+      "noonMinusMorningBiasKmh": -1.2,
+      "falseBlueRatio": 1.82,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGSK",
+      "name": "Σκιάθος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 9,
+      "quietDays": 185,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 740,
+          "biasKmh": 2.5,
+          "rawBiasKmh": 0.1,
+          "obsMeanKmh": 8.2,
+          "shownMeanKmh": 10.7,
+          "underPct": 13.2,
+          "overPct": 40.8,
+          "toneCalmerPct": 3.5,
+          "falseBluePct": 3.2
+        },
+        "μεσημέρι 12-16": {
+          "n": 925,
+          "biasKmh": 2.6,
+          "rawBiasKmh": 0.2,
+          "obsMeanKmh": 10.8,
+          "shownMeanKmh": 13.4,
+          "underPct": 9.6,
+          "overPct": 34.9,
+          "toneCalmerPct": 3.3,
+          "falseBluePct": 3.2
+        },
+        "απόγευμα 17-20": {
+          "n": 740,
+          "biasKmh": 0.8,
+          "rawBiasKmh": -1.6,
+          "obsMeanKmh": 8.5,
+          "shownMeanKmh": 9.2,
+          "underPct": 23.2,
+          "overPct": 27.2,
+          "toneCalmerPct": 6.9,
+          "falseBluePct": 6.9
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.7,
+      "noonMinusMorningBiasKmh": 0.1,
+      "falseBlueRatio": 2.16,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGPA",
+      "name": "Πάρος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 31,
+      "quietDays": 66,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 264,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 10.6,
+          "shownMeanKmh": 9.6,
+          "underPct": 34.1,
+          "overPct": 11,
+          "toneCalmerPct": 11.2,
+          "falseBluePct": 10.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 330,
+          "biasKmh": -2.2,
+          "rawBiasKmh": -4.6,
+          "obsMeanKmh": 14.9,
+          "shownMeanKmh": 12.7,
+          "underPct": 32.4,
+          "overPct": 5.8,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 14.1
+        },
+        "απόγευμα 17-20": {
+          "n": 264,
+          "biasKmh": -2.6,
+          "rawBiasKmh": -5,
+          "obsMeanKmh": 12.8,
+          "shownMeanKmh": 10.2,
+          "underPct": 45.1,
+          "overPct": 4.5,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 15.7
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.6,
+      "noonMinusMorningBiasKmh": -1.2,
+      "falseBlueRatio": 1.48,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGKC",
+      "name": "Κύθηρα",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 315,
+      "quietDays": 10,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 23,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 14.7,
+          "shownMeanKmh": 14.4,
+          "underPct": 52.2,
+          "overPct": 17.4,
+          "toneCalmerPct": 21.7,
+          "falseBluePct": 17.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 49,
+          "biasKmh": -3.6,
+          "rawBiasKmh": -6,
+          "obsMeanKmh": 19,
+          "shownMeanKmh": 15.4,
+          "underPct": 46.9,
+          "overPct": 6.1,
+          "toneCalmerPct": 22.4,
+          "falseBluePct": 18.4
+        },
+        "απόγευμα 17-20": {
+          "n": 38,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 18,
+          "shownMeanKmh": 16.3,
+          "underPct": 28.9,
+          "overPct": 13.2,
+          "toneCalmerPct": 14,
+          "falseBluePct": 8.8
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.5,
+      "noonMinusMorningBiasKmh": -3.3,
+      "falseBlueRatio": 0.51,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGHI",
+      "name": "Χίος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 3,
+      "quietDays": 86,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 344,
+          "biasKmh": 1.2,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 8.4,
+          "shownMeanKmh": 9.6,
+          "underPct": 14.8,
+          "overPct": 32.3,
+          "toneCalmerPct": 6.2,
+          "falseBluePct": 5.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 425,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 11.7,
+          "shownMeanKmh": 11.7,
+          "underPct": 20,
+          "overPct": 15.8,
+          "toneCalmerPct": 9.6,
+          "falseBluePct": 8.2
+        },
+        "απόγευμα 17-20": {
+          "n": 339,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 8.3,
+          "shownMeanKmh": 8.2,
+          "underPct": 29.2,
+          "overPct": 18,
+          "toneCalmerPct": 7.8,
+          "falseBluePct": 7.3
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.3,
+      "noonMinusMorningBiasKmh": -1.1,
+      "falseBlueRatio": 1.35,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGSR",
+      "name": "Σαντορίνη",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 26,
+      "quietDays": 82,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 328,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 13,
+          "shownMeanKmh": 12.3,
+          "underPct": 29.3,
+          "overPct": 19.2,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 10.1
+        },
+        "μεσημέρι 12-16": {
+          "n": 410,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 16,
+          "shownMeanKmh": 14.7,
+          "underPct": 25.6,
+          "overPct": 17.6,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 10
+        },
+        "απόγευμα 17-20": {
+          "n": 327,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 14.7,
+          "shownMeanKmh": 12.9,
+          "underPct": 32.7,
+          "overPct": 18,
+          "toneCalmerPct": 20.2,
+          "falseBluePct": 13.6
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.2,
+      "noonMinusMorningBiasKmh": -0.7,
+      "falseBlueRatio": 1.35,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGTS",
+      "name": "Θεσσαλονίκη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 1,
+      "quietDays": 267,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1068,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 8.1,
+          "shownMeanKmh": 7.7,
+          "underPct": 29.7,
+          "overPct": 19.1,
+          "toneCalmerPct": 7.7,
+          "falseBluePct": 7
+        },
+        "μεσημέρι 12-16": {
+          "n": 1335,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 15.3,
+          "shownMeanKmh": 13.8,
+          "underPct": 27.9,
+          "overPct": 8.3,
+          "toneCalmerPct": 13.8,
+          "falseBluePct": 11.8
+        },
+        "απόγευμα 17-20": {
+          "n": 1068,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 18.1,
+          "shownMeanKmh": 16.5,
+          "underPct": 25,
+          "overPct": 10.6,
+          "toneCalmerPct": 20.8,
+          "falseBluePct": 14.4
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1.1,
+      "noonMinusMorningBiasKmh": -1.1,
+      "falseBlueRatio": 2.06,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGLM",
+      "name": "Λήμνος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 3,
+      "quietDays": 107,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 428,
+          "biasKmh": 2.7,
+          "rawBiasKmh": 0.3,
+          "obsMeanKmh": 8.7,
+          "shownMeanKmh": 11.4,
+          "underPct": 7.2,
+          "overPct": 41.4,
+          "toneCalmerPct": 3.7,
+          "falseBluePct": 3
+        },
+        "μεσημέρι 12-16": {
+          "n": 535,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 13.8,
+          "shownMeanKmh": 14.2,
+          "underPct": 14.2,
+          "overPct": 16.1,
+          "toneCalmerPct": 7.5,
+          "falseBluePct": 6.1
+        },
+        "απόγευμα 17-20": {
+          "n": 428,
+          "biasKmh": 1.7,
+          "rawBiasKmh": -0.7,
+          "obsMeanKmh": 9.5,
+          "shownMeanKmh": 11.2,
+          "underPct": 10.3,
+          "overPct": 26.6,
+          "toneCalmerPct": 3.7,
+          "falseBluePct": 3.2
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1,
+      "noonMinusMorningBiasKmh": -2.3,
+      "falseBlueRatio": 1.07,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGKP",
+      "name": "Κάρπαθος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 8,
+      "quietDays": 31,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 124,
+          "biasKmh": -2.1,
+          "rawBiasKmh": -4.5,
+          "obsMeanKmh": 18.9,
+          "shownMeanKmh": 16.8,
+          "underPct": 31.5,
+          "overPct": 14.5,
+          "toneCalmerPct": 20.2,
+          "falseBluePct": 9.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 155,
+          "biasKmh": -3.8,
+          "rawBiasKmh": -6.2,
+          "obsMeanKmh": 21.4,
+          "shownMeanKmh": 17.7,
+          "underPct": 40.6,
+          "overPct": 5.2,
+          "toneCalmerPct": 35.7,
+          "falseBluePct": 18.5
+        },
+        "απόγευμα 17-20": {
+          "n": 124,
+          "biasKmh": -3.1,
+          "rawBiasKmh": -5.5,
+          "obsMeanKmh": 19.5,
+          "shownMeanKmh": 16.4,
+          "underPct": 38.7,
+          "overPct": 9.7,
+          "toneCalmerPct": 31.7,
+          "falseBluePct": 19.1
+        }
+      },
+      "eveningMinusMorningBiasKmh": -1,
+      "noonMinusMorningBiasKmh": -1.7,
+      "falseBlueRatio": 2.03,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGZA",
+      "name": "Ζάκυνθος",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 2,
+      "quietDays": 238,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 952,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 6.9,
+          "shownMeanKmh": 7.8,
+          "underPct": 22.5,
+          "overPct": 29.9,
+          "toneCalmerPct": 6.2,
+          "falseBluePct": 5.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 1190,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 11.4,
+          "shownMeanKmh": 9.6,
+          "underPct": 37.8,
+          "overPct": 6.7,
+          "toneCalmerPct": 13.2,
+          "falseBluePct": 12.5
+        },
+        "απόγευμα 17-20": {
+          "n": 952,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 11.5,
+          "shownMeanKmh": 11.9,
+          "underPct": 23.9,
+          "overPct": 22.4,
+          "toneCalmerPct": 8.7,
+          "falseBluePct": 7.8
+        }
+      },
+      "eveningMinusMorningBiasKmh": -0.5,
+      "noonMinusMorningBiasKmh": -2.7,
+      "falseBlueRatio": 1.32,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGMK",
+      "name": "Μύκονος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 122,
+      "quietDays": 38,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 152,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 9.5,
+          "shownMeanKmh": 9.4,
+          "underPct": 28.9,
+          "overPct": 25.7,
+          "toneCalmerPct": 11.6,
+          "falseBluePct": 9.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 190,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 12.1,
+          "shownMeanKmh": 12.4,
+          "underPct": 20,
+          "overPct": 24.2,
+          "toneCalmerPct": 8.9,
+          "falseBluePct": 7.7
+        },
+        "απόγευμα 17-20": {
+          "n": 152,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 11.6,
+          "shownMeanKmh": 11.1,
+          "underPct": 25,
+          "overPct": 22.4,
+          "toneCalmerPct": 10.7,
+          "falseBluePct": 9.6
+        }
+      },
+      "eveningMinusMorningBiasKmh": -0.4,
+      "noonMinusMorningBiasKmh": 0.4,
+      "falseBlueRatio": 1,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGKL",
+      "name": "Καλαμάτα",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 5,
+      "quietDays": 258,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1032,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 6.9,
+          "shownMeanKmh": 7.8,
+          "underPct": 26.4,
+          "overPct": 38.9,
+          "toneCalmerPct": 7.9,
+          "falseBluePct": 7.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 1290,
+          "biasKmh": 1.4,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 15.7,
+          "shownMeanKmh": 17.2,
+          "underPct": 14.7,
+          "overPct": 37.5,
+          "toneCalmerPct": 8.4,
+          "falseBluePct": 6.7
+        },
+        "απόγευμα 17-20": {
+          "n": 1032,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 12.8,
+          "shownMeanKmh": 13.2,
+          "underPct": 20.6,
+          "overPct": 26.2,
+          "toneCalmerPct": 11.9,
+          "falseBluePct": 9.7
+        }
+      },
+      "eveningMinusMorningBiasKmh": -0.4,
+      "noonMinusMorningBiasKmh": 0.5,
+      "falseBlueRatio": 1.29,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGKV",
+      "name": "Καβάλα",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 2,
+      "quietDays": 277,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1106,
+          "biasKmh": 1.7,
+          "rawBiasKmh": -0.7,
+          "obsMeanKmh": 6.7,
+          "shownMeanKmh": 8.5,
+          "underPct": 14.9,
+          "overPct": 37.4,
+          "toneCalmerPct": 4.2,
+          "falseBluePct": 4.1
+        },
+        "μεσημέρι 12-16": {
+          "n": 1385,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 13.7,
+          "shownMeanKmh": 14.2,
+          "underPct": 16.2,
+          "overPct": 21.2,
+          "toneCalmerPct": 7.7,
+          "falseBluePct": 6.6
+        },
+        "απόγευμα 17-20": {
+          "n": 1108,
+          "biasKmh": 1.4,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 11.2,
+          "shownMeanKmh": 12.6,
+          "underPct": 16,
+          "overPct": 27.8,
+          "toneCalmerPct": 6.9,
+          "falseBluePct": 6.1
+        }
+      },
+      "eveningMinusMorningBiasKmh": -0.3,
+      "noonMinusMorningBiasKmh": -1.2,
+      "falseBlueRatio": 1.49,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGKF",
+      "name": "Κεφαλονιά",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 15,
+      "quietDays": 188,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 752,
+          "biasKmh": 3,
+          "rawBiasKmh": 0.6,
+          "obsMeanKmh": 4.5,
+          "shownMeanKmh": 7.5,
+          "underPct": 13.4,
+          "overPct": 56.4,
+          "toneCalmerPct": 4.3,
+          "falseBluePct": 4.1
+        },
+        "μεσημέρι 12-16": {
+          "n": 940,
+          "biasKmh": 3.9,
+          "rawBiasKmh": 1.5,
+          "obsMeanKmh": 9.8,
+          "shownMeanKmh": 13.7,
+          "underPct": 9.4,
+          "overPct": 49.7,
+          "toneCalmerPct": 4.9,
+          "falseBluePct": 4.3
+        },
+        "απόγευμα 17-20": {
+          "n": 752,
+          "biasKmh": 2.9,
+          "rawBiasKmh": 0.5,
+          "obsMeanKmh": 12.9,
+          "shownMeanKmh": 15.8,
+          "underPct": 10.4,
+          "overPct": 42.8,
+          "toneCalmerPct": 8,
+          "falseBluePct": 5.5
+        }
+      },
+      "eveningMinusMorningBiasKmh": -0.1,
+      "noonMinusMorningBiasKmh": 0.9,
+      "falseBlueRatio": 1.34,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGST",
+      "name": "Σητεία",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 104,
+      "quietDays": 0,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      },
+      "eveningMinusMorningBiasKmh": null,
+      "noonMinusMorningBiasKmh": null,
+      "falseBlueRatio": null,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGSM",
+      "name": "Σάμος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 3,
+      "quietDays": 101,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 404,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 10.9,
+          "shownMeanKmh": 10,
+          "underPct": 34.7,
+          "overPct": 20.8,
+          "toneCalmerPct": 13.9,
+          "falseBluePct": 12.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 505,
+          "biasKmh": -3.7,
+          "rawBiasKmh": -6.1,
+          "obsMeanKmh": 14.5,
+          "shownMeanKmh": 10.8,
+          "underPct": 56,
+          "overPct": 7.7,
+          "toneCalmerPct": 25,
+          "falseBluePct": 23.3
+        },
+        "απόγευμα 17-20": {
+          "n": 404,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 11,
+          "shownMeanKmh": 10.1,
+          "underPct": 37.4,
+          "overPct": 17.1,
+          "toneCalmerPct": 12.2,
+          "falseBluePct": 11.6
+        }
+      },
+      "eveningMinusMorningBiasKmh": 0,
+      "noonMinusMorningBiasKmh": -2.8,
+      "falseBlueRatio": 0.9,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGML",
+      "name": "Μήλος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 0,
+      "quietDays": 0,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      },
+      "eveningMinusMorningBiasKmh": null,
+      "noonMinusMorningBiasKmh": null,
+      "falseBlueRatio": null,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGLE",
+      "name": "Λέρος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 4,
+      "quietDays": 0,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      },
+      "eveningMinusMorningBiasKmh": null,
+      "noonMinusMorningBiasKmh": null,
+      "falseBlueRatio": null,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGIK",
+      "name": "Ικαρία",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 21,
+      "quietDays": 0,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      },
+      "eveningMinusMorningBiasKmh": null,
+      "noonMinusMorningBiasKmh": null,
+      "falseBlueRatio": null,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGSY",
+      "name": "Σκύρος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 8,
+      "quietDays": 0,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      },
+      "eveningMinusMorningBiasKmh": null,
+      "noonMinusMorningBiasKmh": null,
+      "falseBlueRatio": null,
+      "enoughHours": false,
+      "passes": false
+    },
+    {
+      "icao": "LGKO",
+      "name": "Κως",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 119,
+      "quietDays": 65,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 260,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 11.5,
+          "shownMeanKmh": 9.8,
+          "underPct": 38.1,
+          "overPct": 12.3,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 15.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 325,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 15,
+          "shownMeanKmh": 15.5,
+          "underPct": 13.5,
+          "overPct": 18.8,
+          "toneCalmerPct": 7.5,
+          "falseBluePct": 5.9
+        },
+        "απόγευμα 17-20": {
+          "n": 260,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 15.9,
+          "shownMeanKmh": 14.7,
+          "underPct": 27.3,
+          "overPct": 10.8,
+          "toneCalmerPct": 18.1,
+          "falseBluePct": 13.7
+        }
+      },
+      "eveningMinusMorningBiasKmh": 0.5,
+      "noonMinusMorningBiasKmh": 2.2,
+      "falseBlueRatio": 0.9,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGPZ",
+      "name": "Άκτιο",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 1,
+      "quietDays": 287,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 1147,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 8.7,
+          "shownMeanKmh": 7.5,
+          "underPct": 40,
+          "overPct": 18.3,
+          "toneCalmerPct": 11.5,
+          "falseBluePct": 11
+        },
+        "μεσημέρι 12-16": {
+          "n": 1434,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 18.3,
+          "shownMeanKmh": 18.9,
+          "underPct": 15.3,
+          "overPct": 22.9,
+          "toneCalmerPct": 9.4,
+          "falseBluePct": 5
+        },
+        "απόγευμα 17-20": {
+          "n": 1147,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 20.4,
+          "shownMeanKmh": 20,
+          "underPct": 14.9,
+          "overPct": 18.1,
+          "toneCalmerPct": 12.7,
+          "falseBluePct": 6.2
+        }
+      },
+      "eveningMinusMorningBiasKmh": 0.9,
+      "noonMinusMorningBiasKmh": 1.8,
+      "falseBlueRatio": 0.56,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGIR",
+      "name": "Ηράκλειο",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "pointElevationM": 24,
+      "quietDays": 79,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 316,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 9.3,
+          "shownMeanKmh": 8.1,
+          "underPct": 40.5,
+          "overPct": 9.8,
+          "toneCalmerPct": 12.2,
+          "falseBluePct": 11.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 395,
+          "biasKmh": 2.1,
+          "rawBiasKmh": -0.3,
+          "obsMeanKmh": 11.7,
+          "shownMeanKmh": 13.9,
+          "underPct": 9.1,
+          "overPct": 33.7,
+          "toneCalmerPct": 6.2,
+          "falseBluePct": 4.6
+        },
+        "απόγευμα 17-20": {
+          "n": 316,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 9.9,
+          "shownMeanKmh": 9.7,
+          "underPct": 24.7,
+          "overPct": 17.1,
+          "toneCalmerPct": 8.8,
+          "falseBluePct": 8.2
+        }
+      },
+      "eveningMinusMorningBiasKmh": 1,
+      "noonMinusMorningBiasKmh": 3.3,
+      "falseBlueRatio": 0.7,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGMT",
+      "name": "Μυτιλήνη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "pointElevationM": 7,
+      "quietDays": 95,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 380,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 9.5,
+          "shownMeanKmh": 8.6,
+          "underPct": 39.7,
+          "overPct": 11.8,
+          "toneCalmerPct": 13,
+          "falseBluePct": 11.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 475,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 11.5,
+          "shownMeanKmh": 10.2,
+          "underPct": 31.8,
+          "overPct": 12.8,
+          "toneCalmerPct": 10.7,
+          "falseBluePct": 9.7
+        },
+        "απόγευμα 17-20": {
+          "n": 380,
+          "biasKmh": 1.2,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 9,
+          "shownMeanKmh": 10.3,
+          "underPct": 18.9,
+          "overPct": 28.2,
+          "toneCalmerPct": 6.1,
+          "falseBluePct": 5.3
+        }
+      },
+      "eveningMinusMorningBiasKmh": 2.1,
+      "noonMinusMorningBiasKmh": -0.4,
+      "falseBlueRatio": 0.45,
+      "enoughHours": true,
+      "passes": false
+    },
+    {
+      "icao": "LGRX",
+      "name": "Άραξος",
+      "group": "Ιόνιο/δυτικά",
+      "pointElevationM": 12,
+      "quietDays": 232,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 928,
+          "biasKmh": 3.6,
+          "rawBiasKmh": 1.2,
+          "obsMeanKmh": 3.2,
+          "shownMeanKmh": 6.8,
+          "underPct": 10.7,
+          "overPct": 67,
+          "toneCalmerPct": 2.7,
+          "falseBluePct": 2.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 1160,
+          "biasKmh": 7.4,
+          "rawBiasKmh": 5,
+          "obsMeanKmh": 9.1,
+          "shownMeanKmh": 16.5,
+          "underPct": 4.1,
+          "overPct": 75.8,
+          "toneCalmerPct": 2.2,
+          "falseBluePct": 1.8
+        },
+        "απόγευμα 17-20": {
+          "n": 928,
+          "biasKmh": 8.3,
+          "rawBiasKmh": 5.9,
+          "obsMeanKmh": 7.7,
+          "shownMeanKmh": 16,
+          "underPct": 2.2,
+          "overPct": 79.4,
+          "toneCalmerPct": 1.2,
+          "falseBluePct": 1
+        }
+      },
+      "eveningMinusMorningBiasKmh": 4.7,
+      "noonMinusMorningBiasKmh": 3.8,
+      "falseBlueRatio": 0.38,
+      "enoughHours": true,
+      "passes": false
+    }
+  ],
+  "dailyComparableNote": "ΕΞΕΡΕΥΝΗΤΙΚΟ, εκτός του προδηλωμένου κανόνα: ημερήσιος μέσος ΟΛΩΝ των ωρών στα αεροδρόμια, ώστε να συγκρίνεται με τον κριτή ΕΑΑ (meteo-gr-stations-2026-summer.json), που δίνει μόνο ημερήσιες συνόψεις.",
+  "dailyComparable": {
+    "LGIR": {
+      "name": "Ηράκλειο",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 18.6,
+        "shownMeanKmh": 14,
+        "rawMeanKmh": 11.6,
+        "shownMinusObsKmh": -4.6,
+        "rawMinusObsKmh": -7
+      },
+      "quiet": {
+        "days": 79,
+        "obsMeanKmh": 10.2,
+        "shownMeanKmh": 9.9,
+        "rawMeanKmh": 7.5,
+        "shownMinusObsKmh": -0.3,
+        "rawMinusObsKmh": -2.7
+      }
+    },
+    "LGSA": {
+      "name": "Χανιά",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 11,
+        "shownMeanKmh": 11.7,
+        "rawMeanKmh": 9.3,
+        "shownMinusObsKmh": 0.6,
+        "rawMinusObsKmh": -1.8
+      },
+      "quiet": {
+        "days": 225,
+        "obsMeanKmh": 10.3,
+        "shownMeanKmh": 11.1,
+        "rawMeanKmh": 8.7,
+        "shownMinusObsKmh": 0.8,
+        "rawMinusObsKmh": -1.6
+      }
+    },
+    "LGST": {
+      "name": "Σητεία",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGRP": {
+      "name": "Ρόδος",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 20.2,
+        "shownMeanKmh": 15.6,
+        "rawMeanKmh": 13.2,
+        "shownMinusObsKmh": -4.6,
+        "rawMinusObsKmh": -7
+      },
+      "quiet": {
+        "days": 292,
+        "obsMeanKmh": 20.3,
+        "shownMeanKmh": 15.6,
+        "rawMeanKmh": 13.2,
+        "shownMinusObsKmh": -4.6,
+        "rawMinusObsKmh": -7
+      }
+    },
+    "LGKO": {
+      "name": "Κως",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 19,
+        "shownMeanKmh": 15.3,
+        "rawMeanKmh": 12.9,
+        "shownMinusObsKmh": -3.7,
+        "rawMinusObsKmh": -6.1
+      },
+      "quiet": {
+        "days": 65,
+        "obsMeanKmh": 12.6,
+        "shownMeanKmh": 10.9,
+        "rawMeanKmh": 8.5,
+        "shownMinusObsKmh": -1.7,
+        "rawMinusObsKmh": -4.1
+      }
+    },
+    "LGMK": {
+      "name": "Μύκονος",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 27.7,
+        "shownMeanKmh": 26.7,
+        "rawMeanKmh": 24.3,
+        "shownMinusObsKmh": -1.1,
+        "rawMinusObsKmh": -3.5
+      },
+      "quiet": {
+        "days": 38,
+        "obsMeanKmh": 9.4,
+        "shownMeanKmh": 9.7,
+        "rawMeanKmh": 7.3,
+        "shownMinusObsKmh": 0.3,
+        "rawMinusObsKmh": -2
+      }
+    },
+    "LGSR": {
+      "name": "Σαντορίνη",
+      "allDays": {
+        "days": 284,
+        "obsMeanKmh": 20.2,
+        "shownMeanKmh": 18.2,
+        "rawMeanKmh": 15.8,
+        "shownMinusObsKmh": -2,
+        "rawMinusObsKmh": -4.4
+      },
+      "quiet": {
+        "days": 79,
+        "obsMeanKmh": 13.3,
+        "shownMeanKmh": 12.5,
+        "rawMeanKmh": 10.1,
+        "shownMinusObsKmh": -0.8,
+        "rawMinusObsKmh": -3.2
+      }
+    },
+    "LGNX": {
+      "name": "Νάξος",
+      "allDays": {
+        "days": 1,
+        "obsMeanKmh": 23.2,
+        "shownMeanKmh": 34.3,
+        "rawMeanKmh": 34.3,
+        "shownMinusObsKmh": 11.1,
+        "rawMinusObsKmh": 11.1
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGPA": {
+      "name": "Πάρος",
+      "allDays": {
+        "days": 287,
+        "obsMeanKmh": 21.1,
+        "shownMeanKmh": 19.5,
+        "rawMeanKmh": 17.1,
+        "shownMinusObsKmh": -1.6,
+        "rawMinusObsKmh": -4
+      },
+      "quiet": {
+        "days": 63,
+        "obsMeanKmh": 11.2,
+        "shownMeanKmh": 9.8,
+        "rawMeanKmh": 7.4,
+        "shownMinusObsKmh": -1.4,
+        "rawMinusObsKmh": -3.8
+      }
+    },
+    "LGSK": {
+      "name": "Σκιάθος",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGKR": {
+      "name": "Κέρκυρα",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 7.7,
+        "shownMeanKmh": 5.9,
+        "rawMeanKmh": 5.6,
+        "shownMinusObsKmh": -1.7,
+        "rawMinusObsKmh": -2.1
+      },
+      "quiet": {
+        "days": 267,
+        "obsMeanKmh": 7.1,
+        "shownMeanKmh": 5.5,
+        "rawMeanKmh": 5.2,
+        "shownMinusObsKmh": -1.6,
+        "rawMinusObsKmh": -1.9
+      }
+    },
+    "LGZA": {
+      "name": "Ζάκυνθος",
+      "allDays": {
+        "days": 69,
+        "obsMeanKmh": 9,
+        "shownMeanKmh": 10.3,
+        "rawMeanKmh": 7.9,
+        "shownMinusObsKmh": 1.3,
+        "rawMinusObsKmh": -1.1
+      },
+      "quiet": {
+        "days": 56,
+        "obsMeanKmh": 7.9,
+        "shownMeanKmh": 9.3,
+        "rawMeanKmh": 7,
+        "shownMinusObsKmh": 1.5,
+        "rawMinusObsKmh": -0.9
+      }
+    },
+    "LGKF": {
+      "name": "Κεφαλονιά",
+      "allDays": {
+        "days": 15,
+        "obsMeanKmh": 11.1,
+        "shownMeanKmh": 12.9,
+        "rawMeanKmh": 10.5,
+        "shownMinusObsKmh": 1.7,
+        "rawMinusObsKmh": -0.7
+      },
+      "quiet": {
+        "days": 9,
+        "obsMeanKmh": 9.3,
+        "shownMeanKmh": 11.3,
+        "rawMeanKmh": 8.9,
+        "shownMinusObsKmh": 2,
+        "rawMinusObsKmh": -0.4
+      }
+    },
+    "LGPZ": {
+      "name": "Άκτιο",
+      "allDays": {
+        "days": 291,
+        "obsMeanKmh": 11.9,
+        "shownMeanKmh": 12.1,
+        "rawMeanKmh": 9.7,
+        "shownMinusObsKmh": 0.2,
+        "rawMinusObsKmh": -2.2
+      },
+      "quiet": {
+        "days": 284,
+        "obsMeanKmh": 11.9,
+        "shownMeanKmh": 12.1,
+        "rawMeanKmh": 9.7,
+        "shownMinusObsKmh": 0.2,
+        "rawMinusObsKmh": -2.2
+      }
+    },
+    "LGLM": {
+      "name": "Λήμνος",
+      "allDays": {
+        "days": 293,
+        "obsMeanKmh": 14,
+        "shownMeanKmh": 15.3,
+        "rawMeanKmh": 12.9,
+        "shownMinusObsKmh": 1.3,
+        "rawMinusObsKmh": -1.1
+      },
+      "quiet": {
+        "days": 107,
+        "obsMeanKmh": 7.5,
+        "shownMeanKmh": 10.1,
+        "rawMeanKmh": 7.7,
+        "shownMinusObsKmh": 2.6,
+        "rawMinusObsKmh": 0.2
+      }
+    },
+    "LGMT": {
+      "name": "Μυτιλήνη",
+      "allDays": {
+        "days": 119,
+        "obsMeanKmh": 14.8,
+        "shownMeanKmh": 15.2,
+        "rawMeanKmh": 12.8,
+        "shownMinusObsKmh": 0.5,
+        "rawMinusObsKmh": -1.9
+      },
+      "quiet": {
+        "days": 32,
+        "obsMeanKmh": 8.7,
+        "shownMeanKmh": 8.8,
+        "rawMeanKmh": 6.4,
+        "shownMinusObsKmh": 0.1,
+        "rawMinusObsKmh": -2.3
+      }
+    },
+    "LGSM": {
+      "name": "Σάμος",
+      "allDays": {
+        "days": 279,
+        "obsMeanKmh": 15.5,
+        "shownMeanKmh": 17.1,
+        "rawMeanKmh": 14.7,
+        "shownMinusObsKmh": 1.7,
+        "rawMinusObsKmh": -0.7
+      },
+      "quiet": {
+        "days": 96,
+        "obsMeanKmh": 9.8,
+        "shownMeanKmh": 9.9,
+        "rawMeanKmh": 7.5,
+        "shownMinusObsKmh": 0.1,
+        "rawMinusObsKmh": -2.3
+      }
+    },
+    "LGHI": {
+      "name": "Χίος",
+      "allDays": {
+        "days": 78,
+        "obsMeanKmh": 14.8,
+        "shownMeanKmh": 18,
+        "rawMeanKmh": 15.6,
+        "shownMinusObsKmh": 3.2,
+        "rawMinusObsKmh": 0.8
+      },
+      "quiet": {
+        "days": 28,
+        "obsMeanKmh": 7.3,
+        "shownMeanKmh": 9.4,
+        "rawMeanKmh": 7,
+        "shownMinusObsKmh": 2.1,
+        "rawMinusObsKmh": -0.2
+      }
+    },
+    "LGKL": {
+      "name": "Καλαμάτα",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 9.9,
+        "shownMeanKmh": 11.1,
+        "rawMeanKmh": 8.7,
+        "shownMinusObsKmh": 1.2,
+        "rawMinusObsKmh": -1.2
+      },
+      "quiet": {
+        "days": 258,
+        "obsMeanKmh": 9.4,
+        "shownMeanKmh": 10.6,
+        "rawMeanKmh": 8.2,
+        "shownMinusObsKmh": 1.3,
+        "rawMinusObsKmh": -1.1
+      }
+    },
+    "LGAL": {
+      "name": "Αλεξανδρούπολη",
+      "allDays": {
+        "days": 290,
+        "obsMeanKmh": 13.1,
+        "shownMeanKmh": 14.1,
+        "rawMeanKmh": 11.8,
+        "shownMinusObsKmh": 1,
+        "rawMinusObsKmh": -1.4
+      },
+      "quiet": {
+        "days": 155,
+        "obsMeanKmh": 9.5,
+        "shownMeanKmh": 11,
+        "rawMeanKmh": 8.6,
+        "shownMinusObsKmh": 1.5,
+        "rawMinusObsKmh": -0.9
+      }
+    },
+    "LGKV": {
+      "name": "Καβάλα",
+      "allDays": {
+        "days": 97,
+        "obsMeanKmh": 8.7,
+        "shownMeanKmh": 10.5,
+        "rawMeanKmh": 8.1,
+        "shownMinusObsKmh": 1.8,
+        "rawMinusObsKmh": -0.6
+      },
+      "quiet": {
+        "days": 92,
+        "obsMeanKmh": 8.5,
+        "shownMeanKmh": 10.2,
+        "rawMeanKmh": 7.8,
+        "shownMinusObsKmh": 1.7,
+        "rawMinusObsKmh": -0.7
+      }
+    },
+    "LGTS": {
+      "name": "Θεσσαλονίκη",
+      "allDays": {
+        "days": 294,
+        "obsMeanKmh": 12,
+        "shownMeanKmh": 10.9,
+        "rawMeanKmh": 8.5,
+        "shownMinusObsKmh": -1.1,
+        "rawMinusObsKmh": -3.5
+      },
+      "quiet": {
+        "days": 267,
+        "obsMeanKmh": 11.3,
+        "shownMeanKmh": 10.3,
+        "rawMeanKmh": 7.9,
+        "shownMinusObsKmh": -1,
+        "rawMinusObsKmh": -3.4
+      }
+    },
+    "LGKC": {
+      "name": "Κύθηρα",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGML": {
+      "name": "Μήλος",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGLE": {
+      "name": "Λέρος",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGKP": {
+      "name": "Κάρπαθος",
+      "allDays": {
+        "days": 98,
+        "obsMeanKmh": 37.2,
+        "shownMeanKmh": 31.7,
+        "rawMeanKmh": 29.3,
+        "shownMinusObsKmh": -5.5,
+        "rawMinusObsKmh": -8
+      },
+      "quiet": {
+        "days": 6,
+        "obsMeanKmh": 18.1,
+        "shownMeanKmh": 15.8,
+        "rawMeanKmh": 13.4,
+        "shownMinusObsKmh": -2.3,
+        "rawMinusObsKmh": -4.7
+      }
+    },
+    "LGIK": {
+      "name": "Ικαρία",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGSY": {
+      "name": "Σκύρος",
+      "allDays": {
+        "days": 0
+      },
+      "quiet": {
+        "days": 0
+      }
+    },
+    "LGBL": {
+      "name": "Ν. Αγχίαλος",
+      "allDays": {
+        "days": 291,
+        "obsMeanKmh": 11,
+        "shownMeanKmh": 11,
+        "rawMeanKmh": 8.6,
+        "shownMinusObsKmh": 0,
+        "rawMinusObsKmh": -2.4
+      },
+      "quiet": {
+        "days": 283,
+        "obsMeanKmh": 10.8,
+        "shownMeanKmh": 10.9,
+        "rawMeanKmh": 8.5,
+        "shownMinusObsKmh": 0,
+        "rawMinusObsKmh": -2.4
+      }
+    },
+    "LGRX": {
+      "name": "Άραξος",
+      "allDays": {
+        "days": 293,
+        "obsMeanKmh": 6,
+        "shownMeanKmh": 10.9,
+        "rawMeanKmh": 8.5,
+        "shownMinusObsKmh": 4.9,
+        "rawMinusObsKmh": 2.5
+      },
+      "quiet": {
+        "days": 231,
+        "obsMeanKmh": 4.3,
+        "shownMeanKmh": 10.5,
+        "rawMeanKmh": 8.1,
+        "shownMinusObsKmh": 6.2,
+        "rawMinusObsKmh": 3.8
+      }
+    },
+    "TOTAL": {
+      "name": "όλα τα αεροδρόμια",
+      "allDays": {
+        "days": 5137,
+        "obsMeanKmh": 15.1,
+        "shownMeanKmh": 14.6,
+        "rawMeanKmh": 12.3,
+        "shownMinusObsKmh": -0.5,
+        "rawMinusObsKmh": -2.8
+      },
+      "quiet": {
+        "days": 3012,
+        "obsMeanKmh": 10.6,
+        "shownMeanKmh": 10.8,
+        "rawMeanKmh": 8.5,
+        "shownMinusObsKmh": 0.2,
+        "rawMinusObsKmh": -2
+      }
+    }
+  }
+}
