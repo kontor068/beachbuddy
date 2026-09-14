@@ -31,6 +31,15 @@ export type ChangelogEntry = {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-09-14',
+    tag: 'improved',
+    text: {
+      gr: 'Στους μικρούς κλειστούς όρμους το κύμα που δείχνουμε δεν ανεβαίνει πια στα 0,8 μέτρα μόνο και μόνο επειδή φυσάει: με λίγες εκατοντάδες μέτρα νερό μπροστά σου, ο αέρας δεν προλαβαίνει να χτίσει τέτοιο κύμα. Το ελέγξαμε με δορυφόρο σε πέντε καλοκαίρια — στις μέρες που λέγαμε 0,8 η άμμος ήταν το ίδιο ήσυχη με μια νήνεμη μέρα.',
+      en: 'In small enclosed coves the wave we show no longer climbs to 0.8 m just because the wind is up: with only a few hundred metres of water in front of you, the wind has no room to build a wave like that. We checked it against five summers of satellite images — on the days we were calling it 0.8 m, the sand was as quiet as on a windless day.',
+    },
+    short: { gr: 'Πιο αληθινό κύμα στους κλειστούς όρμους', en: 'A truer wave height in enclosed coves' },
+  },
+  {
     date: '2026-09-13',
     tag: 'new',
     text: {
