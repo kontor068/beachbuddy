@@ -49,6 +49,7 @@
  * βαρύτερα από το ύψος του) και για τον κανόνα της βροχής παρακάτω.
  */
 import { SEA_STATE_AMBER_M, seaStateSeverityM } from './waveCharacter';
+import { SWELL_SURGE_PERIOD_FLOOR_S } from './swellSurge';
 
 /**
  * Πάνω από τόσο νερό ΣΤΗΝ ΑΚΤΗ, το άθροισμα δικαιούται να αρνηθεί το μπάνιο.
@@ -113,6 +114,12 @@ export interface OverCautionReliefInput {
   officialWarning?: boolean;
   /** Αποθαλασσιά που έρχεται κατά πρόσωπο. */
   directSwell?: boolean;
+  /**
+   * Η ΠΕΡΙΟΔΟΣ αυτής της αποθαλασσιάς (s) — το `surgePeriodS` του score: κανάλι swell, αλλιώς
+   * κύματος. Χωρίς αυτήν (παλιοί καλούντες, άγνωστη περίοδος) η μετωπική αποθαλασσιά αρνείται την
+   * ανακούφιση όπως πριν — η άγνοια δεν είναι απόδειξη κοντού κύματος.
+   */
+  directSwellPeriodS?: number;
   /** Ποινή κυματισμού μεγάλης περιόδου· >0 σημαίνει «σκάει βαρύτερα από το ύψος του». */
   swellSurgePenalty?: number;
 }
@@ -128,10 +135,29 @@ export const relievesOverCaution = ({
   departingSea,
   officialWarning,
   directSwell,
+  directSwellPeriodS,
   swellSurgePenalty,
 }: OverCautionReliefInput): boolean => {
   if (officialWarning) return false;
-  if (directSwell) return false;
+  /**
+   * Η ΜΕΤΩΠΙΚΗ ΑΠΟΘΑΛΑΣΣΙΑ ΠΑΡΑΜΕΡΙΖΕΙ ΜΟΝΟ ΟΤΑΝ ΕΙΝΑΙ ΜΑΚΡΙΑ (14/09/2026, Πευκούλια #1169, βίβλος §Γ85).
+   *
+   * Η κεφαλίδα από την πρώτη μέρα λέει «παραμερίζει για αποθαλασσιά ΜΕΓΑΛΗΣ ΠΕΡΙΟΔΟΥ (0,5 μ. στα 8 s
+   * σκάει βαρύτερα από το ύψος του)». Ο κώδικας όμως αρνιόταν για ΚΑΘΕ μετωπική αποθαλασσιά, όποια κι
+   * αν ήταν η περίοδος. Πευκούλια 14/09 16:00: 0,54 μ. @ ~5 s ίσια μέσα, 2 Μποφόρ, άθροισμα ποινών 45
+   * → «μην κολυμπήσεις» — ενώ το ίδιο νερό στις 11:00 ήταν «πρόσεχε» και ο κανόνας «μισό μέτρο ίσια»
+   * (utils/seaArrival.straightInSeaCallsForCaution) ορίζει ακριβώς «πρόσεχε» γι' αυτή τη θάλασσα.
+   *
+   * ΤΟ ΟΡΙΟ ΔΕΝ ΕΙΝΑΙ ΚΑΙΝΟΥΡΓΙΟ: 6 s είναι το `SWELL_SURGE_PERIOD_FLOOR_S` του utils/swellSurge — εκεί
+   * όπου ο ίδιος ο κώδικας χωρίζει το κύμα ανέμου (≤6 s, «σκάει όσο το ύψος του») από τη φουσκοθαλασσιά
+   * εδάφους. Γιατί ΔΕΝ αρκεί η σκέτη ποινή μεγάλης περιόδου πιο κάτω: αυτή ανάβει μόνο από ύψος×βάρος
+   * ≥0,35 — το ίδιο το παράδειγμα της κεφαλίδας (0,5 μ. @ 8 s → 0,33) θα ξέφευγε. Άγνωστη περίοδος →
+   * άρνηση όπως πριν. Όλα τα άλλα φρένα (≥4 Μπφ, νερό ≥0,8 swell-equivalent, επίσημη) μένουν άθικτα, και
+   * η ανακούφιση μένει ένα σκαλί: «μην» → «πρόσεχε», ποτέ «καλή».
+   */
+  const shortPeriodSwell = typeof directSwellPeriodS === 'number' && Number.isFinite(directSwellPeriodS)
+    && directSwellPeriodS <= SWELL_SURGE_PERIOD_FLOOR_S;
+  if (directSwell && !shortPeriodSwell) return false;
   if (typeof swellSurgePenalty === 'number' && swellSurgePenalty > 0) return false;
   if (!Number.isFinite(beaufort) || !Number.isFinite(seaAtShoreM)) return false;
   if ((seaStateSeverityM(seaAtShoreM, periodS) ?? seaAtShoreM) >= OVER_CAUTION_MAX_SHORE_WAVE_M) return false;

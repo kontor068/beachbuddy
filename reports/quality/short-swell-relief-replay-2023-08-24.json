@@ -1,0 +1,27 @@
+{
+  "before": ".tmp/max-2023-08-24.json",
+  "after": ".tmp/door-2023-08-24.json",
+  "weather": "replay-2023-08-24",
+  "comparedHours": 25704,
+  "mildHoursBefore": 18326,
+  "stricterHours": 0,
+  "stricterPctOfAll": 0,
+  "milderHours": 391,
+  "milderPctOfAll": 1.52,
+  "netStricterPctOfAll": -1.52,
+  "stricterBeaches": 0,
+  "milderBeaches": 79,
+  "moves": {
+    "avoid_swimming→caution": 391
+  },
+  "printedShoreWave": {
+    "up": 0,
+    "down": 0,
+    "unchanged": 25704,
+    "meanDeltaM": 0,
+    "histogram": {
+      "0,0": 25704
+    }
+  },
+  "topRegionsStricter": []
+}

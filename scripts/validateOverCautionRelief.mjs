@@ -86,6 +86,17 @@ check('5 μετωπική αποθαλασσιά',
 check('5 κυματισμός μεγάλης περιόδου',
   relievesOverCaution({ ...calm, departingSea: true, swellSurgePenalty: 1 }) === false,
   'ανακουφίστηκε με ποινή κυματισμού μεγάλης περιόδου');
+// 5β — Η ΜΕΤΩΠΙΚΗ ΑΠΟΘΑΛΑΣΣΙΑ ΚΡΙΝΕΤΑΙ ΜΕ ΤΗΝ ΠΕΡΙΟΔΟ ΤΗΣ (14/09/2026, Πευκούλια 16:00, §Γ85). Η
+// κεφαλίδα έλεγε πάντα «μεγάλης περιόδου»· ο κώδικας αρνιόταν για κάθε περίοδο. Όριο = 6 s, το
+// SWELL_SURGE_PERIOD_FLOOR_S του utils/swellSurge. Άγνωστη περίοδος → άρνηση (όπως πριν, και όπως το '5' πιο πάνω).
+check('5β κοντό κύμα ίσια', relievesOverCaution({ ...calm, seaAtShoreM: 0.54, directSwell: true, directSwellPeriodS: 4.7 }) === true,
+  'δεν ανακουφίστηκε μετωπική αποθαλασσιά 0,54 μ. @ 4,7 s στα 3 Μποφόρ — κύμα ανέμου, όχι φουσκοθαλασσιά εδάφους');
+check('5β όριο 6 s', relievesOverCaution({ ...calm, directSwell: true, directSwellPeriodS: 6 }) === true,
+  'δεν ανακουφίστηκε στα 6,0 s — το όριο είναι «έως και SWELL_SURGE_PERIOD_FLOOR_S»');
+check('5β μακρύ κύμα ίσια', relievesOverCaution({ ...calm, seaAtShoreM: 0.5, directSwell: true, directSwellPeriodS: 8 }) === false,
+  'ανακουφίστηκε 0,5 μ. @ 8 s ίσια μέσα — το ίδιο το παράδειγμα της κεφαλίδας (σκάει βαρύτερα από το ύψος του)');
+check('5β άγνωστη περίοδος', relievesOverCaution({ ...calm, directSwell: true, directSwellPeriodS: NaN }) === false,
+  'ανακουφίστηκε μετωπική αποθαλασσιά χωρίς γνωστή περίοδο — η άγνοια δεν είναι απόδειξη κοντού κύματος');
 
 // 6 — ΤΑ ΣΚΟΥΠΙΔΙΑ ΔΕΝ ΑΝΑΚΟΥΦΙΖΟΥΝ. Σιωπή είναι η ασφαλής απάντηση.
 for (const bad of [undefined, null, NaN, Infinity]) {
@@ -126,6 +137,9 @@ check('καλωδίωση απόδειξη', /departingSea:[\s\S]{0,200}shoreWav
 check('καλωδίωση περίοδος', /periodS:\s*seaStatePeriodS/.test(call),
   'η κλήση δεν περνάει το `seaStatePeriodS` — το κατώφλι θα συγκρίνει ύψος ενώ το χρώμα '
   + 'συγκρίνει swell-equivalent, και το κοντόκυμα θα παίρνει ανακούφιση που το χρώμα αρνείται');
+check('καλωδίωση περίοδος αποθαλασσιάς', /directSwellPeriodS:\s*surgePeriodS/.test(call),
+  'η κλήση δεν περνάει το `surgePeriodS` ως `directSwellPeriodS` — κάθε μετωπική αποθαλασσιά θα '
+  + 'κρινόταν «άγνωστης περιόδου» και η διόρθωση της 14/09 (Πευκούλια 16:00) θα έμενε νεκρή');
 check('καλωδίωση ένα σκαλί',
   /isLightWindSmallSea && swimmingComfort === 'avoid_swimming'\)\s*\{\s*\n\s*swimmingComfort = 'caution';/.test(service),
   'η ανακούφιση δεν είναι πια «μόνο avoid_swimming → caution» — μπορεί να δώσει παραπάνω από ένα σκαλί');

@@ -2974,6 +2974,9 @@ export const calculateBeachScore = (
     departingSea: shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM,
     officialWarning: officialWarningOverride,
     directSwell,
+    // Η περίοδος της ΙΔΙΑΣ αποθαλασσιάς (κανάλι swell, αλλιώς κύματος) — η μετωπική αποθαλασσιά
+    // αρνείται την ανακούφιση μόνο όταν είναι μακριά (>6 s) ή άγνωστη (14/09/2026, §Γ85).
+    directSwellPeriodS: surgePeriodS,
     swellSurgePenalty,
   });
   if (isLightWindSmallSea && swimmingComfort === 'avoid_swimming') {

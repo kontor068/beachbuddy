@@ -1,0 +1,27 @@
+{
+  "before": ".tmp/max-today.json",
+  "after": ".tmp/door-today.json",
+  "weather": "2026-09-14",
+  "comparedHours": 25704,
+  "mildHoursBefore": 17391,
+  "stricterHours": 0,
+  "stricterPctOfAll": 0,
+  "milderHours": 480,
+  "milderPctOfAll": 1.87,
+  "netStricterPctOfAll": -1.87,
+  "stricterBeaches": 0,
+  "milderBeaches": 154,
+  "moves": {
+    "avoid_swimming→caution": 480
+  },
+  "printedShoreWave": {
+    "up": 0,
+    "down": 0,
+    "unchanged": 25704,
+    "meanDeltaM": 0,
+    "histogram": {
+      "0,0": 25704
+    }
+  },
+  "topRegionsStricter": []
+}
