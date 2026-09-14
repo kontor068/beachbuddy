@@ -462,7 +462,22 @@ export interface ShoreWaveInput {
   windSpeedKmh?: number;
   /** The live wind sector's committed geometry. */
   sector?: { fetchKm?: number; blockedRayRatio?: number; onshore?: number } | null;
-  /** Profile confidence — only 'high' may produce a calm claim. */
+  /**
+   * Profile confidence — only 'high' may produce a calm claim.
+   *
+   * ⚠️ ΜΕΤΡΗΘΗΚΕ 14/09/2026: αυτή η πύλη ΔΕΝ ΕΧΕΙ ΚΟΨΕΙ ΠΟΤΕ ΤΙΠΟΤΑ, και δεν πρόκειται. Το πεδίο
+   * γεμίζει από το `landMask.confidence` (`scripts/geospatialExposureProfiles.ts:540`) — την
+   * εμπιστοσύνη του ΧΑΡΤΗ ΣΤΕΡΙΑΣ, που είναι μία καθολική τιμή, όχι ιδιότητα της παραλίας. Έλεγχος
+   * και στα 110 αρχεία: **2.872 από 2.872 προφίλ έχουν `'high'`**, καμία άλλη τιμή. Άρα μην τη
+   * διαβάσεις ως δικλείδα «αυτή η παραλία έχει ύποπτη γεωμετρία» — δεν είναι.
+   *
+   * Η ΠΡΑΓΜΑΤΙΚΗ πύλη ανά παραλία είναι η `suspectPin` από κάτω, που όντως ανάβει (5 παραλίες μέσω
+   * `utils/windProfileOverrides`: 1519, 1526, 1543, 1742, 1846). Η `confidence` μένει γιατί φυλάει
+   * κάτι αληθινό αλλά ΑΛΛΟ: αν ποτέ ξαναχτιστεί ο χάρτης στεριάς σε χαμηλότερη ανάλυση, σβήνει
+   * ΚΑΘΕ ισχυρισμό ηρεμίας μονομιάς. Μην την «ζωντανέψεις» εφευρίσκοντας κατώφλι εμπιστοσύνης ανά
+   * παραλία: ένα κατώφλι χωρίς προέλευση είναι ακριβώς το εύρημα που η αξιολόγηση 12/09 χρέωσε
+   * στη γεωμετρία (33/60 κατώφλια χωρίς πηγή). Νήμα 23 στο `EPOMENA-NHMATA.md`.
+   */
   confidence?: string;
   suspectPin?: boolean;
   /**

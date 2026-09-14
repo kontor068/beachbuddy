@@ -35,6 +35,12 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rel = (p) => path.relative(root, p).replace(/\\/g, '/');
 const readJson = (p) => (existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : null);
+// Μικρό glob χωρίς εξάρτηση: το Node 22 έχει fs.globSync, αλλά κρατάμε συμβατότητα με readdirSync.
+const globSync = (pattern) => {
+  const dir = path.dirname(pattern), base = path.basename(pattern);
+  const rx = new RegExp(`^${base.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`);
+  try { return readdirSync(path.join(root, dir)).filter(f => rx.test(f)).map(f => `${dir}/${f}`); } catch { return []; }
+};
 const DAY_MS = 86_400_000;
 const today = new Date();
 const todayKey = today.toISOString().slice(0, 10);
@@ -97,14 +103,28 @@ if (fb?.counts?.feedback && fb.window?.first && fb.window?.last) {
   row4 = { key: 'onSiteFeedbackPerWeek', label: 'Σχόλια από την άμμο ανά εβδομάδα', value: null, note: 'τρέξε scripts/exportFeedbackFromBlobs.mjs και φτιάξε reports/feedback/calibration-<μέρα>.json', breached: null };
 }
 
-// 5 — η μετατόπιση που κανείς δεν άθροισε (§ΑΞ1/Α7)
-const row5 = {
+// 5 — η μετατόπιση που κανείς δεν άθροισε (§ΑΞ1/Α7) — ΜΕΤΡΗΘΗΚΕ ΠΡΩΤΗ ΦΟΡΑ 14/09/2026
+// `scripts/measureConservatismDrift.mjs`: ο ΙΔΙΟΣ καιρός (ηχογραφημένος ανά σημείο) και τα ΙΔΙΑ δεδομένα
+// περνούν από τον κώδικα της 05/08 (commit 23828152, worktree με junction στο σημερινό public/data) και από
+// τον σημερινό, και συγκρίνεται η ετυμηγορία κολύμβησης ανά παραλία-μέρα. Θετικό = γίναμε αυστηρότεροι.
+const driftFile = [...globSync('reports/quality/conservatism-drift-*.json')].sort().pop() ?? null;
+const drift = driftFile ? readJson(path.join(root, driftFile)) : null;
+const row5 = drift ? {
   key: 'conservatismDrift', label: 'Μετατόπιση συντηρητισμού από το κλείδωμα (05/08)',
-  what: '% παραλιών-ωρών που το σημερινό χρώμα είναι πιο σκούρο από του κώδικα της 05/08, σε 2 μέρες replay (ήρεμη + μελτέμι)',
-  value: null, note: 'ΔΕΝ ΜΕΤΡΗΘΗΚΕ ΠΟΤΕ — ζητήθηκε 21/08 (§ΑΞ1/Α7), μετράει η Δ6 (βίβλος §Γ81)',
+  what: '% παραλιών-ημερών που η σημερινή ετυμηγορία είναι αυστηρότερη από του κώδικα της 05/08, με ΙΔΙΟ καιρό και ΙΔΙΑ δεδομένα (καθαρή = αυστηρότερα − ηπιότερα)',
+  value: drift.netDriftPct, stricterPct: drift.stricterPct, milderPct: drift.milderPct,
+  n: drift.comparedBeachDays, meanScoreDeltaPoints: drift.meanScoreDeltaPoints,
+  measuredAt: drift.generatedAt, source: driftFile,
+  note: drift.netDriftPct <= 0
+    ? `η μετατόπιση είναι προς το ΗΠΙΟΤΕΡΟ (${drift.milderPct}% ηπιότερα έναντι ${drift.stricterPct}% αυστηρότερα) — το όριο φυλάει την άλλη κατεύθυνση`
+    : `${drift.stricterPct}% αυστηρότερα έναντι ${drift.milderPct}% ηπιότερα`,
+  redLine: `>${RED.driftPct}%/μήνα`, breached: drift.netDriftPct > RED.driftPct,
+} : {
+  key: 'conservatismDrift', label: 'Μετατόπιση συντηρητισμού από το κλείδωμα (05/08)',
+  what: '% παραλιών-ημερών που η σημερινή ετυμηγορία είναι αυστηρότερη από του κώδικα της 05/08',
+  value: null, note: 'τρέξε scripts/measureConservatismDrift.mjs (record → replay → compare)',
   redLine: `>${RED.driftPct}%/μήνα`, breached: null,
 };
-
 // 6 — πόσο παλιά είναι η πιο παλιά εξωτερική μέτρηση
 const buoyFile = path.join(root, 'reports/wave-model/buoy-comparison.json');
 const buoy = readJson(buoyFile);

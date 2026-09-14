@@ -1,0 +1,282 @@
+{
+  "generatedAt": "2026-09-14T07:22:23.077Z",
+  "baseline": {
+    "file": ".tmp/drift-0508.json",
+    "label": "κώδικας 05/08/2026",
+    "commit": "23828152"
+  },
+  "current": {
+    "file": ".tmp/drift-today.json",
+    "label": "σημερινός κώδικας",
+    "commit": "dba5a06d"
+  },
+  "comparedBeachDays": 5712,
+  "onlyInBaseline": 0,
+  "onlyInCurrent": 0,
+  "stricter": 773,
+  "milder": 1347,
+  "same": 3592,
+  "stricterPct": 13.53,
+  "milderPct": 23.58,
+  "netDriftPct": -10.05,
+  "meanScoreDeltaPoints": 1.63,
+  "moves": {
+    "good→excellent": 679,
+    "good→caution": 416,
+    "avoid_swimming→caution": 372,
+    "caution→good": 239,
+    "excellent→good": 176,
+    "good→avoid_swimming": 121,
+    "avoid_swimming→good": 48,
+    "excellent→caution": 36,
+    "caution→avoid_swimming": 24,
+    "caution→excellent": 9
+  },
+  "examples": {
+    "stricter": [
+      {
+        "beachId": 81,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "avoid_swimming",
+        "score": 45,
+        "total": null,
+        "was": "good",
+        "scoreWas": 76
+      },
+      {
+        "beachId": 93,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "avoid_swimming",
+        "score": 45,
+        "total": null,
+        "was": "good",
+        "scoreWas": 73
+      },
+      {
+        "beachId": 94,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "avoid_swimming",
+        "score": 45,
+        "total": null,
+        "was": "good",
+        "scoreWas": 76
+      },
+      {
+        "beachId": 95,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 84,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 96,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 84,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 97,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 83,
+        "total": null,
+        "was": "good",
+        "scoreWas": 83
+      },
+      {
+        "beachId": 98,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 82,
+        "total": null,
+        "was": "good",
+        "scoreWas": 82
+      },
+      {
+        "beachId": 99,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 73,
+        "total": null,
+        "was": "good",
+        "scoreWas": 73
+      },
+      {
+        "beachId": 100,
+        "regionId": "attica-agistri",
+        "day": 0,
+        "verdict": "caution",
+        "score": 70,
+        "total": null,
+        "was": "good",
+        "scoreWas": 70
+      },
+      {
+        "beachId": 97,
+        "regionId": "attica-agistri",
+        "day": 1,
+        "verdict": "avoid_swimming",
+        "score": 45,
+        "total": null,
+        "was": "caution",
+        "scoreWas": 66
+      },
+      {
+        "beachId": 99,
+        "regionId": "attica-agistri",
+        "day": 1,
+        "verdict": "avoid_swimming",
+        "score": 45,
+        "total": null,
+        "was": "caution",
+        "scoreWas": 64
+      },
+      {
+        "beachId": 16,
+        "regionId": "attica-athens-area-mainland",
+        "day": 1,
+        "verdict": "caution",
+        "score": 66,
+        "total": null,
+        "was": "good",
+        "scoreWas": 94
+      }
+    ],
+    "milder": [
+      {
+        "beachId": 80,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 82,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 83,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 83
+      },
+      {
+        "beachId": 84,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 97,
+        "total": null,
+        "was": "good",
+        "scoreWas": 81
+      },
+      {
+        "beachId": 85,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 98,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 89,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 90,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 94,
+        "total": null,
+        "was": "good",
+        "scoreWas": 82
+      },
+      {
+        "beachId": 91,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 92,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 98,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 3022,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 94,
+        "total": null,
+        "was": "good",
+        "scoreWas": 80
+      },
+      {
+        "beachId": 3024,
+        "regionId": "attica-aegina",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 94,
+        "total": null,
+        "was": "good",
+        "scoreWas": 82
+      },
+      {
+        "beachId": 83,
+        "regionId": "attica-aegina",
+        "day": 1,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 89
+      }
+    ]
+  },
+  "reading": "netDriftPct > 0 σημαίνει ότι ο σημερινός κώδικας λέει «χειρότερα» πιο συχνά απ᾽ ό,τι ο παλιός, στον ΙΔΙΟ καιρό και στα ΙΔΙΑ δεδομένα."
+}

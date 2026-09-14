@@ -107,5 +107,120 @@
     "breached": [
       "daysSinceExternalCheck"
     ]
+  },
+  {
+    "date": "2026-09-14",
+    "generatedAt": "2026-09-14T07:23:25.798Z",
+    "rows": [
+      {
+        "key": "severeFalseCalmWind",
+        "label": "Βαριά ψεύτικη ηρεμία ανέμου",
+        "what": "μπλε πινέζα εκεί που το ανεμόμετρο δίνει πορτοκαλί/κόκκινο, 06-16 UTC, 3 επίπεδα έκθεσης",
+        "value": 1.9,
+        "count": 14,
+        "n": 730,
+        "window": "2026-09-08→2026-09-11",
+        "stations": 25,
+        "measuredAt": "2026-09-12T13:55:04.842Z",
+        "source": "reports/weather/station-truth-latest.json",
+        "redLine": ">10%",
+        "breached": false
+      },
+      {
+        "key": "falseAlarmWind",
+        "label": "Ψεύτικος συναγερμός ανέμου",
+        "what": "πορτοκαλί/κόκκινη πινέζα εκεί που το ανεμόμετρο δίνει μπλε, ίδιες ώρες και επίπεδα",
+        "value": 0.8,
+        "count": 12,
+        "n": 1587,
+        "window": "2026-09-08→2026-09-11",
+        "stations": 25,
+        "measuredAt": "2026-09-12T13:55:04.842Z",
+        "source": "reports/weather/station-truth-latest.json",
+        "redLine": ">12%",
+        "breached": false
+      },
+      {
+        "key": "shoreFalseCalm",
+        "label": "Ψεύτικη ηρεμία στην άμμο",
+        "what": "μέρες που τυπώνουμε ≤0,3 μ. και ο Sentinel-2 βλέπει αφρό στη λωρίδα 20-30 μ. (με έλεγχο SWIR στους υποψήφιους)",
+        "value": 1.2,
+        "count": 178,
+        "n": 14705,
+        "baseline": "εντελώς ήρεμες μέρες: 1% (270/26845)",
+        "measuredAt": "2026-09-10T21:53:47.207039+00:00",
+        "source": "reports/wave-model/shore-surf-national.json",
+        "redLine": ">3%",
+        "breached": false
+      },
+      {
+        "key": "onSiteFeedbackPerWeek",
+        "label": "Σχόλια από την άμμο ανά εβδομάδα",
+        "what": "εγγραφές f/ που δηλώνουν «τώρα είμαι εδώ» (ή live:true) — ο μόνος κριτής της ετυμηγορίας",
+        "value": 3.09,
+        "count": 19,
+        "n": 50,
+        "weeks": 6.1,
+        "negativeShare": 0.62,
+        "window": "2026-07-31→2026-09-12",
+        "measuredAt": "2026-09-12T13:40Z",
+        "source": "reports/feedback/calibration-2026-09-12.json",
+        "redLine": "<1/εβδ",
+        "breached": false
+      },
+      {
+        "key": "conservatismDrift",
+        "label": "Μετατόπιση συντηρητισμού από το κλείδωμα (05/08)",
+        "what": "% παραλιών-ημερών που η σημερινή ετυμηγορία είναι αυστηρότερη από του κώδικα της 05/08, με ΙΔΙΟ καιρό και ΙΔΙΑ δεδομένα (καθαρή = αυστηρότερα − ηπιότερα)",
+        "value": -10.05,
+        "stricterPct": 13.53,
+        "milderPct": 23.58,
+        "n": 5712,
+        "meanScoreDeltaPoints": 1.63,
+        "measuredAt": "2026-09-14T07:22:23.077Z",
+        "source": "reports/quality/conservatism-drift-2026-09-14.json",
+        "note": "η μετατόπιση είναι προς το ΗΠΙΟΤΕΡΟ (23.58% ηπιότερα έναντι 13.53% αυστηρότερα) — το όριο φυλάει την άλλη κατεύθυνση",
+        "redLine": ">10%/μήνα",
+        "breached": false
+      },
+      {
+        "key": "daysSinceExternalCheck",
+        "label": "Μέρες από την πιο παλιά εξωτερική μέτρηση",
+        "what": "η μεγαλύτερη ηλικία ανάμεσα σε ανεμόμετρα, δορυφόρο, σημαδούρες, σχόλια",
+        "value": 45,
+        "oldest": "σημαδούρες ΕΛΚΕΘΕ",
+        "byJudge": [
+          {
+            "judge": "ανεμόμετρα (METAR)",
+            "at": "2026-09-12T13:55:04.842Z",
+            "source": "reports/weather/station-truth-latest.json",
+            "days": 2
+          },
+          {
+            "judge": "δορυφόρος στην άμμο (Sentinel-2)",
+            "at": "2026-09-10T21:53:47.207039+00:00",
+            "source": "reports/wave-model/shore-surf-national.json",
+            "days": 3
+          },
+          {
+            "judge": "σημαδούρες ΕΛΚΕΘΕ",
+            "at": "2026-07-31T12:26:16.038744+00:00",
+            "source": "reports/wave-model/buoy-comparison.json",
+            "days": 45
+          },
+          {
+            "judge": "σχόλια επισκεπτών",
+            "at": "2026-09-12T13:40Z",
+            "source": "reports/feedback/calibration-2026-09-12.json",
+            "days": 2
+          }
+        ],
+        "redLine": ">30 μέρες",
+        "breached": true
+      }
+    ],
+    "breached": [
+      "daysSinceExternalCheck"
+    ]
   }
 ]
