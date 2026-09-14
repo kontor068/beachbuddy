@@ -38,7 +38,58 @@ import type { OverWaterWindByTime, OverWaterWindHour } from '../utils/overWaterW
 // means more honestly-labelled data, never more silently-old data.
 export const FRESH_TTL_MS = 60 * 60 * 1000;           // 60 min — matches Open-Meteo refresh cadence
 export const SOFT_STALE_LIMIT_MS = 12 * 60 * 60 * 1000; // 12 h — hard cutoff; older is never served
-const WEATHER_REQUEST_TIMEOUT_MS = 8000;
+// LONGER THAN THE EDGE PROXY'S OWN WAIT, ON PURPOSE (14/09/2026).
+//
+// netlify/functions/forecast.mjs gives Open-Meteo UPSTREAM_TIMEOUT_MS = 8000 and then
+// answers from its last-good store (FALLBACK_STORE) instead of an error. This was also
+// 8000, and it starts counting EARLIER (before the request even reaches the proxy), so in
+// exactly the case the rescue exists for — a slow provider — the browser had already given
+// up by the time the rescued forecast was on its way. 12 s leaves room for the proxy's 8 s,
+// its store read and a slow mobile link back.
+const WEATHER_REQUEST_TIMEOUT_MS = 12000;
+
+/** A forecast response that arrived but was not a 2xx. Carries the status for classification. */
+export class WeatherHttpError extends Error {
+  readonly status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = 'WeatherHttpError';
+    this.status = status;
+  }
+}
+
+/**
+ * Why a forecast request failed, in words an analytics row can be grouped by.
+ *
+ * Measured 17/08–13/09/2026 (GA): 81 of 2.601 visitors (3%) saw "conditions unavailable",
+ * every single day, spread over 37 regions, twice as often on iPhone Safari (4,3%) as on
+ * Android Chrome (2,0%) — and the event never said why. This is the why.
+ */
+export type WeatherFailureKind =
+  | 'timeout'      // our own abort fired — slow link or slow provider
+  | 'offline'      // the browser itself says there is no network
+  | 'network'      // the request died on the way (iOS "Load failed" after an app switch or a network change)
+  | 'rate_limited' // 429 from our proxy's per-IP net
+  | 'server'       // 5xx — the proxy failed and had nothing to rescue with
+  | 'refused'      // any other non-2xx
+  | 'bad_data'     // a 200 whose body we could not use
+  | 'other';
+
+export const classifyWeatherFailure = (reason: unknown): WeatherFailureKind => {
+  if (reason instanceof WeatherHttpError) {
+    if (reason.status === 429) return 'rate_limited';
+    if (reason.status >= 500) return 'server';
+    return 'refused';
+  }
+  const name = reason instanceof Error ? reason.name : '';
+  if (name === 'AbortError') return 'timeout';
+  if (name === 'SyntaxError') return 'bad_data';
+  if (reason instanceof TypeError) {
+    return typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'network';
+  }
+  if (reason instanceof Error && /missing hourly data|carried no hours/.test(reason.message)) return 'bad_data';
+  return 'other';
+};
 
 /** A forecast payload plus the real epoch-ms time its data was fetched from Open-Meteo. */
 export interface FetchResult<T> {
@@ -288,7 +339,7 @@ const fetchJson = async <T>(url: string, source: string): Promise<T> => {
     });
 
     if (!response.ok) {
-      throw new Error(`${source} fetch failed: ${response.status} ${response.statusText}`);
+      throw new WeatherHttpError(response.status, `${source} fetch failed: ${response.status} ${response.statusText}`);
     }
 
     // Clear first, so a live response after a rescued one never keeps the old age.

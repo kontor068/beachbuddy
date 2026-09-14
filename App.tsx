@@ -1686,7 +1686,7 @@ export const App: React.FC = () => {
     [allIslands],
   );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked, isEveningHandover } = useWeather(selectedIsland, language);
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, errorKind: weatherErrorKind, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked, isEveningHandover } = useWeather(selectedIsland, language);
   // Said out loud whenever the evening cutoff moved the page to tomorrow — see the render site
   // in the recommendation section.
   const eveningHandoverNote = getLocalizedCopy(language, {
@@ -5981,8 +5981,11 @@ export const App: React.FC = () => {
     trackEvent('weather_fallback_shown', undefined, {
       ...analyticsBaseParams,
       weather_mode: 'fallback',
+      // Why it failed (timeout / network / offline / server / rate_limited / …) — see
+      // classifyWeatherFailure. Needs the GA custom dimension `error_kind` to be readable.
+      error_kind: weatherErrorKind ?? 'unknown',
     });
-  }, [analyticsBaseParams, selectedIsland, weatherError]);
+  }, [analyticsBaseParams, selectedIsland, weatherError, weatherErrorKind]);
 
   const calmAllAroundSummary = useMemo(() => {
     const selectedForecast = forecast?.[selectedDayIndex];

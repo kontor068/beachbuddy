@@ -11,7 +11,22 @@ import {
   mergeMarineForecastData,
   FRESH_TTL_MS,
   SOFT_STALE_LIMIT_MS,
+  classifyWeatherFailure,
+  type WeatherFailureKind,
 } from '../services/weatherService';
+
+/**
+ * ONE QUIET SECOND TRY BEFORE "CONDITIONS UNAVAILABLE" (14/09/2026).
+ *
+ * There was none. A single dropped request — an iPhone that cut the connection because the
+ * visitor switched apps, a phone hopping from hotel WiFi to 4G on the way to the beach — left
+ * the fallback on screen until someone pressed retry, and in four weeks six people did
+ * (GA 17/08–13/09: 81 saw the fallback, `weather_retry_clicked` 6). Only the failures that are
+ * usually gone a second later earn the retry: a timeout has already cost the visitor 12 s, a
+ * 429 would meet the same per-IP window, and a bad body will be bad again.
+ */
+const WEATHER_AUTO_RETRY_DELAY_MS = 1500;
+const isQuickRetryWorthwhile = (kind: WeatherFailureKind): boolean => kind === 'network' || kind === 'server';
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
 import { applyForecastUncertaintyToDays, type UncertainByDay } from '../utils/forecastUncertainty';
 import { fetchForecastUncertainty } from '../services/ensembleSpreadService';
@@ -442,6 +457,8 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   const [beachForecastsLoading, setBeachForecastsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Why `error` is set — travels to analytics with the fallback event. Null whenever error is.
+  const [errorKind, setErrorKind] = useState<WeatherFailureKind | null>(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   // Real fetch time of the region forecast in state — the single source of truth for the
@@ -477,6 +494,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
 
     setLoading(true);
     setError(null);
+    setErrorKind(null);
     setBeachForecasts({});
     setBeachForecastsLoading(false);
 
@@ -509,7 +527,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     // wave figure painted is already each beach's own. It runs CONCURRENTLY with the three legs
     // that were always here and resolves against a timeout, so it can delay first paint by at
     // most PER_BEACH_MARINE_PROFILE_TIMEOUT_MS and normally by nothing at all.
-    const [weatherResult, forecastResult, marineResult, beachMarineResult] = await Promise.allSettled([
+    const fetchAllLegs = () => Promise.allSettled([
       fetchWeatherData(lat, lon),
       fetchForecastData(lat, lon),
       fetchMarineForecastData(marinePoint.lat, marinePoint.lon)
@@ -521,7 +539,17 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       loadBeachMarine(selectedIsland, marinePoint, { timeoutMs: PER_BEACH_MARINE_PROFILE_TIMEOUT_MS }),
     ]);
 
+    let [weatherResult, forecastResult, marineResult, beachMarineResult] = await fetchAllLegs();
     if (requestIdRef.current !== requestId) return;
+
+    // The quiet second try (see WEATHER_AUTO_RETRY_DELAY_MS). Legs that succeeded come back
+    // from the in-memory cache, so this re-asks only for what actually failed.
+    if (forecastResult.status === 'rejected' && isQuickRetryWorthwhile(classifyWeatherFailure(forecastResult.reason))) {
+      await new Promise(resolve => window.setTimeout(resolve, WEATHER_AUTO_RETRY_DELAY_MS));
+      if (requestIdRef.current !== requestId) return;
+      [weatherResult, forecastResult, marineResult, beachMarineResult] = await fetchAllLegs();
+      if (requestIdRef.current !== requestId) return;
+    }
 
     // Set before the forecast below, so React commits both in one render and the wave figure is
     // never painted from the region cell first. A null here is not a failure: the region's own
@@ -572,11 +600,16 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
         hasCurrentWeather: weatherResult.status === 'fulfilled',
         hasForecast: forecastResult.status === 'fulfilled',
       });
+      const failedReason = forecastResult.status === 'rejected'
+        ? forecastResult.reason
+        : weatherResult.status === 'rejected' ? weatherResult.reason : undefined;
+      setErrorKind(classifyWeatherFailure(failedReason));
       setError(weatherFallbackMessage[language]);
       return;
     }
 
     setError(null);
+    setErrorKind(null);
 
     const islandForBackgroundForecasts = selectedIsland;
 
@@ -634,6 +667,37 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setLoading(false);
     }
   }, [selectedIsland, loadWeatherData]);
+
+  /**
+   * COME BACK AND IT FIXES ITSELF (14/09/2026).
+   *
+   * The failure this app sees most is not a broken provider, it is a phone: iOS kills in-flight
+   * requests when Safari goes to the background or the network changes, which is why iPhone
+   * Safari hit the fallback twice as often as Android Chrome. The visitor then returns to a page
+   * that says "conditions unavailable" and stays that way. So when the page becomes visible
+   * again, or the browser reports the network is back, and the weather is in its failed state,
+   * load it again. Nothing happens on a healthy page — tab switches do not refetch.
+   */
+  const errorRef = useRef<string | null>(null);
+  const loadingRef = useRef(false);
+  useEffect(() => { errorRef.current = error; }, [error]);
+  useEffect(() => { loadingRef.current = loading; }, [loading]);
+  useEffect(() => {
+    const retryIfFailed = () => {
+      if (!errorRef.current || loadingRef.current) return;
+      if (document.visibilityState === 'hidden') return;
+      void loadWeatherData();
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') retryIfFailed();
+    };
+    window.addEventListener('online', retryIfFailed);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      window.removeEventListener('online', retryIfFailed);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, [loadWeatherData]);
 
   /**
    * ΤΟ ΦΡΕΝΟ ΤΗΣ ΑΒΕΒΑΙΟΤΗΤΑΣ — ΜΙΑ ΚΛΗΣΗ ΑΝΑ ΠΕΡΙΟΧΗ (§ΑΞ2/Α5, 21/08/2026).
@@ -728,6 +792,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     beachForecastsLoading,
     loading,
     error,
+    errorKind,
     selectedDayIndex,
     setSelectedDayIndex: selectDayIndex,
     loadWeatherData,
