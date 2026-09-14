@@ -17,7 +17,8 @@
  *   4. reports/feedback/calibration-*.json (νεότερο)   άνθρωποι στην άμμο: σχόλια επιτόπου ανά εβδομάδα
  *   5. —                                                μετατόπιση συντηρητισμού vs 05/08 (§ΑΞ1/Α7): ΔΕΝ ΜΕΤΡΗΘΗΚΕ ΠΟΤΕ — μένει κενό
  *                                                      επίτηδες ώστε να φαίνεται, ως τη Δ6
- *   6. οι ημερομηνίες των 1-4 + σημαδούρες             μέρες από την τελευταία εξωτερική μέτρηση (η μεγαλύτερη)
+ *   6. οι ημερομηνίες των 1-4 + κύμα ανοιχτά           μέρες από την τελευταία εξωτερική μέτρηση (η μεγαλύτερη)· κύμα ανοιχτά =
+ *                                                      ο νεότερος από σημαδούρες ΕΛΚΕΘΕ / δορυφορικά αλτίμετρα (14/09/2026)
  *
  * ΤΙ ΓΡΑΦΕΙ:
  *   reports/quality/honesty-scorecard.json                 append-only ιστορικό (μία γραμμή ανά μέρα· ίδια μέρα = αντικατάσταση)
@@ -128,16 +129,28 @@ const row5 = drift ? {
 // 6 — πόσο παλιά είναι η πιο παλιά εξωτερική μέτρηση
 const buoyFile = path.join(root, 'reports/wave-model/buoy-comparison.json');
 const buoy = readJson(buoyFile);
+// ΚΥΜΑ ΑΝΟΙΧΤΑ: Ο ΠΙΟ ΦΡΕΣΚΟΣ ΑΠΟ ΤΟΥΣ ΔΥΟ ΚΡΙΤΕΣ (14/09/2026, βίβλος §Γ85). Οι σημαδούρες του ΕΛΚΕΘΕ σώπασαν
+// (Ηράκλειο 16/07/2026)· με «η μεγαλύτερη ηλικία» αυτός ο αριθμός θα έμενε κόκκινος για πάντα, όχι επειδή
+// δεν ελέγχουμε αλλά επειδή ένα συγκεκριμένο όργανο χάλασε. Τα δορυφορικά αλτίμετρα κρίνουν το ΙΔΙΟ μέγεθος
+// (σημαντικό ύψος στην ανοιχτή θάλασσα) — scripts/auditWaveModelAgainstAltimetry.py. Ο κριτής γράφει αναφορά
+// ΜΟΝΟ με ≥200 συγκρίσεις, οπότε ημερομηνία εδώ = πραγματική μέτρηση, ποτέ άδειο τρέξιμο.
+const altimetryFile = path.join(root, 'reports/wave-model/altimetry-comparison.json');
+const altimetry = readJson(altimetryFile);
+const openSeaJudges = [
+  { judge: 'κύμα ανοιχτά: σημαδούρες ΕΛΚΕΘΕ', at: buoy?.generatedAt ?? null, source: buoy ? rel(buoyFile) : null },
+  { judge: 'κύμα ανοιχτά: δορυφορικά αλτίμετρα', at: altimetry?.generatedAt ?? null, source: altimetry ? rel(altimetryFile) : null },
+].filter(j => j.at).sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
+const openSea = openSeaJudges[0] ?? { judge: 'κύμα ανοιχτά', at: null, source: null };
 const ages = [
   { judge: 'ανεμόμετρα (METAR)', at: st?.generatedAt ?? null, source: st ? rel(stationsFile) : null },
   { judge: 'δορυφόρος στην άμμο (Sentinel-2)', at: s2?.generatedFrom ?? null, source: s2 ? rel(s2File) : null },
-  { judge: 'σημαδούρες ΕΛΚΕΘΕ', at: buoy?.generatedAt ?? null, source: buoy ? rel(buoyFile) : null },
+  openSea,
   { judge: 'σχόλια επισκεπτών', at: fb?.generatedAt ?? null, source: fb ? rel(fbFile) : null },
 ].map(a => ({ ...a, days: ageDays(a.at) }));
 const oldest = ages.reduce((m, a) => (a.days === null ? m : (m === null || a.days > m.days ? a : m)), null);
 const row6 = {
   key: 'daysSinceExternalCheck', label: 'Μέρες από την πιο παλιά εξωτερική μέτρηση',
-  what: 'η μεγαλύτερη ηλικία ανάμεσα σε ανεμόμετρα, δορυφόρο, σημαδούρες, σχόλια',
+  what: 'η μεγαλύτερη ηλικία ανάμεσα σε ανεμόμετρα, δορυφόρο στην άμμο, κύμα ανοιχτά (ο νεότερος από σημαδούρες/αλτίμετρα), σχόλια',
   value: oldest?.days ?? null, oldest: oldest?.judge ?? null, byJudge: ages,
   redLine: `>${RED.maxAgeDays} μέρες`, breached: oldest ? oldest.days > RED.maxAgeDays : null,
 };

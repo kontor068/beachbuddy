@@ -110,7 +110,7 @@
   },
   {
     "date": "2026-09-14",
-    "generatedAt": "2026-09-14T07:23:25.798Z",
+    "generatedAt": "2026-09-14T09:55:42.029Z",
     "rows": [
       {
         "key": "severeFalseCalmWind",
@@ -186,9 +186,9 @@
       {
         "key": "daysSinceExternalCheck",
         "label": "Μέρες από την πιο παλιά εξωτερική μέτρηση",
-        "what": "η μεγαλύτερη ηλικία ανάμεσα σε ανεμόμετρα, δορυφόρο, σημαδούρες, σχόλια",
-        "value": 45,
-        "oldest": "σημαδούρες ΕΛΚΕΘΕ",
+        "what": "η μεγαλύτερη ηλικία ανάμεσα σε ανεμόμετρα, δορυφόρο στην άμμο, κύμα ανοιχτά (ο νεότερος από σημαδούρες/αλτίμετρα), σχόλια",
+        "value": 4,
+        "oldest": "δορυφόρος στην άμμο (Sentinel-2)",
         "byJudge": [
           {
             "judge": "ανεμόμετρα (METAR)",
@@ -200,13 +200,13 @@
             "judge": "δορυφόρος στην άμμο (Sentinel-2)",
             "at": "2026-09-10T21:53:47.207039+00:00",
             "source": "reports/wave-model/shore-surf-national.json",
-            "days": 3
+            "days": 4
           },
           {
-            "judge": "σημαδούρες ΕΛΚΕΘΕ",
-            "at": "2026-07-31T12:26:16.038744+00:00",
-            "source": "reports/wave-model/buoy-comparison.json",
-            "days": 45
+            "judge": "κύμα ανοιχτά: δορυφορικά αλτίμετρα",
+            "at": "2026-09-14T09:54:33.338352+00:00",
+            "source": "reports/wave-model/altimetry-comparison.json",
+            "days": 0
           },
           {
             "judge": "σχόλια επισκεπτών",
@@ -216,11 +216,9 @@
           }
         ],
         "redLine": ">30 μέρες",
-        "breached": true
+        "breached": false
       }
     ],
-    "breached": [
-      "daysSinceExternalCheck"
-    ]
+    "breached": []
   }
 ]

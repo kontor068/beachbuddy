@@ -1,0 +1,1051 @@
+{
+  "generatedAt": "2026-09-14T09:54:33.338352+00:00",
+  "instrument": "δορυφορικά αλτίμετρα, Copernicus WAVE_GLO_PHY_SWH_L3_NRT_014_001 (VAVH, value_qc 0)",
+  "window": {
+    "start": "2026-06-16",
+    "end": "2026-09-14",
+    "days": 90
+  },
+  "method": {
+    "coast_km": 15.0,
+    "land_mask": "cmems_mod_med_wav_anfc_4.2km_PT1H-i",
+    "bin_deg": 0.1,
+    "bin_seconds": 600,
+    "model_time": "γραμμική παρεμβολή ανάμεσα σε ωριαίες τιμές",
+    "page_model": "ewam όπου >0, αλλιώς meteofrance_wave",
+    "wind": "WIND_SPEED του ίδιου αλτίμετρου"
+  },
+  "satellites": {
+    "s3a": {
+      "measurements": 4094,
+      "openWater": 3226
+    },
+    "s3b": {
+      "measurements": 4344,
+      "openWater": 3492
+    },
+    "s6a": {
+      "measurements": 3229,
+      "openWater": 2418
+    },
+    "j3": {
+      "measurements": 4886,
+      "openWater": 3695
+    },
+    "c2": {
+      "measurements": 1461,
+      "openWater": 1082
+    },
+    "al": {
+      "measurements": 4615,
+      "openWater": 3395
+    },
+    "h2b": {
+      "measurements": 3856,
+      "openWater": 3043
+    },
+    "h2c": {
+      "measurements": 0,
+      "openWater": 0
+    },
+    "cfo": {
+      "measurements": 3975,
+      "openWater": 2926
+    },
+    "swon": {
+      "measurements": 4348,
+      "openWater": 3187
+    }
+  },
+  "counts": {
+    "measurements": 34808,
+    "openWater": 26464,
+    "bins": 18044,
+    "cells": 3283
+  },
+  "gates": {
+    "min_pairs": 200,
+    "max_negative_bias_pct": -10.0,
+    "rmse_not_worse_than_alternative": true,
+    "strong_wind_ms": 8.0,
+    "danger_min_observed_m": 1.0,
+    "serious_underestimate_m": 0.4,
+    "max_serious_underestimate_pct": 5.0
+  },
+  "overall": {
+    "ewam": {
+      "n": 18044,
+      "mean_observed_m": 0.887,
+      "mean_model_m": 0.826,
+      "bias_m": -0.061,
+      "bias_pct": -6.9,
+      "rmse_m": 0.209,
+      "mae_m": 0.158,
+      "corr": 0.918
+    },
+    "meteofrance_wave": {
+      "n": 18044,
+      "mean_observed_m": 0.887,
+      "mean_model_m": 0.878,
+      "bias_m": -0.009,
+      "bias_pct": -1.1,
+      "rmse_m": 0.147,
+      "mae_m": 0.108,
+      "corr": 0.945
+    },
+    "page": {
+      "n": 18044,
+      "mean_observed_m": 0.887,
+      "mean_model_m": 0.826,
+      "bias_m": -0.061,
+      "bias_pct": -6.9,
+      "rmse_m": 0.209,
+      "mae_m": 0.158,
+      "corr": 0.918
+    }
+  },
+  "byObservedHeight": {
+    "ewam": {
+      "0,5-1": {
+        "n": 9167,
+        "mean_observed_m": 0.732,
+        "mean_model_m": 0.646,
+        "bias_m": -0.085,
+        "bias_pct": -11.6,
+        "rmse_m": 0.191,
+        "mae_m": 0.147,
+        "corr": 0.603
+      },
+      "1-2": {
+        "n": 5297,
+        "mean_observed_m": 1.327,
+        "mean_model_m": 1.274,
+        "bias_m": -0.052,
+        "bias_pct": -4.0,
+        "rmse_m": 0.256,
+        "mae_m": 0.2,
+        "corr": 0.776
+      },
+      "<0,5": {
+        "n": 3093,
+        "mean_observed_m": 0.377,
+        "mean_model_m": 0.351,
+        "bias_m": -0.025,
+        "bias_pct": -6.7,
+        "rmse_m": 0.132,
+        "mae_m": 0.1,
+        "corr": 0.446
+      },
+      "≥2": {
+        "n": 487,
+        "mean_observed_m": 2.278,
+        "mean_model_m": 2.34,
+        "bias_m": 0.062,
+        "bias_pct": 2.7,
+        "rmse_m": 0.326,
+        "mae_m": 0.269,
+        "corr": 0.641
+      }
+    },
+    "meteofrance_wave": {
+      "0,5-1": {
+        "n": 9167,
+        "mean_observed_m": 0.732,
+        "mean_model_m": 0.728,
+        "bias_m": -0.004,
+        "bias_pct": -0.5,
+        "rmse_m": 0.142,
+        "mae_m": 0.102,
+        "corr": 0.689
+      },
+      "1-2": {
+        "n": 5297,
+        "mean_observed_m": 1.327,
+        "mean_model_m": 1.295,
+        "bias_m": -0.032,
+        "bias_pct": -2.4,
+        "rmse_m": 0.14,
+        "mae_m": 0.102,
+        "corr": 0.874
+      },
+      "<0,5": {
+        "n": 3093,
+        "mean_observed_m": 0.377,
+        "mean_model_m": 0.411,
+        "bias_m": 0.035,
+        "bias_pct": 9.2,
+        "rmse_m": 0.156,
+        "mae_m": 0.125,
+        "corr": 0.497
+      },
+      "≥2": {
+        "n": 487,
+        "mean_observed_m": 2.278,
+        "mean_model_m": 2.119,
+        "bias_m": -0.159,
+        "bias_pct": -7.0,
+        "rmse_m": 0.24,
+        "mae_m": 0.177,
+        "corr": 0.722
+      }
+    },
+    "page": {
+      "0,5-1": {
+        "n": 9167,
+        "mean_observed_m": 0.732,
+        "mean_model_m": 0.646,
+        "bias_m": -0.085,
+        "bias_pct": -11.6,
+        "rmse_m": 0.191,
+        "mae_m": 0.147,
+        "corr": 0.603
+      },
+      "1-2": {
+        "n": 5297,
+        "mean_observed_m": 1.327,
+        "mean_model_m": 1.274,
+        "bias_m": -0.052,
+        "bias_pct": -4.0,
+        "rmse_m": 0.256,
+        "mae_m": 0.2,
+        "corr": 0.776
+      },
+      "<0,5": {
+        "n": 3093,
+        "mean_observed_m": 0.377,
+        "mean_model_m": 0.351,
+        "bias_m": -0.025,
+        "bias_pct": -6.7,
+        "rmse_m": 0.132,
+        "mae_m": 0.1,
+        "corr": 0.446
+      },
+      "≥2": {
+        "n": 487,
+        "mean_observed_m": 2.278,
+        "mean_model_m": 2.34,
+        "bias_m": 0.062,
+        "bias_pct": 2.7,
+        "rmse_m": 0.326,
+        "mae_m": 0.269,
+        "corr": 0.641
+      }
+    }
+  },
+  "bySea": {
+    "ewam": {
+      "Ιόνιο": {
+        "n": 3669,
+        "mean_observed_m": 0.704,
+        "mean_model_m": 0.602,
+        "bias_m": -0.102,
+        "bias_pct": -14.5,
+        "rmse_m": 0.191,
+        "mae_m": 0.147,
+        "corr": 0.915
+      },
+      "Αιγαίο": {
+        "n": 4780,
+        "mean_observed_m": 0.88,
+        "mean_model_m": 0.819,
+        "bias_m": -0.061,
+        "bias_pct": -7.0,
+        "rmse_m": 0.235,
+        "mae_m": 0.181,
+        "corr": 0.906
+      },
+      "Κρητικό/Λιβυκό": {
+        "n": 9595,
+        "mean_observed_m": 0.961,
+        "mean_model_m": 0.915,
+        "bias_m": -0.046,
+        "bias_pct": -4.8,
+        "rmse_m": 0.202,
+        "mae_m": 0.151,
+        "corr": 0.92
+      }
+    },
+    "meteofrance_wave": {
+      "Ιόνιο": {
+        "n": 3669,
+        "mean_observed_m": 0.704,
+        "mean_model_m": 0.679,
+        "bias_m": -0.025,
+        "bias_pct": -3.5,
+        "rmse_m": 0.159,
+        "mae_m": 0.115,
+        "corr": 0.923
+      },
+      "Αιγαίο": {
+        "n": 4780,
+        "mean_observed_m": 0.88,
+        "mean_model_m": 0.864,
+        "bias_m": -0.016,
+        "bias_pct": -1.8,
+        "rmse_m": 0.169,
+        "mae_m": 0.125,
+        "corr": 0.926
+      },
+      "Κρητικό/Λιβυκό": {
+        "n": 9595,
+        "mean_observed_m": 0.961,
+        "mean_model_m": 0.961,
+        "bias_m": -0.0,
+        "bias_pct": -0.0,
+        "rmse_m": 0.13,
+        "mae_m": 0.097,
+        "corr": 0.957
+      }
+    },
+    "page": {
+      "Ιόνιο": {
+        "n": 3669,
+        "mean_observed_m": 0.704,
+        "mean_model_m": 0.602,
+        "bias_m": -0.102,
+        "bias_pct": -14.5,
+        "rmse_m": 0.191,
+        "mae_m": 0.147,
+        "corr": 0.915
+      },
+      "Αιγαίο": {
+        "n": 4780,
+        "mean_observed_m": 0.88,
+        "mean_model_m": 0.819,
+        "bias_m": -0.061,
+        "bias_pct": -7.0,
+        "rmse_m": 0.235,
+        "mae_m": 0.181,
+        "corr": 0.906
+      },
+      "Κρητικό/Λιβυκό": {
+        "n": 9595,
+        "mean_observed_m": 0.961,
+        "mean_model_m": 0.915,
+        "bias_m": -0.046,
+        "bias_pct": -4.8,
+        "rmse_m": 0.202,
+        "mae_m": 0.151,
+        "corr": 0.92
+      }
+    }
+  },
+  "seriousUnderestimates": {
+    "ewam": {
+      "eligible": 2708,
+      "serious": 89,
+      "examples": [
+        {
+          "sat": "s3a",
+          "time": "2026-07-15T08:48Z",
+          "lat": 34.65,
+          "lon": 24.05,
+          "observed_m": 1.46,
+          "model_m": 1.04,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-27T08:36Z",
+          "lat": 35.25,
+          "lon": 27.05,
+          "observed_m": 1.09,
+          "model_m": 0.68,
+          "wind_ms": 8.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.05,
+          "lon": 26.05,
+          "observed_m": 2.14,
+          "model_m": 1.66,
+          "wind_ms": 9.0
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.15,
+          "lon": 26.05,
+          "observed_m": 2.18,
+          "model_m": 1.56,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.25,
+          "lon": 26.05,
+          "observed_m": 2.2,
+          "model_m": 1.4,
+          "wind_ms": 10.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.25,
+          "lon": 25.95,
+          "observed_m": 2.19,
+          "model_m": 1.68,
+          "wind_ms": 11.1
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.35,
+          "lon": 25.95,
+          "observed_m": 2.15,
+          "model_m": 1.5,
+          "wind_ms": 11.3
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-03T08:51Z",
+          "lat": 37.25,
+          "lon": 23.85,
+          "observed_m": 1.08,
+          "model_m": 0.63,
+          "wind_ms": 8.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-07T20:04Z",
+          "lat": 35.95,
+          "lon": 22.65,
+          "observed_m": 1.28,
+          "model_m": 0.83,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-07T20:04Z",
+          "lat": 36.05,
+          "lon": 22.65,
+          "observed_m": 1.25,
+          "model_m": 0.52,
+          "wind_ms": 9.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-06-21T19:48Z",
+          "lat": 35.25,
+          "lon": 27.05,
+          "observed_m": 1.48,
+          "model_m": 1.05,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-06-21T19:48Z",
+          "lat": 35.75,
+          "lon": 26.95,
+          "observed_m": 1.25,
+          "model_m": 0.84,
+          "wind_ms": 8.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-05T09:09Z",
+          "lat": 35.45,
+          "lon": 19.15,
+          "observed_m": 1.84,
+          "model_m": 1.44,
+          "wind_ms": 8.0
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.35,
+          "lon": 26.25,
+          "observed_m": 1.44,
+          "model_m": 1.0,
+          "wind_ms": 10.3
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.25,
+          "lon": 26.25,
+          "observed_m": 1.62,
+          "model_m": 1.16,
+          "wind_ms": 9.6
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.15,
+          "lon": 26.25,
+          "observed_m": 1.74,
+          "model_m": 1.28,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.15,
+          "lon": 26.15,
+          "observed_m": 1.82,
+          "model_m": 1.25,
+          "wind_ms": 10.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.45,
+          "lon": 25.35,
+          "observed_m": 1.39,
+          "model_m": 0.89,
+          "wind_ms": 8.6
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.35,
+          "lon": 25.35,
+          "observed_m": 1.41,
+          "model_m": 0.93,
+          "wind_ms": 8.3
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.65,
+          "lon": 23.55,
+          "observed_m": 2.11,
+          "model_m": 1.68,
+          "wind_ms": 12.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.85,
+          "lon": 23.45,
+          "observed_m": 2.02,
+          "model_m": 1.6,
+          "wind_ms": 11.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.95,
+          "lon": 23.45,
+          "observed_m": 1.82,
+          "model_m": 1.34,
+          "wind_ms": 12.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 35.05,
+          "lon": 23.45,
+          "observed_m": 1.67,
+          "model_m": 1.14,
+          "wind_ms": 11.9
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-08-14T19:48Z",
+          "lat": 37.15,
+          "lon": 26.55,
+          "observed_m": 1.75,
+          "model_m": 1.28,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-08-29T08:42Z",
+          "lat": 37.05,
+          "lon": 26.15,
+          "observed_m": 1.83,
+          "model_m": 1.25,
+          "wind_ms": 10.0
+        }
+      ],
+      "pct": 3.29
+    },
+    "meteofrance_wave": {
+      "eligible": 2708,
+      "serious": 60,
+      "examples": [
+        {
+          "sat": "s3a",
+          "time": "2026-08-15T08:43Z",
+          "lat": 37.15,
+          "lon": 25.75,
+          "observed_m": 2.45,
+          "model_m": 2.0,
+          "wind_ms": 12.7
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.75,
+          "lon": 25.45,
+          "observed_m": 1.18,
+          "model_m": 0.7,
+          "wind_ms": 10.0
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.65,
+          "lon": 25.45,
+          "observed_m": 1.4,
+          "model_m": 0.87,
+          "wind_ms": 9.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.55,
+          "lon": 25.45,
+          "observed_m": 1.36,
+          "model_m": 0.89,
+          "wind_ms": 8.7
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.45,
+          "lon": 25.35,
+          "observed_m": 1.39,
+          "model_m": 0.91,
+          "wind_ms": 8.6
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.35,
+          "lon": 25.35,
+          "observed_m": 1.41,
+          "model_m": 0.94,
+          "wind_ms": 8.3
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-14T08:35Z",
+          "lat": 34.65,
+          "lon": 27.25,
+          "observed_m": 2.33,
+          "model_m": 1.93,
+          "wind_ms": 13.3
+        },
+        {
+          "sat": "s6a",
+          "time": "2026-07-23T07:43Z",
+          "lat": 38.85,
+          "lon": 23.85,
+          "observed_m": 1.36,
+          "model_m": 0.95,
+          "wind_ms": 11.7
+        },
+        {
+          "sat": "j3",
+          "time": "2026-06-19T13:46Z",
+          "lat": 34.35,
+          "lon": 24.05,
+          "observed_m": 1.9,
+          "model_m": 1.45,
+          "wind_ms": 9.2
+        },
+        {
+          "sat": "j3",
+          "time": "2026-06-19T13:46Z",
+          "lat": 34.45,
+          "lon": 24.05,
+          "observed_m": 1.92,
+          "model_m": 1.44,
+          "wind_ms": 9.4
+        },
+        {
+          "sat": "j3",
+          "time": "2026-06-19T13:46Z",
+          "lat": 34.55,
+          "lon": 24.05,
+          "observed_m": 1.79,
+          "model_m": 1.38,
+          "wind_ms": 9.8
+        },
+        {
+          "sat": "j3",
+          "time": "2026-06-19T13:47Z",
+          "lat": 37.15,
+          "lon": 25.75,
+          "observed_m": 2.19,
+          "model_m": 1.72,
+          "wind_ms": 12.4
+        },
+        {
+          "sat": "j3",
+          "time": "2026-06-19T13:47Z",
+          "lat": 37.35,
+          "lon": 25.85,
+          "observed_m": 2.51,
+          "model_m": 1.96,
+          "wind_ms": 10.6
+        },
+        {
+          "sat": "j3",
+          "time": "2026-07-05T19:54Z",
+          "lat": 34.35,
+          "lon": 26.55,
+          "observed_m": 2.06,
+          "model_m": 1.62,
+          "wind_ms": 8.5
+        },
+        {
+          "sat": "j3",
+          "time": "2026-07-05T19:54Z",
+          "lat": 34.25,
+          "lon": 26.65,
+          "observed_m": 2.17,
+          "model_m": 1.7,
+          "wind_ms": 9.0
+        },
+        {
+          "sat": "j3",
+          "time": "2026-07-05T19:54Z",
+          "lat": 34.15,
+          "lon": 26.75,
+          "observed_m": 2.18,
+          "model_m": 1.72,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-06-22T04:44Z",
+          "lat": 34.65,
+          "lon": 26.95,
+          "observed_m": 2.01,
+          "model_m": 1.57,
+          "wind_ms": 10.7
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-06-22T04:44Z",
+          "lat": 34.55,
+          "lon": 26.95,
+          "observed_m": 1.98,
+          "model_m": 1.49,
+          "wind_ms": 10.5
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-06-22T04:44Z",
+          "lat": 34.55,
+          "lon": 26.85,
+          "observed_m": 1.92,
+          "model_m": 1.37,
+          "wind_ms": 10.2
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-06-22T04:44Z",
+          "lat": 34.45,
+          "lon": 26.85,
+          "observed_m": 1.81,
+          "model_m": 1.29,
+          "wind_ms": 9.8
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-07-05T16:01Z",
+          "lat": 35.55,
+          "lon": 24.45,
+          "observed_m": 1.59,
+          "model_m": 1.14,
+          "wind_ms": 8.2
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-07-06T04:44Z",
+          "lat": 34.65,
+          "lon": 26.95,
+          "observed_m": 2.52,
+          "model_m": 2.0,
+          "wind_ms": 12.9
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-07-06T04:44Z",
+          "lat": 34.55,
+          "lon": 26.95,
+          "observed_m": 2.54,
+          "model_m": 1.94,
+          "wind_ms": 13.0
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-07-06T04:44Z",
+          "lat": 34.55,
+          "lon": 26.85,
+          "observed_m": 2.5,
+          "model_m": 1.81,
+          "wind_ms": 12.8
+        },
+        {
+          "sat": "h2b",
+          "time": "2026-07-06T04:44Z",
+          "lat": 34.45,
+          "lon": 26.85,
+          "observed_m": 2.38,
+          "model_m": 1.79,
+          "wind_ms": 12.1
+        }
+      ],
+      "pct": 2.22
+    },
+    "page": {
+      "eligible": 2708,
+      "serious": 89,
+      "examples": [
+        {
+          "sat": "s3a",
+          "time": "2026-07-15T08:48Z",
+          "lat": 34.65,
+          "lon": 24.05,
+          "observed_m": 1.46,
+          "model_m": 1.04,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-27T08:36Z",
+          "lat": 35.25,
+          "lon": 27.05,
+          "observed_m": 1.09,
+          "model_m": 0.68,
+          "wind_ms": 8.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.05,
+          "lon": 26.05,
+          "observed_m": 2.14,
+          "model_m": 1.66,
+          "wind_ms": 9.0
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.15,
+          "lon": 26.05,
+          "observed_m": 2.18,
+          "model_m": 1.56,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.25,
+          "lon": 26.05,
+          "observed_m": 2.2,
+          "model_m": 1.4,
+          "wind_ms": 10.5
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.25,
+          "lon": 25.95,
+          "observed_m": 2.19,
+          "model_m": 1.68,
+          "wind_ms": 11.1
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-07-31T19:50Z",
+          "lat": 37.35,
+          "lon": 25.95,
+          "observed_m": 2.15,
+          "model_m": 1.5,
+          "wind_ms": 11.3
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-03T08:51Z",
+          "lat": 37.25,
+          "lon": 23.85,
+          "observed_m": 1.08,
+          "model_m": 0.63,
+          "wind_ms": 8.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-07T20:04Z",
+          "lat": 35.95,
+          "lon": 22.65,
+          "observed_m": 1.28,
+          "model_m": 0.83,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3a",
+          "time": "2026-09-07T20:04Z",
+          "lat": 36.05,
+          "lon": 22.65,
+          "observed_m": 1.25,
+          "model_m": 0.52,
+          "wind_ms": 9.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-06-21T19:48Z",
+          "lat": 35.25,
+          "lon": 27.05,
+          "observed_m": 1.48,
+          "model_m": 1.05,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-06-21T19:48Z",
+          "lat": 35.75,
+          "lon": 26.95,
+          "observed_m": 1.25,
+          "model_m": 0.84,
+          "wind_ms": 8.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-05T09:09Z",
+          "lat": 35.45,
+          "lon": 19.15,
+          "observed_m": 1.84,
+          "model_m": 1.44,
+          "wind_ms": 8.0
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.35,
+          "lon": 26.25,
+          "observed_m": 1.44,
+          "model_m": 1.0,
+          "wind_ms": 10.3
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.25,
+          "lon": 26.25,
+          "observed_m": 1.62,
+          "model_m": 1.16,
+          "wind_ms": 9.6
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.15,
+          "lon": 26.25,
+          "observed_m": 1.74,
+          "model_m": 1.28,
+          "wind_ms": 9.7
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:42Z",
+          "lat": 37.15,
+          "lon": 26.15,
+          "observed_m": 1.82,
+          "model_m": 1.25,
+          "wind_ms": 10.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.45,
+          "lon": 25.35,
+          "observed_m": 1.39,
+          "model_m": 0.89,
+          "wind_ms": 8.6
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-06T08:43Z",
+          "lat": 34.35,
+          "lon": 25.35,
+          "observed_m": 1.41,
+          "model_m": 0.93,
+          "wind_ms": 8.3
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.65,
+          "lon": 23.55,
+          "observed_m": 2.11,
+          "model_m": 1.68,
+          "wind_ms": 12.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.85,
+          "lon": 23.45,
+          "observed_m": 2.02,
+          "model_m": 1.6,
+          "wind_ms": 11.1
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 34.95,
+          "lon": 23.45,
+          "observed_m": 1.82,
+          "model_m": 1.34,
+          "wind_ms": 12.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-07-29T20:03Z",
+          "lat": 35.05,
+          "lon": 23.45,
+          "observed_m": 1.67,
+          "model_m": 1.14,
+          "wind_ms": 11.9
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-08-14T19:48Z",
+          "lat": 37.15,
+          "lon": 26.55,
+          "observed_m": 1.75,
+          "model_m": 1.28,
+          "wind_ms": 9.5
+        },
+        {
+          "sat": "s3b",
+          "time": "2026-08-29T08:42Z",
+          "lat": 37.05,
+          "lon": 26.15,
+          "observed_m": 1.83,
+          "model_m": 1.25,
+          "wind_ms": 10.0
+        }
+      ],
+      "pct": 3.29
+    }
+  },
+  "verdict": {
+    "passed": false,
+    "gates": {
+      "bias_not_below_-10pct": {
+        "pass": true,
+        "value_pct": -6.9
+      },
+      "rmse_not_worse_than_alternative": {
+        "pass": false,
+        "page_rmse_m": 0.209,
+        "alternative_rmse_m": 0.147
+      },
+      "serious_underestimates_with_strong_wind_max_5pct": {
+        "pass": true,
+        "value_pct": 3.29,
+        "serious": 89,
+        "eligible": 2708
+      }
+    }
+  }
+}
