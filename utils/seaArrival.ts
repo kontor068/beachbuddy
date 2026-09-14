@@ -1,7 +1,7 @@
 import type { GeospatialExposureProfile, WindSector } from '../types';
 import { interpolateSectorGeometry } from './windExposureModel';
 import { ARRIVAL_MIN_FETCH_KM, type SeaArrivalGeometry } from './waveModel';
-import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING } from './waveCharacter';
+import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM } from './waveCharacter';
 
 export { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING };
 
@@ -486,4 +486,50 @@ const resolveShoreShadowDampingFromGeometry = (
     if (onshore > SHADOW_CROSS_SEA_ONSHORE_MIN) return Math.max(kd, SHADOW_KD_AT_EDGE);
   }
   return kd;
+};
+
+/**
+ * ΜΙΣΟ ΜΕΤΡΟ ΚΑΤΑΜΟΥΤΡΑ ΔΕΝ ΛΕΓΕΤΑΙ «ΚΑΛΗ» (14/09/2026 — Πευκούλια #1169, βίβλος §Γ85, απόφαση Μίλτου Α).
+ *
+ * ΤΙ ΕΓΙΝΕ. 11:00, επισκέπτης στην άμμο: «είχε πιο πολύ κύμα απ' όσο δείχνατε». Η σελίδα τύπωνε
+ * 0,58 μ. από 301° σε ακτή 285° (ανοιχτό νερό = ακτή, καμία έκπτωση) και έλεγε «Καλή». Ο ΑΡΙΘΜΟΣ
+ * ήταν σωστός — ewam 0,58, Copernicus 0,55-0,60 στο ίδιο σημείο. Η ΛΕΞΗ όχι: ο τυπωμένος αριθμός
+ * είναι το σημαντικό ύψος (ο μέσος όρος του ψηλότερου τρίτου) και σε 20 λεπτά (~250 κύματα των 5 s)
+ * το μεγαλύτερο φτάνει ~1,6× (κατανομή Rayleigh): 0,58 → ~0,95 μ. που σκάει στην ακτή.
+ *
+ * ΤΟ ΟΡΙΟ ΔΕΝ ΕΙΝΑΙ ΚΑΙΝΟΥΡΓΙΟ. Το «πρόσεχε» για κύμα είναι 0,8 μ. (services/recommendationService
+ * `swimmingComfortForWave`). Εδώ εφαρμόζεται στα κύματα που βλέπει ο κόσμος αντί για τον μέσο όρο:
+ * 0,8 / 1,6 = 0,5. Και η σελίδα της παραλίας ΗΔΗ γράφει «Λίγος κυματισμός · θέλει λίγη προσοχή» από
+ * το 0,5 (pages/BeachDetailPage) — η λέξη της ετυμηγορίας ήταν η μόνη που δεν το έλεγε.
+ *
+ * ΤΙ ΣΗΜΑΙΝΕΙ «ΙΣΙΑ». Δύο συνθήκες, και οι δύο απαραίτητες:
+ *   • η άφιξη είναι 'exposed' (`resolveSeaArrivalExposureLevel`) — η θάλασσα έρχεται από τομέα που
+ *     κρίναμε ανοιχτό. Λοξή-ξυστή, προστατευμένη, κλειστή ή άγνωστη άφιξη: σιωπή.
+ *   • συνιστώσα προς την ακτή ≥ 0,8 (≈ ως 37° από το μέτωπο). ΓΙΑΤΙ 0,8: σε λοξή άφιξη το κύμα
+ *     διαθλάται πάνω στον πυθμένα και απλώνεται — ο συντελεστής διάθλασης σε ίσιες ισοβαθείς είναι
+ *     ≈ √(συνιστώσα). Στο 0,8 → 0,89: ο τυπωμένος αριθμός (που για 'exposed' ΔΕΝ παίρνει καμία
+ *     έκπτωση γωνίας) απέχει ≤10% από ό,τι φτάνει στην άμμο. Πιο λοξά ο αριθμός υπερβάλλει ολοένα
+ *     περισσότερο (0,5 → 0,71 · 0,3 → 0,55) και ο κανόνας θα έκρινε ύψος που δεν φτάνει. Μετρημένο
+ *     14/09: με όλη την 'exposed' άφιξη (συνιστώσα >0,3) θα άλλαζαν 144 παραλίες, όχι οι ~70-84 που
+ *     ενέκρινε ο Μίλτος για «μισό μέτρο που μπαίνει ΙΣΙΑ».
+ *
+ * ΣΤΗΝ ΑΚΡΙΒΕΙΑ ΤΗΣ ΟΘΟΝΗΣ (§Γ52/§Γ74): κρίνεται ο αριθμός που τυπώνεται (`shoreDisplayWaveM` είναι
+ * το ίδιο `shoreWaveM`), ώστε η λέξη να μη διαψεύδει ποτέ το νούμερο δίπλα της.
+ *
+ * ΜΟΝΟ ΑΠΑΝΤΗΣΗ «ναι/όχι». Η ίδια η υποβάθμιση (ΕΝΑ σκαλί, «Καλή/Ιδανική» → «πρόσεχε», ποτέ τίποτα
+ * ηπιότερο, ποτέ «μην κολυμπήσεις») γίνεται στο calculateBeachScore. Εδώ ζει για να τη φτάνουν οι
+ * πύλες χωρίς το δίκτυο — scripts/measureStraightInCaution.mjs (μέτρηση), η πύλη μονοτονίας.
+ */
+export const STRAIGHT_IN_CAUTION_SHORE_M = 0.5;
+export const STRAIGHT_IN_MIN_ONSHORE = 0.8;
+
+export const straightInSeaCallsForCaution = (
+  printedShoreWaveM: number | undefined,
+  seaArrivalExposureLevel: string | undefined,
+  onshore: number | undefined
+): boolean => {
+  if (seaArrivalExposureLevel !== 'exposed') return false;
+  if (typeof onshore !== 'number' || !Number.isFinite(onshore) || onshore < STRAIGHT_IN_MIN_ONSHORE) return false;
+  const printed = atDisplayedPrecisionM(printedShoreWaveM);
+  return typeof printed === 'number' && printed >= STRAIGHT_IN_CAUTION_SHORE_M;
 };

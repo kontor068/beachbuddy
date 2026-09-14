@@ -105,8 +105,18 @@ require.extensions['.ts'] = (module, filename) => {
   }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})'), filename);
 };
 
-// ── Ο καιρός: ηχογράφηση/επανάληψη ΑΝΑ ΣΗΜΕΙΟ ────────────────────────────────────────────────
-const pointKey = (pathname, lat, lon) => `${pathname}|${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+// ── Ο καιρός: ηχογράφηση/επανάληψη ΑΝΑ ΣΗΜΕΙΟ ΚΑΙ ΑΝΑ ΑΙΤΗΜΑ ─────────────────────────────────
+// ΔΙΟΡΘΩΘΗΚΕ 14/09/2026 (βίβλος §Γ85). Το κλειδί ήταν μόνο διαδρομή + σημείο, αλλά για κάθε σημείο
+// θάλασσας η σελίδα κάνει ΤΡΙΑ αιτήματα στο /v1/marine (ewam · ουρά meteofrance_wave · θερμοκρασία
+// νερού — services/weatherService fetchMarineForecastData) και κρατιόταν όποιο έφτανε τελευταίο: στην
+// ηχογράφηση της 14/09 10:21, 604/2.867 σημεία (21%) είχαν ΜΟΝΟ θερμοκρασία νερού, οπότε στο
+// ξαναπαίξιμο το κύμα χανόταν. Μετρημένο: ίδιος κώδικας, ζωντανά vs ξαναπαίξιμο → 436/5.712
+// παραλίες-μέρες (7,6%) «άλλαζαν» χωρίς καμία αλλαγή κώδικα. Ηχογραφήσεις πριν από αυτή τη γραμμή
+// ΔΕΝ ξαναπαίζονται με το νέο κλειδί — ξαναγράψε τις.
+const requestSignature = (u) => [...u.searchParams.entries()]
+  .filter(([k]) => !['latitude', 'longitude', 'apikey', 'start_date', 'end_date'].includes(k))
+  .sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => `${k}=${v}`).join('&');
+const pointKey = (u, lat, lon) => `${u.pathname}|${requestSignature(u)}|${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 const store = REPLAY ? JSON.parse(readFileSync(path.resolve(REPLAY), 'utf8')) : {};
 let recorded = 0, replayed = 0;
 const missingPoints = new Set();
@@ -124,7 +134,7 @@ if (RECORD || REPLAY) {
     if (REPLAY) {
       const rows = [];
       for (let i = 0; i < lats.length; i += 1) {
-        const k = pointKey(u.pathname, lats[i], lons[i]);
+        const k = pointKey(u, lats[i], lons[i]);
         if (!(k in store)) { missingPoints.add(k); rows.push(null); continue; }
         rows.push(store[k]);
       }
@@ -137,7 +147,7 @@ if (RECORD || REPLAY) {
     const res = await originalFetch(target, init);
     const json = await res.clone().json();
     const rows = Array.isArray(json) ? json : [json];
-    rows.forEach((r, i) => { if (lats[i] !== undefined) { store[pointKey(u.pathname, lats[i], lons[i])] = r; recorded += 1; } });
+    rows.forEach((r, i) => { if (lats[i] !== undefined) { store[pointKey(u, lats[i], lons[i])] = r; recorded += 1; } });
     return new Response(JSON.stringify(json), { status: res.status, headers: { 'content-type': 'application/json' } });
   };
   console.log(RECORD ? `  Ηχογράφηση καιρού → ${RECORD}${apiKey ? ' (πληρωμένη πόρτα)' : ''}` : `  Επανάληψη καιρού ← ${REPLAY} (${Object.keys(store).length} σημεία)`);

@@ -54,7 +54,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { SHADOW_KD_AT_EDGE, applyWitnessedSeaFloorM, isCalmWitnessedArrivalDirection, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping, witnessedArrivalSeaM } from '../utils/seaArrival';
+import { SHADOW_KD_AT_EDGE, applyWitnessedSeaFloorM, isCalmWitnessedArrivalDirection, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping, straightInSeaCallsForCaution, witnessedArrivalSeaM } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM, type CoveWave } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
@@ -2917,6 +2917,13 @@ export const calculateBeachScore = (
   }
   // Roadmap #4: a strong afternoon build never leaves a 'good'/'excellent' headline.
   if (afternoonBuild.buildsRough && (swimmingComfort === 'good' || swimmingComfort === 'excellent')) {
+    swimmingComfort = 'caution';
+  }
+  // Μισό μέτρο (τυπωμένο) που μπαίνει ΙΣΙΑ από ανοιχτό τομέα δεν λέγεται «Καλή» — τα μεγάλα του σετ
+  // σκάνε στην ακτή ~0,8 μ., το δικό μας όριο «πρόσεχε». Ένα σκαλί, μονόδρομο· ολόκληρο το σκεπτικό
+  // και η μέτρηση στο utils/seaArrival.straightInSeaCallsForCaution (Πευκούλια 14/09/2026, §Γ85).
+  if ((swimmingComfort === 'good' || swimmingComfort === 'excellent')
+    && straightInSeaCallsForCaution(shoreWaveM, seaArrivalExposureLevel, seaArrival?.onshore)) {
     swimmingComfort = 'caution';
   }
   /**
