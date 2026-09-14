@@ -1,0 +1,94 @@
+{
+  "before": ".tmp/sic2-today-after.json",
+  "after": ".tmp/max-today.json",
+  "weather": "2026-09-14",
+  "comparedHours": 25704,
+  "mildHoursBefore": 17863,
+  "stricterHours": 1170,
+  "stricterPctOfAll": 4.55,
+  "milderHours": 450,
+  "milderPctOfAll": 1.75,
+  "netStricterPctOfAll": 2.8,
+  "stricterBeaches": 396,
+  "milderBeaches": 180,
+  "moves": {
+    "excellent→good": 518,
+    "good→caution": 471,
+    "avoid_swimming→caution": 346,
+    "caution→avoid_swimming": 139,
+    "good→excellent": 63,
+    "caution→good": 35,
+    "good→avoid_swimming": 24,
+    "excellent→caution": 18,
+    "avoid_swimming→good": 6
+  },
+  "printedShoreWave": {
+    "up": 5540,
+    "down": 848,
+    "unchanged": 19316,
+    "meanDeltaM": 0.024,
+    "histogram": {
+      "0,0": 19316,
+      "-0,1": 499,
+      "+0,1": 4161,
+      "+0,2": 948,
+      "-0,2": 247,
+      "+0,3": 302,
+      "-0,3": 83,
+      "≤−0,5": 10,
+      "-0,4": 9,
+      "≥+0,5": 49,
+      "+0,4": 80
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "south-aegean-karpathos",
+      155
+    ],
+    [
+      "crete-crete-chania",
+      110
+    ],
+    [
+      "south-aegean-milos",
+      94
+    ],
+    [
+      "crete-crete-rethymno",
+      65
+    ],
+    [
+      "ionian-islands-corfu",
+      60
+    ],
+    [
+      "ionian-islands-kefalonia",
+      54
+    ],
+    [
+      "peloponnese-messinia-mainland",
+      50
+    ],
+    [
+      "peloponnese-lakonia-mainland",
+      48
+    ],
+    [
+      "ionian-islands-lefkada",
+      45
+    ],
+    [
+      "ionian-islands-zakynthos",
+      42
+    ],
+    [
+      "crete-crete-lasithi",
+      37
+    ],
+    [
+      "epirus-thesprotia-mainland",
+      35
+    ]
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "before": ".tmp/sic2-2023-08-24-after.json",
+  "after": ".tmp/max-2023-08-24.json",
+  "weather": "replay-2023-08-24",
+  "comparedHours": 25704,
+  "mildHoursBefore": 18423,
+  "stricterHours": 422,
+  "stricterPctOfAll": 1.64,
+  "milderHours": 263,
+  "milderPctOfAll": 1.02,
+  "netStricterPctOfAll": 0.62,
+  "stricterBeaches": 148,
+  "milderBeaches": 126,
+  "moves": {
+    "excellent→good": 198,
+    "avoid_swimming→caution": 194,
+    "good→caution": 103,
+    "caution→avoid_swimming": 92,
+    "caution→good": 35,
+    "good→excellent": 34,
+    "good→avoid_swimming": 27,
+    "excellent→caution": 2
+  },
+  "printedShoreWave": {
+    "up": 4747,
+    "down": 914,
+    "unchanged": 20043,
+    "meanDeltaM": 0.018,
+    "histogram": {
+      "0,0": 20043,
+      "+0,1": 3848,
+      "+0,2": 738,
+      "-0,1": 649,
+      "-0,3": 78,
+      "-0,2": 152,
+      "+0,3": 111,
+      "-0,4": 20,
+      "≤−0,5": 15,
+      "+0,4": 36,
+      "≥+0,5": 14
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "ionian-islands-corfu",
+      60
+    ],
+    [
+      "south-aegean-rhodes",
+      51
+    ],
+    [
+      "south-aegean-folegandros",
+      33
+    ],
+    [
+      "south-aegean-syros",
+      31
+    ],
+    [
+      "south-aegean-paros",
+      27
+    ],
+    [
+      "thessaly-magnesia-mainland---pelion",
+      25
+    ],
+    [
+      "north-aegean-lesvos",
+      24
+    ],
+    [
+      "south-aegean-antiparos",
+      22
+    ],
+    [
+      "thessaly-alonissos",
+      20
+    ],
+    [
+      "central-greece-evia",
+      19
+    ],
+    [
+      "north-aegean-agios-efstratios",
+      17
+    ],
+    [
+      "north-aegean-chios",
+      13
+    ]
+  ]
+}

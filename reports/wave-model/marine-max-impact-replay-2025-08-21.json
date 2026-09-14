@@ -1,0 +1,94 @@
+{
+  "before": ".tmp/sic2-2025-08-21-after.json",
+  "after": ".tmp/max-2025-08-21.json",
+  "weather": "replay-2025-08-21",
+  "comparedHours": 25704,
+  "mildHoursBefore": 18987,
+  "stricterHours": 726,
+  "stricterPctOfAll": 2.82,
+  "milderHours": 198,
+  "milderPctOfAll": 0.77,
+  "netStricterPctOfAll": 2.05,
+  "stricterBeaches": 201,
+  "milderBeaches": 87,
+  "moves": {
+    "good→caution": 465,
+    "caution→avoid_swimming": 168,
+    "avoid_swimming→caution": 133,
+    "excellent→good": 81,
+    "caution→good": 46,
+    "good→excellent": 18,
+    "excellent→caution": 6,
+    "good→avoid_swimming": 6,
+    "avoid_swimming→good": 1
+  },
+  "printedShoreWave": {
+    "up": 2434,
+    "down": 926,
+    "unchanged": 22344,
+    "meanDeltaM": 0.01,
+    "histogram": {
+      "0,0": 22344,
+      "-0,1": 663,
+      "+0,1": 1671,
+      "+0,3": 141,
+      "+0,2": 419,
+      "-0,3": 78,
+      "-0,2": 141,
+      "-0,4": 26,
+      "+0,4": 105,
+      "≥+0,5": 98,
+      "≤−0,5": 18
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "attica-kythira",
+      80
+    ],
+    [
+      "south-aegean-lipsi",
+      68
+    ],
+    [
+      "south-aegean-kalymnos",
+      66
+    ],
+    [
+      "south-aegean-rhodes",
+      59
+    ],
+    [
+      "south-aegean-astypalaia",
+      52
+    ],
+    [
+      "south-aegean-tilos",
+      37
+    ],
+    [
+      "crete-crete-chania",
+      35
+    ],
+    [
+      "crete-crete-rethymno",
+      34
+    ],
+    [
+      "peloponnese-lakonia-mainland",
+      29
+    ],
+    [
+      "south-aegean-karpathos",
+      29
+    ],
+    [
+      "crete-crete-heraklion",
+      28
+    ],
+    [
+      "south-aegean-patmos",
+      24
+    ]
+  ]
+}

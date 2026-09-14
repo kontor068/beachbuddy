@@ -1,0 +1,96 @@
+{
+  "before": ".tmp/sic2-2025-07-10-after.json",
+  "after": ".tmp/max-2025-07-10.json",
+  "weather": "replay-2025-07-10",
+  "comparedHours": 25704,
+  "mildHoursBefore": 8777,
+  "stricterHours": 1948,
+  "stricterPctOfAll": 7.58,
+  "milderHours": 344,
+  "milderPctOfAll": 1.34,
+  "netStricterPctOfAll": 6.24,
+  "stricterBeaches": 645,
+  "milderBeaches": 149,
+  "moves": {
+    "caution→avoid_swimming": 691,
+    "good→caution": 671,
+    "excellent→good": 400,
+    "avoid_swimming→caution": 143,
+    "good→avoid_swimming": 136,
+    "good→excellent": 106,
+    "caution→good": 64,
+    "excellent→caution": 42,
+    "caution→excellent": 21,
+    "avoid_swimming→good": 10,
+    "excellent→avoid_swimming": 8
+  },
+  "printedShoreWave": {
+    "up": 5878,
+    "down": 1026,
+    "unchanged": 18800,
+    "meanDeltaM": 0.041,
+    "histogram": {
+      "0,0": 18800,
+      "-0,2": 222,
+      "+0,1": 2765,
+      "-0,1": 426,
+      "+0,2": 1376,
+      "-0,3": 122,
+      "-0,4": 88,
+      "+0,3": 758,
+      "+0,4": 379,
+      "≥+0,5": 600,
+      "≤−0,5": 168
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "south-aegean-karpathos",
+      157
+    ],
+    [
+      "crete-crete-chania",
+      117
+    ],
+    [
+      "ionian-islands-corfu",
+      112
+    ],
+    [
+      "south-aegean-rhodes",
+      108
+    ],
+    [
+      "attica-kythira",
+      102
+    ],
+    [
+      "central-macedonia-halkidiki-mainland",
+      76
+    ],
+    [
+      "crete-crete-lasithi",
+      75
+    ],
+    [
+      "ionian-islands-kefalonia",
+      69
+    ],
+    [
+      "south-aegean-milos",
+      69
+    ],
+    [
+      "south-aegean-tinos",
+      67
+    ],
+    [
+      "epirus-thesprotia-mainland",
+      54
+    ],
+    [
+      "north-aegean-samos",
+      54
+    ]
+  ]
+}

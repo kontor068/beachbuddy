@@ -1,0 +1,94 @@
+{
+  "before": ".tmp/sic2-2023-07-18-after.json",
+  "after": ".tmp/max-2023-07-18.json",
+  "weather": "replay-2023-07-18",
+  "comparedHours": 25704,
+  "mildHoursBefore": 10453,
+  "stricterHours": 1418,
+  "stricterPctOfAll": 5.52,
+  "milderHours": 257,
+  "milderPctOfAll": 1,
+  "netStricterPctOfAll": 4.52,
+  "stricterBeaches": 447,
+  "milderBeaches": 109,
+  "moves": {
+    "caution→avoid_swimming": 725,
+    "good→caution": 407,
+    "excellent→good": 242,
+    "avoid_swimming→caution": 190,
+    "caution→good": 38,
+    "good→avoid_swimming": 32,
+    "good→excellent": 24,
+    "excellent→caution": 12,
+    "avoid_swimming→good": 5
+  },
+  "printedShoreWave": {
+    "up": 5471,
+    "down": 913,
+    "unchanged": 19320,
+    "meanDeltaM": 0.034,
+    "histogram": {
+      "0,0": 19320,
+      "-0,1": 392,
+      "-0,3": 122,
+      "+0,2": 1187,
+      "-0,2": 173,
+      "+0,1": 2892,
+      "-0,4": 89,
+      "+0,3": 630,
+      "≥+0,5": 395,
+      "+0,4": 367,
+      "≤−0,5": 137
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "ionian-islands-corfu",
+      142
+    ],
+    [
+      "south-aegean-ios",
+      118
+    ],
+    [
+      "south-aegean-kos",
+      77
+    ],
+    [
+      "south-aegean-tinos",
+      60
+    ],
+    [
+      "south-aegean-anafi",
+      54
+    ],
+    [
+      "north-aegean-ikaria",
+      53
+    ],
+    [
+      "south-aegean-kea",
+      48
+    ],
+    [
+      "north-aegean-lesvos",
+      46
+    ],
+    [
+      "north-aegean-samos",
+      44
+    ],
+    [
+      "peloponnese-messinia-mainland",
+      44
+    ],
+    [
+      "south-aegean-tilos",
+      43
+    ],
+    [
+      "crete-crete-chania",
+      41
+    ]
+  ]
+}

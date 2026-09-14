@@ -1,0 +1,94 @@
+{
+  "before": ".tmp/sic2-2024-08-13-after.json",
+  "after": ".tmp/max-2024-08-13.json",
+  "weather": "replay-2024-08-13",
+  "comparedHours": 25704,
+  "mildHoursBefore": 18260,
+  "stricterHours": 1995,
+  "stricterPctOfAll": 7.76,
+  "milderHours": 374,
+  "milderPctOfAll": 1.46,
+  "netStricterPctOfAll": 6.31,
+  "stricterBeaches": 539,
+  "milderBeaches": 209,
+  "moves": {
+    "excellent→good": 757,
+    "caution→avoid_swimming": 573,
+    "good→caution": 456,
+    "avoid_swimming→caution": 252,
+    "good→avoid_swimming": 175,
+    "caution→good": 66,
+    "good→excellent": 53,
+    "excellent→caution": 34,
+    "avoid_swimming→good": 3
+  },
+  "printedShoreWave": {
+    "up": 6113,
+    "down": 1078,
+    "unchanged": 18513,
+    "meanDeltaM": 0.028,
+    "histogram": {
+      "0,0": 18513,
+      "+0,1": 4338,
+      "-0,1": 694,
+      "+0,2": 1174,
+      "-0,3": 102,
+      "+0,3": 390,
+      "+0,4": 136,
+      "-0,2": 240,
+      "≥+0,5": 75,
+      "-0,4": 31,
+      "≤−0,5": 11
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "south-aegean-karpathos",
+      221
+    ],
+    [
+      "crete-crete-chania",
+      186
+    ],
+    [
+      "central-greece-evia",
+      182
+    ],
+    [
+      "south-aegean-milos",
+      118
+    ],
+    [
+      "thessaly-magnesia-mainland---pelion",
+      109
+    ],
+    [
+      "south-aegean-syros",
+      98
+    ],
+    [
+      "thessaly-alonissos",
+      95
+    ],
+    [
+      "south-aegean-kythnos",
+      83
+    ],
+    [
+      "south-aegean-kea",
+      71
+    ],
+    [
+      "crete-crete-rethymno",
+      59
+    ],
+    [
+      "south-aegean-serifos",
+      56
+    ],
+    [
+      "north-aegean-lesvos",
+      55
+    ]
+  ]
+}

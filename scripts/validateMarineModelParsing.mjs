@@ -317,7 +317,11 @@ if (process.argv.includes('--live') && failures.length === 0) {
   }
 
   if (typeof parseMarineHourly === 'function') {
-    // Hour 0-1: both models report. Hour 2: ewam has run out (its horizon is ~82 h).
+    // ΤΟ ΜΕΓΑΛΥΤΕΡΟ ΑΠΟ ΤΑ ΔΥΟ (14/09/2026, βίβλος §Γ85). Ως τότε εδώ απαιτούνταν «ώρα 0 = ewam 0,55»
+    // ενώ το meteofrance έδινε 1,9 — ο κανόνας «το ewam πάντα». Τα παράκτια αλτίμετρα (34.971 συγκρίσεις)
+    // τον βρήκαν −14,4% με 20% σοβαρές υποεκτιμήσεις· ο «max» −1,9% / 8%. Σαμποτάζ: γύρνα τον κανόνα
+    // στο «ewam πάντα» και η ώρα 0 πέφτει· γύρνα τον στο «meteofrance πάντα» και πέφτει η ώρα 1.
+    // Hour 0: meteofrance larger. Hour 1: ewam larger. Hour 2: ewam has run out (~94 h).
     const hourly = {
       time: ['2026-07-31T00:00', '2026-07-31T01:00', '2026-07-31T02:00'],
       wave_height_ewam: [0.55, 0.60, null],
@@ -326,10 +330,10 @@ if (process.argv.includes('--live') && failures.length === 0) {
       swell_wave_height_ewam: [0.2, 0.2, null],
       swell_wave_period_ewam: [8, 8, null],
       swell_wave_direction_ewam: [20, 20, null],
-      wave_height_meteofrance_wave: [1.9, 1.9, 1.4],
-      wave_period_meteofrance_wave: [7.7, 7.7, 6.5],
+      wave_height_meteofrance_wave: [1.9, 0.4, 1.4],
+      wave_period_meteofrance_wave: [7.7, 3.9, 6.5],
       wave_direction_meteofrance_wave: [200, 200, 210],
-      swell_wave_height_meteofrance_wave: [1.1, 1.1, 0.9],
+      swell_wave_height_meteofrance_wave: [1.1, 0.1, 0.9],
       swell_wave_period_meteofrance_wave: [9, 9, 9],
       swell_wave_direction_meteofrance_wave: [210, 210, 210],
       sea_surface_temperature_meteofrance_currents: [25.5, 25.5, 25.5],
@@ -339,9 +343,14 @@ if (process.argv.includes('--live') && failures.length === 0) {
     if (rows.length !== 3) {
       fail(`${PARSER}: behaviour check expected 3 rows, got ${rows.length}.`);
     } else {
-      if (rows[0].marine.waveHeightM !== 0.55 || rows[0].marine.waveModel !== 'ewam') {
-        fail(`${PARSER}: hour 0 should take ewam (0.55 m) — got ${rows[0].marine.waveHeightM} m ` +
-             `from '${rows[0].marine.waveModel}'. The preferred wave model is not reaching users.`);
+      if (rows[0].marine.waveHeightM !== 1.9 || rows[0].marine.waveModel !== 'meteofrance_wave') {
+        fail(`${PARSER}: hour 0 should take the LARGER model (meteofrance_wave 1.9 m) — got ` +
+             `${rows[0].marine.waveHeightM} m from '${rows[0].marine.waveModel}'. The page is printing the ` +
+             `smaller of two models — the −14% under-reading the altimeters measured.`);
+      }
+      if (rows[1].marine.waveHeightM !== 0.6 || rows[1].marine.waveModel !== 'ewam') {
+        fail(`${PARSER}: hour 1 should take the LARGER model (ewam 0.60 m) — got ` +
+             `${rows[1].marine.waveHeightM} m from '${rows[1].marine.waveModel}'.`);
       }
       if (rows[2].marine.waveHeightM !== 1.4 || rows[2].marine.waveModel !== 'meteofrance_wave') {
         fail(`${PARSER}: hour 2 (past ewam's horizon) should fall back to meteofrance_wave ` +
@@ -351,9 +360,16 @@ if (process.argv.includes('--live') && failures.length === 0) {
       // The failure this specifically forbids: a height from one model beside a period from
       // the other. utils/waveCharacter turns (height, period) into one severity, so a mixed
       // pair invents a sea neither model reported.
-      if (rows[0].marine.wavePeriodS !== 4.1 || rows[2].marine.wavePeriodS !== 6.5) {
+      if (rows[0].marine.wavePeriodS !== 7.7 || rows[1].marine.wavePeriodS !== 4.2 || rows[2].marine.wavePeriodS !== 6.5) {
         fail(`${PARSER}: height and period came from different models ` +
-             `(hour 0 period ${rows[0].marine.wavePeriodS}, hour 2 period ${rows[2].marine.wavePeriodS}).`);
+             `(periods ${rows[0].marine.wavePeriodS} / ${rows[1].marine.wavePeriodS} / ${rows[2].marine.wavePeriodS}).`);
+      }
+      // Τα 56 αναποδογυρισμένα σημεία: εκεί το κελί του ewam είναι λάθος θάλασσα (πίσω από ακρωτήρι),
+      // άρα ένα ΜΕΓΑΛΥΤΕΡΟ ewam δεν επιτρέπεται να κερδίσει — ηγείται το meteofrance όπως πριν.
+      const flippedRows = parseMarineHourly(hourly, 'meteofrance_wave');
+      if (flippedRows[1]?.marine.waveModel !== 'meteofrance_wave' || flippedRows[1]?.marine.waveHeightM !== 0.4) {
+        fail(`${PARSER}: at a flipped point the larger ewam (0.60 m) must NOT win — its cell describes water ` +
+             `behind a headland. Got ${flippedRows[1]?.marine.waveHeightM} m from '${flippedRows[1]?.marine.waveModel}'.`);
       }
       if (rows[0].marine.seaSurfaceTemperatureC !== 25.5) {
         fail(`${PARSER}: sea temperature lost — it comes from meteofrance_currents and must ` +
@@ -413,6 +429,33 @@ if (process.argv.includes('--live') && failures.length === 0) {
         fail(`${PARSER}: a REAL 2.4 m sea that both models report was blocked ` +
              `(got ${spikeRows[4].marine.waveHeightM} m from '${spikeRows[4].marine.waveModel}'). ` +
              `The guard must never hide weather the witness confirms — that is false calm.`);
+      }
+    }
+
+    // ── ΤΟ ΦΡΕΝΟ ΠΡΟΣ ΤΗΝ ΑΛΛΗ ΜΕΡΙΑ (14/09/2026) ─────────────────────────────────────────────
+    // Με «το μεγαλύτερο» μπορεί να κερδίσει και το meteofrance — άρα ένα αδύνατο άλμα ΤΟΥ που το ewam
+    // δεν επιβεβαιώνει πρέπει να μπλοκάρεται, αλλιώς ο κανόνας «max» θα διάλεγε ακριβώς το σφάλμα.
+    const mfSpikeRows = parseMarineHourly({
+      time: ['2026-09-14T10:00', '2026-09-14T11:00', '2026-09-14T12:00'],
+      wave_height_ewam: [0.25, 0.26, 0.27],
+      wave_period_ewam: [3.5, 3.5, 3.6],
+      wave_direction_ewam: [300, 300, 300],
+      swell_wave_height_ewam: [0.1, 0.1, 0.1],
+      swell_wave_period_ewam: [3, 3, 3],
+      swell_wave_direction_ewam: [300, 300, 300],
+      wave_height_meteofrance_wave: [0.22, 3.3, 2.6],
+      wave_period_meteofrance_wave: [3.4, 10, 9.5],
+      wave_direction_meteofrance_wave: [290, 290, 290],
+      swell_wave_height_meteofrance_wave: [0.1, 3.0, 2.4],
+      swell_wave_period_meteofrance_wave: [3, 10, 9],
+      swell_wave_direction_meteofrance_wave: [290, 290, 290],
+      sea_surface_temperature_meteofrance_currents: [26, 26, 26],
+    });
+    for (const index of [1, 2]) {
+      if (mfSpikeRows[index]?.marine.waveModel !== 'ewam') {
+        fail(`${PARSER}: hour ${index} is an impossible meteofrance jump the ewam does not corroborate, yet ` +
+             `'${mfSpikeRows[index]?.marine.waveModel}' ${mfSpikeRows[index]?.marine.waveHeightM} m won the hour. ` +
+             `The larger-model rule is picking a broken reading.`);
       }
     }
   }

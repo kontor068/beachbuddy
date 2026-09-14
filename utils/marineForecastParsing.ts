@@ -9,8 +9,15 @@ import type { MarineForecast } from '../types';
  * provider modules, and a guard that wants to prove this behaviour has to load that whole graph
  * to reach one pure function. Here it is importable on its own.
  *
- * THE RULE: `ewam` (DWD, 0.05° ≈ 5 km) wins every hour it reports a wave height;
- * `meteofrance_wave` (0.08° ≈ 8 km, global, 7 days) covers the rest.
+ * THE RULE (since 14/09/2026): each hour takes the LARGER of `ewam` (DWD, 0.05° ≈ 5 km) and
+ * `meteofrance_wave` (0.08° ≈ 8 km, global, 7 days), both behind the impossible-jump guard; where
+ * only one reports (ewam runs out after ~94 h) that one; at the 56 flipped points meteofrance leads
+ * as before. The evidence and the reasoning are at `modelAt` inside parseMarineHourly — in short,
+ * satellite altimeters (an instrument, 34,971 comparisons near the coast) found the old
+ * «ewam wins» rule −14.4% low with 20% serious underestimates, and «max» at −1.9% / 8%.
+ *
+ * WHAT FOLLOWS IS THE HISTORY OF THE PREVIOUS RULE (ewam every hour it reports, meteofrance the
+ * rest) — kept because it is why ewam is here at all, and it still describes ewam correctly.
  *
  * Why ewam leads, measured 2026-07-31 against 9,723 QC-good hourly observations from three
  * Greek buoys (Ηράκλειο, 61277, Άθως — Copernicus In Situ, 2022-09 → 2024-12):
@@ -170,8 +177,8 @@ export const parseMarineHourly = (
   // is correct, and simply hides the water-temperature card until the cache turns over.
   const seaTemperature = series('sea_surface_temperature', 'meteofrance_currents');
 
-  // One model per hour, decided by whether ewam reported a HEIGHT for that hour. Every other
-  // field follows that same decision, so height, direction and period always describe ONE sea —
+  // One model per hour, decided by which model reports the larger usable HEIGHT (see `modelAt`).
+  // Every other field follows that same decision, so height, direction and period always describe ONE sea —
   // utils/waveCharacter turns (height, period) into a single severity, so a mixed pair would
   // invent a sea neither model reported.
   // ΤΟ ΣΗΜΕΙΟ ΜΠΟΡΕΙ ΝΑ ΖΗΤΗΣΕΙ ΤΟ ΑΛΛΟ ΜΟΝΤΕΛΟ — ΚΑΙ ΜΟΝΟ ΓΙΑ ΕΝΑΝ ΛΟΓΟ.
@@ -182,25 +189,55 @@ export const parseMarineHourly = (
   // τις περιπτώσεις όπου το meteofrance θα έχανε τη διάκριση προσήνεμης/υπήνεμης ακτής —
   // scripts/bakeMarineModelPreference.mjs.
   const flipped = preferModelId === 'meteofrance_wave';
-  const leading = flipped ? waveHeightMf : waveHeightEwam;
-  // Ο μάρτυρας είναι πάντα ΤΟ ΑΛΛΟ μοντέλο, όποιο κι αν ηγείται σε αυτό το σημείο — ώστε τα 56
-  // αναποδογυρισμένα σημεία να προστατεύονται με τον ίδιο ακριβώς κανόνα, όχι με εξαίρεση.
-  const witness = flipped ? waveHeightEwam : waveHeightMf;
-  const spikeHours = uncorroboratedSpikeHours(leading, witness);
-  // Μια ώρα-σφάλμα πέφτει ΟΛΟΚΛΗΡΗ στον μάρτυρα: ύψος, περίοδος, κατεύθυνση και αποθαλασσιά
+  // Το φρένο του άλματος τρέχει ΚΑΙ ΠΡΟΣ ΤΙΣ ΔΥΟ ΜΕΡΙΕΣ (14/09/2026). Όσο το ewam ηγούνταν πάντα, μόνο ο
+  // ηγέτης χρειαζόταν μάρτυρα. Με τον κανόνα «το μεγαλύτερο» μπορεί να κερδίσει και το meteofrance —
+  // άρα ένα αδύνατο άλμα ΤΟΥ, που το ewam δεν επιβεβαιώνει, πρέπει να μπλοκάρεται με τον ίδιο κανόνα.
+  // Τα δύο σύνολα δεν επικαλύπτονται ποτέ: το ένα απαιτεί μάρτυρα <½ του ηγέτη, το άλλο το αντίστροφο.
+  const spikeEwam = uncorroboratedSpikeHours(waveHeightEwam, waveHeightMf);
+  const spikeMf = uncorroboratedSpikeHours(waveHeightMf, waveHeightEwam);
+  const usableAt = (heights: unknown[] | undefined, spikes: Set<number>, index: number): number | undefined => (
+    spikes.has(index) ? undefined : optionalNumber(heights?.[index])
+  );
+  /**
+   * ΤΟ ΜΕΓΑΛΥΤΕΡΟ ΑΠΟ ΤΑ ΔΥΟ — ΟΧΙ «ΤΟ ewam ΠΑΝΤΑ» (14/09/2026, βίβλος §Γ85, απόφαση Μίλτου Α).
+   *
+   * Ως σήμερα: το ewam κέρδιζε κάθε ώρα που έδινε ύψος (σημαδούρες 31/07, κεφαλίδα). Ο πρώτος κριτής-
+   * ΟΡΓΑΝΟ με εθνική κάλυψη — παράκτια δορυφορικά αλτίμετρα, 90 μέρες, 34.971 συγκρίσεις, κριτήρια
+   * δεσμευμένα πριν το τρέξιμο (scripts/measureWaveModelBlendAgainstAltimetry.py → reports/wave-model/
+   * altimetry-blend.json) — έδειξε το αντίθετο εκεί που κάθονται τα σημεία θάλασσας της σελίδας (5-15
+   * χλμ. από ακτή): ewam ζυγισμένο RMSE 0,424, μεροληψία −14,4%, σοβαρές υποεκτιμήσεις (κύμα ≥1 μ.,
+   * ≥0,40 μ. κάτω) 20%. Και ειδικά όταν το ewam λέει ≥0,2 μ. πιο ήρεμα από το meteofrance, το όργανο
+   * είναι πιο κοντά στο ewam μόνο 22,6% (όργανο 0,88 / ewam 0,51 / mf 0,85 — altimetry-disagreement.json).
+   * Από 7 προδηλωμένους υποψήφιους μόνο ο «max» πέρασε όλα τα κριτήρια: 0,346 / −1,9% / 8%.
+   *
+   * ΓΙΑΤΙ ΟΧΙ ΑΠΛΩΣ «meteofrance ΠΑΝΤΟΥ»: έμενε −6,1% (εκτός ορίου −5%), και στα ≥2 μ. το meteofrance
+   * υποδιαβάζει (−7%) ενώ το ewam όχι (+2,7%) — κάθε μοντέλο χάνει σε άλλο καθεστώς, το «max» κρατά
+   * το σωστό κάθε φορά. Κατεύθυνση σφάλματος: μόνο προς το ΨΗΛΟΤΕΡΟ κύμα, η ασφαλής πλευρά.
+   *
+   * ΤΑ 56 ΑΝΑΠΟΔΟΓΥΡΙΣΜΕΝΑ ΣΗΜΕΙΑ ΔΕΝ ΑΛΛΑΖΟΥΝ: εκεί το κελί του ewam περιγράφει νερό πίσω από
+   * ακρωτήρι (scripts/bakeMarineModelPreference.mjs) — ένα ψηλότερο ewam εκεί είναι λάθος θάλασσα,
+   * όχι ασφάλεια. Ηγείται το meteofrance όπως πριν, με το ewam μόνο ως ρεζέρβα.
+   *
+   * ΜΙΑ ΘΑΛΑΣΣΑ ΑΝΑ ΩΡΑ, όπως πάντα: ύψος, κατεύθυνση, περίοδος και αποθαλασσιά από το μοντέλο που
+   * κέρδισε την ώρα. Ισοπαλία → ewam (η παλιά συμπεριφορά).
+   */
+  const modelAt = (index: number): 'ewam' | 'meteofrance_wave' => {
+    const ewam = usableAt(waveHeightEwam, spikeEwam, index);
+    const mf = usableAt(waveHeightMf, spikeMf, index);
+    if (flipped) return mf !== undefined ? 'meteofrance_wave' : 'ewam';
+    if (ewam !== undefined && mf !== undefined) return mf > ewam ? 'meteofrance_wave' : 'ewam';
+    if (ewam !== undefined) return 'ewam';
+    if (mf !== undefined) return 'meteofrance_wave';
+    return optionalNumber(waveHeightEwam?.[index]) !== undefined ? 'ewam' : 'meteofrance_wave';
+  };
+  const chosen: Array<'ewam' | 'meteofrance_wave'> = marineHourly.time.map((_: unknown, index: number) => modelAt(index));
+  // Μια ώρα πέφτει ΟΛΟΚΛΗΡΗ στο μοντέλο που την κέρδισε: ύψος, περίοδος, κατεύθυνση και αποθαλασσιά
   // μαζί. Κρατώντας μόνο το ύψος θα φτιάχναμε θάλασσα που δεν ανέφερε κανένα από τα δύο μοντέλα
   // — ακριβώς ο λόγος που η επιλογή μοντέλου ήταν εξαρχής μία ανά ώρα.
-  const preferLeadingAt = (index: number): boolean => (
-    optionalNumber(leading?.[index]) !== undefined && !spikeHours.has(index)
+  const pick = (index: number, ewam?: unknown[], meteofrance?: unknown[]): unknown => (
+    chosen[index] === 'ewam' ? ewam?.[index] : meteofrance?.[index]
   );
-  const pick = (index: number, ewam?: unknown[], fallback?: unknown[]): unknown => {
-    const [first, second] = flipped ? [fallback, ewam] : [ewam, fallback];
-    return preferLeadingAt(index) ? first?.[index] : second?.[index];
-  };
-  const modelAt = (index: number): 'ewam' | 'meteofrance_wave' => {
-    if (preferLeadingAt(index)) return flipped ? 'meteofrance_wave' : 'ewam';
-    return flipped ? 'ewam' : 'meteofrance_wave';
-  };
+  const modelAtIndex = (index: number): 'ewam' | 'meteofrance_wave' => chosen[index];
 
   return marineHourly.time
     .map((timeStr: string, index: number): MarineHourlyRow => ({
@@ -213,7 +250,7 @@ export const parseMarineHourly = (
         swellWaveDirectionDeg: optionalNumber(pick(index, swellDirectionEwam, swellDirectionMf)),
         swellWavePeriodS: optionalNumber(pick(index, swellPeriodEwam, swellPeriodMf)),
         seaSurfaceTemperatureC: optionalNumber(seaTemperature?.[index]),
-        waveModel: modelAt(index),
+        waveModel: modelAtIndex(index),
         source: 'open-meteo-marine',
       },
     }))

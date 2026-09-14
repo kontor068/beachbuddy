@@ -1,0 +1,95 @@
+{
+  "before": ".tmp/sic2-2024-06-28-after.json",
+  "after": ".tmp/max-2024-06-28.json",
+  "weather": "replay-2024-06-28",
+  "comparedHours": 25704,
+  "mildHoursBefore": 9281,
+  "stricterHours": 877,
+  "stricterPctOfAll": 3.41,
+  "milderHours": 275,
+  "milderPctOfAll": 1.07,
+  "netStricterPctOfAll": 2.34,
+  "stricterBeaches": 318,
+  "milderBeaches": 155,
+  "moves": {
+    "good→caution": 357,
+    "caution→avoid_swimming": 328,
+    "avoid_swimming→caution": 208,
+    "excellent→good": 127,
+    "good→avoid_swimming": 57,
+    "caution→good": 54,
+    "good→excellent": 11,
+    "excellent→caution": 7,
+    "avoid_swimming→good": 2,
+    "excellent→avoid_swimming": 1
+  },
+  "printedShoreWave": {
+    "up": 4598,
+    "down": 976,
+    "unchanged": 20130,
+    "meanDeltaM": 0.024,
+    "histogram": {
+      "0,0": 20130,
+      "-0,1": 467,
+      "+0,2": 1039,
+      "+0,1": 2786,
+      "-0,4": 42,
+      "-0,3": 124,
+      "+0,3": 369,
+      "≥+0,5": 224,
+      "≤−0,5": 66,
+      "+0,4": 180,
+      "-0,2": 277
+    }
+  },
+  "topRegionsStricter": [
+    [
+      "crete-crete-chania",
+      117
+    ],
+    [
+      "ionian-islands-corfu",
+      87
+    ],
+    [
+      "attica-kythira",
+      86
+    ],
+    [
+      "ionian-islands-kefalonia",
+      50
+    ],
+    [
+      "ionian-islands-meganisi",
+      48
+    ],
+    [
+      "west-greece-aetolia-acarnania-mainland",
+      41
+    ],
+    [
+      "ionian-islands-lefkada",
+      32
+    ],
+    [
+      "west-greece-ileia-mainland",
+      32
+    ],
+    [
+      "north-aegean-lesvos",
+      31
+    ],
+    [
+      "central-macedonia-halkidiki-mainland",
+      25
+    ],
+    [
+      "epirus-preveza-mainland",
+      25
+    ],
+    [
+      "ionian-islands-zakynthos",
+      24
+    ]
+  ]
+}
