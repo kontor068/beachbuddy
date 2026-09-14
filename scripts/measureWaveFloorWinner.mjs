@@ -141,6 +141,8 @@ waveModelModule.resolveDisplayWaveHeightM = (input) => {
       fetchKm: current.fetchKm, sectorLevel: current.sectorLevel, measured: typeof measured === 'number' ? Number(measured.toFixed(2)) : null,
       smb: Number(input.modeledWaveHeightM.toFixed(2)), floor: Number(floor.toFixed(2)), effective: Number(eff.toFixed(2)), winner,
       capped, effectiveIfCapped: Number(effAfter.toFixed(2)),
+      // 14/09: το fetch που είδε ο κόφτης στο runtime (παρεμβολή, effectiveFetchKm) δίπλα στον τομέα του χάρτη
+      runtimeFetchKm: typeof input.windSectorFetchKm === 'number' ? Number(input.windSectorFetchKm.toFixed(2)) : null,
     });
   }
   return out;
@@ -239,6 +241,20 @@ const report = {
     changedByFetchBand: Object.fromEntries(Object.entries((() => { const m = {}; for (const r of changed) (m[fetchBand(r.fetchKm)] ||= []).push(r); return m; })()).map(([k, v]) => [k, { n: v.length, medianDropM: medianDrop(v), crossBelowAmber: v.filter(r => r.effective >= SEA_STATE_AMBER_M && r.effectiveIfCapped < SEA_STATE_AMBER_M).length }])),
     changedByExposure: Object.fromEntries(Object.entries((() => { const m = {}; for (const r of changed) (m[r.exposure] ||= []).push(r); return m; })()).map(([k, v]) => [k, v.length])),
   },
+  // 14/09 — η διαφορά τομέα/παρεμβολής: κλήσεις όπου ο τομέας του ανέμου έχει <3 χλμ αλλά ο κόφτης είδε ≥3 (ή ανάποδα).
+  fetchMismatch: (() => {
+    const withBoth = calls.filter(r => typeof r.fetchKm === 'number' && typeof r.runtimeFetchKm === 'number');
+    const sectorCoveRuntimeOpen = withBoth.filter(r => r.fetchKm < 3 && r.runtimeFetchKm >= 3);
+    const sectorOpenRuntimeCove = withBoth.filter(r => r.fetchKm >= 3 && r.runtimeFetchKm < 3);
+    const amberLeft = sectorCoveRuntimeOpen.filter(r => r.winner === 'floor' && r.effective >= SEA_STATE_AMBER_M && r.exposure !== 'protected');
+    const gap = sectorCoveRuntimeOpen.map(r => r.runtimeFetchKm - r.fetchKm).sort((a, b) => a - b);
+    return {
+      calls: withBoth.length, sectorCoveRuntimeOpen: sectorCoveRuntimeOpen.length, beaches: beachesOf(sectorCoveRuntimeOpen),
+      sectorOpenRuntimeCove: sectorOpenRuntimeCove.length, amberStillFromFloor: amberLeft.length, amberBeaches: beachesOf(amberLeft),
+      medianGapKm: gap.length ? Number(gap[Math.floor(gap.length / 2)].toFixed(2)) : null,
+      samples: amberLeft.slice(0, 20).map(r => ({ beachId: r.beachId, regionId: r.regionId, exposure: r.exposure, beaufort: r.beaufort, sectorFetchKm: r.fetchKm, runtimeFetchKm: r.runtimeFetchKm, floor: r.floor, effective: r.effective, measured: r.measured })),
+    };
+  })(),
   samples: changed.sort((a, b) => (b.effective - b.effectiveIfCapped) - (a.effective - a.effectiveIfCapped)).slice(0, 25),
   note: 'Δ6 (§Γ81): μέτρηση μίας μέρας με το πραγματικό προϊόν. Δεν λέει ποιος έχει δίκιο — μόνο ποιος αποφασίζει. Έλεγχος με σημαδούρες: επόμενο.',
 };
@@ -255,4 +271,6 @@ for (const [k, v] of Object.entries(report.byFetchBand)) console.log(`  fetch ${
 for (const [k, v] of Object.entries(report.byBeaufort).sort()) console.log(`  ${k} Μπφ n=${String(v.n).padStart(5)} δάπεδο ${v.floorPct}%`);
 console.log(`\nΥΠΟΨΗΦΙΑ (δάπεδο ≤ SMB στη ριπή): αλλάζει ${changed.length}/${floorWins.length} νίκες του δαπέδου (${beachesOf(changed)} παραλίες) · διάμεση πτώση ${report.candidate.medianDropM} μ. · κάτω από 0,8: ${crossAmber.length} · κάτω από 1,2: ${crossRough.length}`);
 for (const [k, v] of Object.entries(report.candidate.changedByFetchBand)) console.log(`  fetch ${k}: ${v.n} · πτώση ${v.medianDropM} μ. · κάτω από 0,8: ${v.crossBelowAmber}`);
+console.log(`
+ΤΟΜΕΑΣ vs ΠΑΡΕΜΒΟΛΗ (14/09): ${JSON.stringify({ ...report.fetchMismatch, samples: undefined })}`);
 console.log(`→ ${path.relative(root, outPath)}`);

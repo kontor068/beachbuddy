@@ -59,7 +59,7 @@
     "holds": false,
     "verdict": "ΔΕΝ ΚΡΑΤΑΕΙ — το δάπεδο μένει"
   },
-  "generatedAt": "2026-09-14T05:57:23.502Z",
+  "generatedAt": "2026-09-14T06:30:13.499Z",
   "years": [
     2022,
     2023,
@@ -137,7 +137,7 @@
       "medianHs": 1.36
     },
     "calmAll": {
-      "days": 8359,
+      "days": 8355,
       "beaches": 1198,
       "surfRate": 0.011,
       "stripRate": 0.042,
@@ -171,6 +171,28 @@
       "medianFetchKm": 0,
       "medianHs": 0.95
     },
+    "floor-0.8-mid": {
+      "days": 129,
+      "beaches": 41,
+      "surfRate": 0.085,
+      "stripRate": 0.488,
+      "medianFoamOuter": 0.038,
+      "medianFoam": 0.194,
+      "medianWindKmh": 38.7,
+      "medianFetchKm": 5.44,
+      "medianHs": 1.55
+    },
+    "floor-0.5-mid": {
+      "days": 133,
+      "beaches": 67,
+      "surfRate": 0.03,
+      "stripRate": 0.195,
+      "medianFoamOuter": 0.003,
+      "medianFoam": 0.084,
+      "medianWindKmh": 24.6,
+      "medianFetchKm": 5.2,
+      "medianHs": 0.89
+    },
     "floor-0.8-open": {
       "days": 52,
       "beaches": 25,
@@ -194,7 +216,7 @@
       "medianHs": 0.22
     },
     "calm": {
-      "days": 8359,
+      "days": 8355,
       "beaches": 1198,
       "surfRate": 0.011,
       "stripRate": 0.042,
@@ -216,15 +238,15 @@
       "medianHs": 1.36
     },
     "other": {
-      "days": 5768,
-      "beaches": 923,
-      "surfRate": 0.014,
-      "stripRate": 0.062,
+      "days": 5510,
+      "beaches": 904,
+      "surfRate": 0.011,
+      "stripRate": 0.049,
       "medianFoamOuter": 0,
-      "medianFoam": 0.049,
-      "medianWindKmh": 19.2,
+      "medianFoam": 0.047,
+      "medianWindKmh": 18.7,
       "medianFetchKm": 0,
-      "medianHs": 0.72
+      "medianHs": 0.71
     }
   },
   "coveFloor08ByFetchBand": {
@@ -413,6 +435,30 @@
       "medianWindKmh": 34.1,
       "medianFetchKm": 0,
       "medianHs": 0.97
+    }
+  },
+  "midFloor08ByFetchBand": {
+    "3-5": {
+      "days": 22,
+      "beaches": 10,
+      "surfRate": 0.045,
+      "stripRate": 0.273,
+      "medianFoamOuter": 0.005,
+      "medianFoam": 0.108,
+      "medianWindKmh": 34.4,
+      "medianFetchKm": 3.6,
+      "medianHs": 1.06
+    },
+    "5-8": {
+      "days": 107,
+      "beaches": 31,
+      "surfRate": 0.093,
+      "stripRate": 0.533,
+      "medianFoamOuter": 0.041,
+      "medianFoam": 0.203,
+      "medianWindKmh": 38.9,
+      "medianFetchKm": 5.44,
+      "medianHs": 1.59
     }
   },
   "perBeach": [

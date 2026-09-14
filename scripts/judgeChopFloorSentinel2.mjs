@@ -224,6 +224,8 @@ for (const t of targetList) {
     let cls = 'other';
     if (winner === 'floor' && fetchKm !== null && fetchKm < COVE_KM && floor >= AMBER_M) cls = 'floor-0.8-cove';
     else if (winner === 'floor' && fetchKm !== null && fetchKm < COVE_KM && floor >= MID_M) cls = 'floor-0.5-cove';
+    else if (winner === 'floor' && fetchKm !== null && fetchKm >= COVE_KM && fetchKm < OPEN_KM && floor >= AMBER_M) cls = 'floor-0.8-mid';
+    else if (winner === 'floor' && fetchKm !== null && fetchKm >= COVE_KM && fetchKm < OPEN_KM && floor >= MID_M) cls = 'floor-0.5-mid';
     else if (winner === 'floor' && fetchKm !== null && fetchKm >= OPEN_KM && floor >= AMBER_M) cls = 'floor-0.8-open';
     else if (winner === 'floor' && fetchKm !== null && fetchKm >= OPEN_KM && floor >= MID_M) cls = 'floor-0.5-open';
     else if (w.kmh < CALM_WIND_KMH && typeof hs === 'number' && hs < CALM_HS_M) cls = 'calm';
@@ -246,7 +248,7 @@ const stat = rs => ({
 });
 const by = (rs, keyFn) => { const m = {}; for (const r of rs) (m[keyFn(r)] ||= []).push(r); return Object.fromEntries(Object.entries(m).sort().map(([k, v]) => [k, stat(v)])); };
 const classes = {};
-for (const c of ['floor-0.8-cove', 'floor-0.5-cove', 'floor-0.8-open', 'floor-0.5-open', 'calm', 'measured-0.8', 'other']) classes[c] = stat(rows.filter(r => r.cls === c));
+for (const c of ['floor-0.8-cove', 'floor-0.5-cove', 'floor-0.8-mid', 'floor-0.5-mid', 'floor-0.8-open', 'floor-0.5-open', 'calm', 'measured-0.8', 'other']) classes[c] = stat(rows.filter(r => r.cls === c));
 const coveIds = new Set(rows.filter(r => r.cls === 'floor-0.8-cove').map(r => r.id));
 const calmSameCoves = rows.filter(r => r.cls === 'calm' && coveIds.has(r.id));
 const measuredSameCoves = rows.filter(r => r.cls === 'measured-0.8' && coveIds.has(r.id));
@@ -295,6 +297,7 @@ const report = {
   coveFloor08ByFetchBand: by(cove08, r => fetchBand(r.fetchKm)), coveFloor08ByBeaufort: by(cove08, r => String(r.bft)), coveFloor08ByExposure: by(cove08, r => r.exposure), coveFloor08ByS2Class: by(cove08, r => r.s2class),
   coveFloor08BySeaCell: by(cove08, r => (r.seaCell ? 'κελί νερού' : 'στεριανό κελί')),
   coveFloor05ByFetchBand: by(rows.filter(r => r.cls === 'floor-0.5-cove'), r => fetchBand(r.fetchKm)),
+  midFloor08ByFetchBand: by(rows.filter(r => r.cls === 'floor-0.8-mid'), r => (r.fetchKm < 5 ? '3-5' : '5-8')),
   perBeach: perBeach.slice(0, 80),
   perBeachCount: perBeach.length,
 };
@@ -305,6 +308,8 @@ console.log('\n=== Θέμα 22 · δάπεδο ψιλοκύματος μπροσ
 console.log(line('ΔΑΠΕΔΟ ≥0,8 σε ΟΡΜΟ <3 χλμ', report.headline.coveFloor08));
 console.log(line('  ίδιοι όρμοι, ΗΡΕΜΗ μέρα', report.headline.calmSameCoves));
 console.log(line('  ίδιοι όρμοι, ΜΕΤΡΗΣΗ ≥0,8', report.headline.measured08SameCoves));
+console.log(line('ΔΑΠΕΔΟ ≥0,8 σε 3-8 χλμ (ΑΜΕΤΡΗΤΗ ΖΩΝΗ)', classes['floor-0.8-mid']));
+console.log(line('ΔΑΠΕΔΟ 0,45-0,79 σε 3-8 χλμ', classes['floor-0.5-mid']));
 console.log(line('ΔΑΠΕΔΟ ≥0,8 σε ΑΝΟΙΧΤΑ ≥8 χλμ', report.headline.openFloor08));
 console.log(line('ΜΕΤΡΗΣΗ ≥0,8 (όλοι οι στόχοι)', report.headline.measured08All));
 console.log(line('ΗΡΕΜΗ (όλοι οι στόχοι)', report.headline.calmAll));
