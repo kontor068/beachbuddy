@@ -105,18 +105,46 @@ require.extensions['.ts'] = (module, filename) => {
   }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})'), filename);
 };
 
-// ── Ο καιρός: ηχογράφηση/επανάληψη ΑΝΑ ΣΗΜΕΙΟ ΚΑΙ ΑΝΑ ΑΙΤΗΜΑ ─────────────────────────────────
-// ΔΙΟΡΘΩΘΗΚΕ 14/09/2026 (βίβλος §Γ85). Το κλειδί ήταν μόνο διαδρομή + σημείο, αλλά για κάθε σημείο
-// θάλασσας η σελίδα κάνει ΤΡΙΑ αιτήματα στο /v1/marine (ewam · ουρά meteofrance_wave · θερμοκρασία
-// νερού — services/weatherService fetchMarineForecastData) και κρατιόταν όποιο έφτανε τελευταίο: στην
-// ηχογράφηση της 14/09 10:21, 604/2.867 σημεία (21%) είχαν ΜΟΝΟ θερμοκρασία νερού, οπότε στο
-// ξαναπαίξιμο το κύμα χανόταν. Μετρημένο: ίδιος κώδικας, ζωντανά vs ξαναπαίξιμο → 436/5.712
-// παραλίες-μέρες (7,6%) «άλλαζαν» χωρίς καμία αλλαγή κώδικα. Ηχογραφήσεις πριν από αυτή τη γραμμή
-// ΔΕΝ ξαναπαίζονται με το νέο κλειδί — ξαναγράψε τις.
-const requestSignature = (u) => [...u.searchParams.entries()]
-  .filter(([k]) => !['latitude', 'longitude', 'apikey', 'start_date', 'end_date'].includes(k))
-  .sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => `${k}=${v}`).join('&');
-const pointKey = (u, lat, lon) => `${u.pathname}|${requestSignature(u)}|${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+// ── Ο καιρός: ηχογράφηση/επανάληψη ΑΝΑ ΣΗΜΕΙΟ ΚΑΙ, ΣΤΗ ΘΑΛΑΣΣΑ, ΑΝΑ ΜΟΝΤΕΛΟ ───────────────────
+// ΔΙΟΡΘΩΘΗΚΕ 14/09/2026 (βίβλος §Γ85). Το κλειδί ήταν «διαδρομή + σημείο» — σκόπιμα, για να περνάει ο
+// καιρός ανάμεσα σε εκδόσεις που ζητούν αλλιώς. Όμως για κάθε σημείο θάλασσας ο σημερινός κώδικας κάνει
+// ΤΡΙΑ αιτήματα στο /v1/marine (models=ewam · ουρά models=meteofrance_wave · θερμοκρασία νερού
+// models=meteofrance_currents — services/weatherService fetchMarineForecastData) και κρατιόταν όποιο
+// έφτανε τελευταίο: ηχογράφηση 14/09 10:21 → 604/2.867 σημεία (21%) ΜΟΝΟ θερμοκρασία νερού· ίδιος κώδικας
+// ζωντανά vs ξαναπαίξιμο → 436/5.712 παραλίες-μέρες (7,6%) «άλλαζαν» χωρίς αλλαγή κώδικα.
+//
+// Το κλειδί «ολόκληρο το ερώτημα» θα έλυνε τη σύγκρουση αλλά θα έσπαγε τον λόγο ύπαρξης του εργαλείου:
+// ο κώδικας της 05/08 ζητάει το κύμα με ΕΝΑ αίτημα και τρία μοντέλα μαζί
+// (models=ewam,meteofrance_wave,meteofrance_currents, πεδία με κατάληξη _<μοντέλο>). Γι' αυτό η θάλασσα
+// φυλάγεται ΑΝΑ ΜΟΝΤΕΛΟ: ένα συνδυασμένο αίτημα σπάει στα μοντέλα του κατά την ηχογράφηση και
+// ξαναχτίζεται (κατάληξη ανά πεδίο) κατά το ξαναπαίξιμο· ένα αίτημα ενός μοντέλου φυλάγεται/σερβίρεται
+// όπως είναι. Έτσι ΚΑΙ τα τρία σημερινά αιτήματα ξεχωρίζουν ΚΑΙ η παλιά έκδοση βρίσκει ό,τι ζητάει.
+// Ηχογραφήσεις πριν από αυτή τη γραμμή ΔΕΝ ξαναπαίζονται — ξαναγράψε τις.
+const coordKey = (lat, lon) => `${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+const isMarine = (u) => u.pathname.endsWith('/v1/marine');
+const modelsOf = (u) => (u.searchParams.get('models') || '').split(',').map(s => s.trim()).filter(Boolean);
+const marineKey = (u, model, lat, lon) => `${u.pathname}|model=${model}|${coordKey(lat, lon)}`;
+const plainKey = (u, lat, lon) => `${u.pathname}|${coordKey(lat, lon)}`;
+const storeResponse = (u, lat, lon, r) => {
+  if (!isMarine(u)) { store[plainKey(u, lat, lon)] = r; return; }
+  const models = modelsOf(u);
+  if (models.length <= 1) { store[marineKey(u, models[0] ?? 'default', lat, lon)] = r; return; }
+  for (const m of models) {
+    const hourly = { time: r?.hourly?.time };
+    for (const [k, v] of Object.entries(r?.hourly ?? {})) if (k.endsWith(`_${m}`)) hourly[k.slice(0, -(m.length + 1))] = v;
+    store[marineKey(u, m, lat, lon)] = { ...r, hourly, hourly_units: undefined };
+  }
+};
+const lookupResponse = (u, lat, lon) => {
+  if (!isMarine(u)) return store[plainKey(u, lat, lon)] ?? null;
+  const models = modelsOf(u);
+  if (models.length <= 1) return store[marineKey(u, models[0] ?? 'default', lat, lon)] ?? null;
+  const parts = models.map(m => [m, store[marineKey(u, m, lat, lon)]]);
+  if (parts.some(([, p]) => !p)) return null;
+  const hourly = { time: parts[0][1].hourly?.time };
+  for (const [m, p] of parts) for (const [k, v] of Object.entries(p.hourly ?? {})) if (k !== 'time') hourly[`${k}_${m}`] = v;
+  return { ...parts[0][1], hourly };
+};
 const store = REPLAY ? JSON.parse(readFileSync(path.resolve(REPLAY), 'utf8')) : {};
 let recorded = 0, replayed = 0;
 const missingPoints = new Set();
@@ -134,9 +162,9 @@ if (RECORD || REPLAY) {
     if (REPLAY) {
       const rows = [];
       for (let i = 0; i < lats.length; i += 1) {
-        const k = pointKey(u, lats[i], lons[i]);
-        if (!(k in store)) { missingPoints.add(k); rows.push(null); continue; }
-        rows.push(store[k]);
+        const hit = lookupResponse(u, lats[i], lons[i]);
+        if (!hit) { missingPoints.add(`${u.pathname}|${modelsOf(u).join(',')}|${coordKey(lats[i], lons[i])}`); rows.push(null); continue; }
+        rows.push(hit);
       }
       if (rows.some(r => r === null)) throw new Error(`ΞΑΝΑΠΑΙΞΙΜΟ: λείπουν ${rows.filter(r => r === null).length}/${rows.length} σημεία από την ηχογράφηση (${u.pathname})`);
       replayed += rows.length;
@@ -147,7 +175,7 @@ if (RECORD || REPLAY) {
     const res = await originalFetch(target, init);
     const json = await res.clone().json();
     const rows = Array.isArray(json) ? json : [json];
-    rows.forEach((r, i) => { if (lats[i] !== undefined) { store[pointKey(u, lats[i], lons[i])] = r; recorded += 1; } });
+    rows.forEach((r, i) => { if (lats[i] !== undefined) { storeResponse(u, lats[i], lons[i], r); recorded += 1; } });
     return new Response(JSON.stringify(json), { status: res.status, headers: { 'content-type': 'application/json' } });
   };
   console.log(RECORD ? `  Ηχογράφηση καιρού → ${RECORD}${apiKey ? ' (πληρωμένη πόρτα)' : ''}` : `  Επανάληψη καιρού ← ${REPLAY} (${Object.keys(store).length} σημεία)`);

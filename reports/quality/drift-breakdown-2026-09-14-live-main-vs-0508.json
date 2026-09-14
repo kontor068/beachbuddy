@@ -1,37 +1,36 @@
 {
-  "generatedAt": "2026-09-14T11:14:09.205Z",
+  "generatedAt": "2026-09-14T11:14:08.914Z",
   "baseline": {
     "file": "C:/cb-drift-main/.tmp/drift2-0508.json",
     "label": "κώδικας 05/08/2026",
     "commit": null
   },
   "current": {
-    "file": "C:/cb-drift-main/.tmp/drift2-branch.json",
-    "label": "κώδικας 05/08/2026",
+    "file": "C:/cb-drift-main/.tmp/drift2-main-live.json",
+    "label": "σημερινός κώδικας",
     "commit": null
   },
   "comparedBeachDays": 5712,
   "onlyInBaseline": 0,
   "onlyInCurrent": 0,
-  "stricter": 789,
-  "milder": 1112,
-  "same": 3811,
-  "stricterPct": 13.81,
-  "milderPct": 19.47,
-  "netDriftPct": -5.66,
-  "meanScoreDeltaPoints": -0.65,
+  "stricter": 587,
+  "milder": 1097,
+  "same": 4028,
+  "stricterPct": 10.28,
+  "milderPct": 19.21,
+  "netDriftPct": -8.93,
+  "meanScoreDeltaPoints": 1.38,
   "moves": {
-    "avoid_swimming→caution": 492,
-    "good→caution": 391,
-    "good→excellent": 305,
-    "caution→good": 253,
-    "excellent→good": 227,
-    "good→avoid_swimming": 75,
-    "avoid_swimming→good": 56,
-    "excellent→caution": 48,
-    "caution→avoid_swimming": 46,
-    "caution→excellent": 6,
-    "excellent→avoid_swimming": 2
+    "good→excellent": 391,
+    "avoid_swimming→caution": 373,
+    "caution→good": 268,
+    "good→caution": 239,
+    "excellent→good": 215,
+    "good→avoid_swimming": 67,
+    "avoid_swimming→good": 59,
+    "caution→avoid_swimming": 42,
+    "excellent→caution": 24,
+    "caution→excellent": 6
   },
   "examples": {
     "stricter": [
@@ -158,16 +157,6 @@
     ],
     "milder": [
       {
-        "beachId": 97,
-        "regionId": "attica-agistri",
-        "day": 1,
-        "verdict": "caution",
-        "score": 41,
-        "total": null,
-        "was": "avoid_swimming",
-        "scoreWas": 28
-      },
-      {
         "beachId": 98,
         "regionId": "attica-agistri",
         "day": 1,
@@ -178,21 +167,11 @@
         "scoreWas": 27
       },
       {
-        "beachId": 99,
-        "regionId": "attica-agistri",
-        "day": 1,
-        "verdict": "caution",
-        "score": 38,
-        "total": null,
-        "was": "avoid_swimming",
-        "scoreWas": 25
-      },
-      {
         "beachId": 0,
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -202,7 +181,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -212,7 +191,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -222,7 +201,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -232,7 +211,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -242,7 +221,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -252,7 +231,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93
@@ -262,7 +241,7 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 97,
+        "score": 94,
         "total": null,
         "was": "good",
         "scoreWas": 90
@@ -272,7 +251,27 @@
         "regionId": "attica-athens-area-mainland",
         "day": 0,
         "verdict": "excellent",
-        "score": 98,
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 93
+      },
+      {
+        "beachId": 9,
+        "regionId": "attica-athens-area-mainland",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
+        "total": null,
+        "was": "good",
+        "scoreWas": 92
+      },
+      {
+        "beachId": 10,
+        "regionId": "attica-athens-area-mainland",
+        "day": 0,
+        "verdict": "excellent",
+        "score": 96,
         "total": null,
         "was": "good",
         "scoreWas": 93

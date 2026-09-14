@@ -1,0 +1,282 @@
+{
+  "generatedAt": "2026-09-14T11:14:09.487Z",
+  "baseline": {
+    "file": "C:/cb-drift-main/.tmp/drift2-main-live.json",
+    "label": "σημερινός κώδικας",
+    "commit": null
+  },
+  "current": {
+    "file": "C:/cb-drift-main/.tmp/drift2-branch.json",
+    "label": "κώδικας 05/08/2026",
+    "commit": null
+  },
+  "comparedBeachDays": 5712,
+  "onlyInBaseline": 0,
+  "onlyInCurrent": 0,
+  "stricter": 417,
+  "milder": 214,
+  "same": 5081,
+  "stricterPct": 7.3,
+  "milderPct": 3.75,
+  "netDriftPct": 3.55,
+  "meanScoreDeltaPoints": -2.03,
+  "moves": {
+    "good→caution": 193,
+    "avoid_swimming→caution": 182,
+    "excellent→good": 133,
+    "caution→avoid_swimming": 66,
+    "good→excellent": 18,
+    "good→avoid_swimming": 16,
+    "caution→good": 11,
+    "excellent→caution": 8,
+    "avoid_swimming→good": 3,
+    "excellent→avoid_swimming": 1
+  },
+  "examples": {
+    "stricter": [
+      {
+        "beachId": 110,
+        "regionId": "attica-kythira",
+        "day": 0,
+        "verdict": "caution",
+        "score": 82,
+        "total": null,
+        "was": "good",
+        "scoreWas": 82
+      },
+      {
+        "beachId": 147,
+        "regionId": "attica-kythira",
+        "day": 0,
+        "verdict": "avoid_swimming",
+        "score": 41,
+        "total": null,
+        "was": "caution",
+        "scoreWas": 61
+      },
+      {
+        "beachId": 198,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 84,
+        "total": null,
+        "was": "good",
+        "scoreWas": 84
+      },
+      {
+        "beachId": 206,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 75,
+        "total": null,
+        "was": "good",
+        "scoreWas": 75
+      },
+      {
+        "beachId": 209,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 83,
+        "total": null,
+        "was": "good",
+        "scoreWas": 83
+      },
+      {
+        "beachId": 275,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 79,
+        "total": null,
+        "was": "good",
+        "scoreWas": 79
+      },
+      {
+        "beachId": 278,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "good",
+        "score": 95,
+        "total": null,
+        "was": "excellent",
+        "scoreWas": 95
+      },
+      {
+        "beachId": 286,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 74,
+        "total": null,
+        "was": "good",
+        "scoreWas": 74
+      },
+      {
+        "beachId": 304,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 72,
+        "total": null,
+        "was": "good",
+        "scoreWas": 72
+      },
+      {
+        "beachId": 308,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 74,
+        "total": null,
+        "was": "good",
+        "scoreWas": 74
+      },
+      {
+        "beachId": 311,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 77,
+        "total": null,
+        "was": "good",
+        "scoreWas": 77
+      },
+      {
+        "beachId": 3121,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 73,
+        "total": null,
+        "was": "good",
+        "scoreWas": 73
+      }
+    ],
+    "milder": [
+      {
+        "beachId": 97,
+        "regionId": "attica-agistri",
+        "day": 1,
+        "verdict": "caution",
+        "score": 41,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 41
+      },
+      {
+        "beachId": 99,
+        "regionId": "attica-agistri",
+        "day": 1,
+        "verdict": "caution",
+        "score": 38,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 38
+      },
+      {
+        "beachId": 144,
+        "regionId": "attica-kythira",
+        "day": 0,
+        "verdict": "caution",
+        "score": 57,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 173,
+        "regionId": "attica-spetses",
+        "day": 1,
+        "verdict": "caution",
+        "score": 45,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 174,
+        "regionId": "attica-spetses",
+        "day": 1,
+        "verdict": "caution",
+        "score": 56,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 195,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "good",
+        "score": 74,
+        "total": null,
+        "was": "caution",
+        "scoreWas": 58
+      },
+      {
+        "beachId": 201,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 47,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 204,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 48,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 212,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 47,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      },
+      {
+        "beachId": 213,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 44,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 44
+      },
+      {
+        "beachId": 217,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 43,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 43
+      },
+      {
+        "beachId": 218,
+        "regionId": "central-greece-evia",
+        "day": 0,
+        "verdict": "caution",
+        "score": 61,
+        "total": null,
+        "was": "avoid_swimming",
+        "scoreWas": 45
+      }
+    ]
+  },
+  "reading": "netDriftPct > 0 σημαίνει ότι ο σημερινός κώδικας λέει «χειρότερα» πιο συχνά απ᾽ ό,τι ο παλιός, στον ΙΔΙΟ καιρό και στα ΙΔΙΑ δεδομένα."
+}
