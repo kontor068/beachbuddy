@@ -2380,48 +2380,22 @@ const heroIsRegionSpecific = (imagePath, region, island) => (
   || regionOgImageOverrides.get(island?.id) === imagePath
 );
 
-// The landing hero photo (LandingHero.tsx) picks morning/afternoon/evening from the
-// VISITOR'S OWN clock — deliberately decorative, not the Athens forecast clock — so the
-// build cannot know which of the three images a given visitor will see. Lighthouse (and
-// the field CrUX data) flagged this as "LCP request not discoverable in the initial
-// document": React only decides which <picture> to render after the JS bundle has loaded
-// and run, so the browser's own preload scanner — which normally starts fetching the
-// biggest visible image before a single script executes — never gets a chance.
-// Fix: a synchronous inline script, first thing in <head>, reads the visitor's local hour
-// with the SAME 5/12/18 boundaries as LandingHero.tsx and injects a <link rel=preload> for
-// exactly that slot's mobile AVIF. Home-only: injected inside buildHomePage, never in
-// injectBeachHead, which every other page type shares — a beach or region page has no hero
-// photo to preload.
+// TRIED AND REVERTED 15/09/2026 — do not re-add without re-measuring live first.
 //
-// A SINGLE fixed width (828, our most common mobile case: ~412 CSS px at ~2x DPR), not the
-// full responsive imagesrcset/imagesizes the <picture> itself uses. Measured live on
-// calmbeach.gr (15/09): the full-srcset version made LCP WORSE, 3.7s -> 4.2s (Lighthouse
-// mobile) — its own resource-selection pass picked 1440w/35KB for the preload while the
-// actual rendered <img> settled on 828w, so it fetched an image nobody displayed AND that
-// extra 35KB competed for bandwidth with the render-critical CSS/JS during the most
-// congested part of a throttled load, delaying the very JS that has to run before React can
-// mount the <img> the preload was for. A fixed width trades perfect per-device sizing (a
-// wider or higher-DPR phone upscales it slightly) for a small, predictable fetch that is
-// very likely the exact file the real <picture> asks for, so the browser serves that second
-// request from its in-flight/disk cache instead of paying for it twice.
-const heroSourcesTs = readFileSync(
-  path.join(projectRoot, 'components', 'landing', 'heroSources.ts'),
-  'utf8',
-);
-const heroSourcesMatch = heroSourcesTs.match(/HERO_SOURCES[^=]*=\s*(\{[\s\S]*?\n\});/);
-if (!heroSourcesMatch) {
-  throw new Error('[prerender] Could not parse HERO_SOURCES out of components/landing/heroSources.ts — did buildLandingHeroAssets.mjs change its output shape?');
-}
-const HERO_SOURCES = JSON.parse(heroSourcesMatch[1]);
-const HERO_PRELOAD_WIDTH = 828;
-const heroMobilePreloadUrl = slot => {
-  const variant = HERO_SOURCES[slot].mobile.find(v => v.width === HERO_PRELOAD_WIDTH);
-  if (!variant) {
-    throw new Error(`[prerender] No ${HERO_PRELOAD_WIDTH}w mobile AVIF variant for hero slot "${slot}" — did buildLandingHeroAssets.mjs change its emitted widths?`);
-  }
-  return variant.avif;
-};
-const heroPreloadScript = `<script>(function(){var h=new Date().getHours();var slot=(h>=5&&h<12)?'morning':(h>=12&&h<18)?'afternoon':'evening';var urls={morning:${JSON.stringify(heroMobilePreloadUrl('morning'))},afternoon:${JSON.stringify(heroMobilePreloadUrl('afternoon'))},evening:${JSON.stringify(heroMobilePreloadUrl('evening'))}};var l=document.createElement('link');l.rel='preload';l.as='image';l.type='image/avif';l.href=urls[slot];l.fetchPriority='high';document.head.appendChild(l);})();</script>`;
+// The landing hero photo (LandingHero.tsx) picks morning/afternoon/evening from the
+// VISITOR'S OWN clock, so the build cannot know in advance which of the three images a
+// given visitor will see, and Lighthouse flags the home hero image as "LCP request not
+// discoverable in the initial document" — true, since React only decides which <picture>
+// to render after the JS bundle has loaded and run. Two attempts at injecting a
+// same-purpose <link rel=preload> (first the full responsive imagesrcset, then a single
+// fixed 828w file once the first version turned out to fetch the WRONG size — 1440w
+// instead of the 828w the real <img> asked for) both made live LCP WORSE, not better:
+// 3.7s baseline -> 4.2s with either version (Lighthouse mobile, calmbeach.gr). Home's
+// actual bottleneck on a throttled connection is the JS bundle React needs before it can
+// mount ANYTHING — the image was never waiting on discoverability, and giving it an
+// early, competing fetch delays the JS that decides which image to show in the first
+// place. Re-measure live before ever trying this again, and only after the first-paint
+// JS bundle itself is materially smaller (see bundle-weight-and-honest-perf-gate.md).
 
 const renderHeroPicture = (sources, alt) => {
   if (!sources) return '';
@@ -5487,13 +5461,15 @@ const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales,
     alternateUrls: alternateUrlsFor(pathName, emittedLocales),
     ogType: 'website',
     jsonLd,
-  })
-    // Right after <meta charset> — first thing in <head> that isn't the encoding
-    // declaration, which has to stay truly first — ahead of the render-blocking CSS/JS
-    // the build already put there, so the browser's preload scanner reaches it before
-    // anything else competes for the connection. See heroPreloadScript above for why
-    // this can't be a plain static <link> the way a beach page's own photo is.
-    .replace(/(<meta charset="[^"]*"\s*\/?>)/i, `$1\n    ${heroPreloadScript}`);
+  });
+  // heroPreloadScript (see its own comment above) was injected here 15/09 and reverted the
+  // same day: measured LIVE, twice, it made LCP WORSE (3.7s -> 4.1-4.2s), even after fixing
+  // the size-mismatch bug that caused the first version's double-fetch. Home's actual
+  // bottleneck on a throttled connection is the JS bundle React needs before it can mount
+  // ANYTHING — the image was never waiting on discoverability, and giving it an early,
+  // competing fetch just delayed the JS that decides which image to show in the first
+  // place. Left unused (not deleted) in case a lighter first-paint bundle someday moves the
+  // bottleneck back to image discovery — re-measure live before ever re-enabling it.
 
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale, regionLinks));
 };
