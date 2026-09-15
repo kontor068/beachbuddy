@@ -9,15 +9,9 @@ import SkeletonLoader from './components/SkeletonLoader';
 import { InstallPrompt } from './components/InstallPrompt';
 import { AppRatingPrompt } from './components/AppRatingPrompt';
 import { UnsafeConditionsMessage } from './components/UnsafeConditionsMessage';
-import { PreferenceFilters } from './components/PreferenceFilters';
-import { BeachFilters } from './components/BeachFilters';
-import { WeatherSummary } from './components/WeatherSummary';
 import { WeatherIcon } from './components/WeatherIcon';
-import { RecommendationSection } from './components/RecommendationSection';
-import { BeachCard } from './components/BeachCard';
 import ErrorDisplay from './components/ErrorDisplay';
 import { MobileBottomNav, type MobileTab } from './components/MobileBottomNav';
-import { SavedBeachesScreen } from './components/SavedBeachesScreen';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
@@ -173,6 +167,41 @@ const IslandSelectorModal = lazyWithChunkRecovery(
 const UsageInsights = lazyWithChunkRecovery(
   () => import('./components/UsageInsights').then(pickLazyExport('UsageInsights', 'UsageInsights')),
   'UsageInsights'
+);
+// App's OWN region shell — the pre-forecast list, the forecast-error and winter states, the
+// no-region explore panel, the saved-beaches tab. None of it renders on the landing, and on
+// a region that has its forecast BeachSearcherHome draws the page instead. Until 15/09/2026
+// these were static imports AND named in vite.config.ts `beach-ui`, which every page
+// preloads: BeachCard alone is ~100 KB of rendered code, and the whole group was ~44 KB gz
+// of first paint on a landing page that never shows a single one of them (Lighthouse:
+// "reduce unused JavaScript", beach-ui + index). Same rule as BeachSearcherHome above: a
+// lazy split saves nothing while the module is still listed in manualChunks.
+// UnsafeConditionsMessage stays eager on purpose: ~1,5 KB, and it is the first thing a
+// winter visitor reads — not worth a pop-in.
+const RecommendationSection = lazyWithChunkRecovery(
+  () => import('./components/RecommendationSection').then(pickLazyExport('RecommendationSection', 'RecommendationSection')),
+  'RecommendationSection'
+);
+const PreferenceFilters = lazyWithChunkRecovery(
+  () => import('./components/PreferenceFilters').then(pickLazyExport('PreferenceFilters', 'PreferenceFilters')),
+  'PreferenceFilters'
+);
+const BeachFilters = lazyWithChunkRecovery(
+  () => import('./components/BeachFilters').then(pickLazyExport('BeachFilters', 'BeachFilters')),
+  'BeachFilters'
+);
+const BeachCard = lazyWithChunkRecovery(
+  // BeachCard.tsx exports several components and helpers, so the generic pick would infer
+  // the union of all of them; narrow the type to the one export used here. Runtime
+  // behaviour (including the missing-export diagnosis) is the same as every other pick.
+  () => import('./components/BeachCard').then(module => pickLazyExport<typeof module.BeachCard>('BeachCard', 'BeachCard')(
+    module as unknown as Record<string, typeof module.BeachCard>,
+  )),
+  'BeachCard'
+);
+const SavedBeachesScreen = lazyWithChunkRecovery(
+  () => import('./components/SavedBeachesScreen').then(pickLazyExport('SavedBeachesScreen', 'SavedBeachesScreen')),
+  'SavedBeachesScreen'
 );
 // The upload form pulls in canvas encoding and, once opened, the Supabase
 // storage client. Almost nobody uploads a photo, so none of it belongs in the
@@ -7099,6 +7128,9 @@ export const App: React.FC = () => {
   if (mobileTab === 'favorites') {
     return (
       <>
+      {/* A full-screen tab: the overlay spinner is the right fallback here — the whole
+          view is being replaced, so there is no page underneath to hold in place. */}
+      <Suspense fallback={<SkeletonLoader t={t} />}>
       <SavedBeachesScreen
         language={language}
         t={t}
@@ -7118,6 +7150,7 @@ export const App: React.FC = () => {
         regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
         otherIslandsCount={savedOtherIslandsCount}
       />
+      </Suspense>
       {photoSheetOverlay}
       </>
     );
@@ -9103,6 +9136,9 @@ export const App: React.FC = () => {
                   </p>
                 )}
               </div>
+              {/* BeachCard loads on demand, see its declaration — reserve one card's height so the
+                  section does not collapse and spring open when the chunk lands. */}
+              <Suspense fallback={<div aria-hidden="true" className="min-h-[24rem]" />}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                 {recommendationSectionBeaches.map((r, i) => (
                   <div key={r.beach.id}>
@@ -9145,6 +9181,7 @@ export const App: React.FC = () => {
                   </div>
                 ))}
               </div>
+              </Suspense>
             </div>
           </div>
         </section>
@@ -9211,6 +9248,9 @@ export const App: React.FC = () => {
           aria-label={exploreSectionLabel}
         >
           <div className="mx-auto max-w-6xl">
+            {/* Both filter panels load on demand, see their declarations: hold roughly their
+                combined height so the section below does not jump when they arrive. */}
+            <Suspense fallback={<div aria-hidden="true" className="min-h-[9rem]" />}>
             <div className="space-y-2.5">
               <PreferenceFilters
                 preferences={preferences}
@@ -9238,6 +9278,7 @@ export const App: React.FC = () => {
                 searchSuggestions={beachSearchSuggestions}
               />
             </div>
+            </Suspense>
           </div>
         </section>
       )}
@@ -9357,6 +9398,8 @@ export const App: React.FC = () => {
                         {recommendationGeneralHelper}
                       </p>
                     </div>
+                    {/* BeachCard is lazy — reserve one card's height, same as above. */}
+                    <Suspense fallback={<div aria-hidden="true" className="min-h-[24rem]" />}>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                     {recommendationSectionBeaches.map((r, i) => (
                       <div key={r.beach.id}>
@@ -9406,6 +9449,7 @@ export const App: React.FC = () => {
                       </div>
                     ))}
                     </div>
+                    </Suspense>
                     <p className="mx-auto mt-3 max-w-2xl px-1 text-center text-[11px] font-semibold leading-relaxed text-slate-700 sm:mt-4 sm:text-xs">
                       Recommendations are indicative and based on available weather and beach data. Conditions may vary locally. Always follow local warnings and use personal judgment.
                     </p>
@@ -9417,6 +9461,12 @@ export const App: React.FC = () => {
 
               {!showHeaderForecast && (
               <div data-nosnippet="true">
+                {/* Lazy (see its declaration). This list renders before the forecast
+                    arrives, below the waiting skeleton, and on forecast errors. Its
+                    fallback holds a full screen so the footer stays below the fold while
+                    the chunk lands — the same footer-climbs-then-drops jump fixed above
+                    the header slot on 15/09. */}
+                <Suspense fallback={<div aria-hidden="true" className="min-h-screen" />}>
                 <RecommendationSection
                   beaches={beachListBeaches} language={language} t={t}
                   windSpeed={(selectedForecast?.wind.speed ?? forecast?.[selectedDayIndex]?.wind.speed) || 0}
@@ -9450,6 +9500,7 @@ export const App: React.FC = () => {
                   protectedSortNoResults={protectedSortNoResults}
                   strongWindContext={isStrongRecommendationMode}
                 />
+                </Suspense>
               </div>
               )}
 

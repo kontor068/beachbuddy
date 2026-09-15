@@ -118,28 +118,27 @@ export default defineConfig(({ mode }) => {
                 }
 
                 if (isAnyProjectModule(id, [
-                  'components/BeachCard.tsx',
-                  'components/BeachConditionScore.tsx',
-                  'components/BeachFilters.tsx',
-                  'components/BeachList.tsx',
                   // BeachSearcherHome.tsx was here until 13/08/2026. It is the region
                   // screen and it is lazy-loaded from App.tsx now; naming it here would
                   // weld it back into this preloaded chunk and undo the split.
+                  //
+                  // Same mistake, eleven more times, removed 15/09/2026: BeachCard,
+                  // BeachConditionScore, BeachFilters, BeachList, PreferenceFilters,
+                  // RecommendationSection, TodayScoreBadge (App.tsx now loads that group
+                  // on demand), and WeatherSummary, Forecast, photos/CuratedPhotoImage,
+                  // photos/index (whose only importer is the already-lazy
+                  // BeachSearcherHome). Every page preloads this chunk, so listing them
+                  // here dragged ~44 KB gz onto a landing page that renders none of them.
+                  // BEFORE ADDING A LINE: if every importer of the module is lazy, it does
+                  // not belong in a preloaded chunk — leave Rollup to place it.
                   'components/ErrorDisplay.tsx',
-                  'components/Forecast.tsx',
                   'components/Header.tsx',
                   'components/LegalFooter.tsx',
                   'components/MapLoadBoundary.tsx',
                   'components/MobileBottomNav.tsx',
-                  'components/PreferenceFilters.tsx',
                   'components/PrivacyConsentBanner.tsx',
-                  'components/RecommendationSection.tsx',
                   'components/SkeletonLoader.tsx',
-                  'components/TodayScoreBadge.tsx',
                   'components/UnsafeConditionsMessage.tsx',
-                  'components/WeatherSummary.tsx',
-                  'components/photos/CuratedPhotoImage.tsx',
-                  'components/photos/index.ts',
                 ])) {
                   return 'beach-ui';
                 }
