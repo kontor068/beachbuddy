@@ -5789,6 +5789,25 @@ export const App: React.FC = () => {
     !isMapExposureLoading &&
     selectedIsland.beaches.length > 0
   );
+  // Measured live (15/09, throttled mobile + real network): once eligible, this card can
+  // still drop out for a single frame — one of its own inputs above (forecast, geometry
+  // loading) unsettles for an instant on a slow connection, even though nothing about the
+  // island actually changed. That frame unmounts the whole ~760px card, and the footer
+  // jumps up to fill the gap and back down a moment later — a full CLS point on region
+  // pages. Root cause of the instant not pinned down (didn't reproduce locally against the
+  // dev server, only against the live minified bundle under 4x CPU + 4G). This remembers
+  // "this island DID qualify" so a transient dip reserves the card's footprint instead of
+  // collapsing to nothing — safe for regions that never qualify (near-me, winter, info-only,
+  // no beaches): the flag simply never latches there, so they render exactly as before.
+  const tripPlannerStickyRef = useRef<{ islandId: string | null; eligible: boolean }>({ islandId: null, eligible: false });
+  const tripPlannerIslandId = selectedIsland?.id ?? null;
+  if (tripPlannerStickyRef.current.islandId !== tripPlannerIslandId) {
+    tripPlannerStickyRef.current = { islandId: tripPlannerIslandId, eligible: false };
+  }
+  if (isTripPlannerMountable) {
+    tripPlannerStickyRef.current.eligible = true;
+  }
+  const isTripPlannerEverMountedForIsland = tripPlannerStickyRef.current.eligible;
 
   // A search that stated a stay length («Νάξο 5 μέρες») opens the planner — but
   // only once it can actually mount. This is LEVEL-triggered on the readiness
@@ -8813,7 +8832,7 @@ export const App: React.FC = () => {
                 onChooseManually={handleChooseStartupRegionManually}
               />
             )}
-            <Suspense fallback={<SkeletonLoader t={t} />}>
+            <Suspense fallback={<div aria-hidden="true" className="min-h-[980px] animate-pulse sm:min-h-[760px]" />}>
             <BeachSearcherHome
               language={language}
               // Same two values RecommendationSection already gets, so the empty state on the
@@ -8960,7 +8979,7 @@ export const App: React.FC = () => {
       />
 
       {showLanding ? (
-        <Suspense fallback={<SkeletonLoader t={t} />}>
+        <Suspense fallback={<div aria-hidden="true" className="min-h-[980px] animate-pulse sm:min-h-[760px]" />}>
         <LandingView
           language={language}
           allIslands={allIslands}
@@ -9002,7 +9021,7 @@ export const App: React.FC = () => {
           its ancestor chain has created a stacking context of its own, and chasing that
           is a losing game. Unmounting is unambiguous — a panel means "show me this one
           thing", so everything else genuinely should be gone. */}
-      {isTripPlannerMountable && selectedIsland && forecast
+      {selectedIsland && (isTripPlannerMountable || isTripPlannerEverMountedForIsland)
         && !isMobileWeatherPanelOpen && !isMobileAllBeachesPanelOpen && (
         <div id={TRIP_PLANNER_SECTION_ID} className="relative z-20 pb-3 pt-1 sm:pb-4">
           {/* Fixed-height fallback sized to the card as it now renders — header
@@ -9011,23 +9030,30 @@ export const App: React.FC = () => {
               when the card stopped being collapsed-until-tapped. */}
           {/* Fallback width tracks the card's own (110rem since 05/08), and the reserved height
               drops on lg because the days sit in columns there, not in one tall list. */}
-          <Suspense fallback={<div className="mx-auto w-full max-w-[110rem] px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem] lg:min-h-[15rem]" /></div>}>
-            <TripPlanner
-              key={String(selectedIsland.id)}
-              beaches={selectedIsland.beaches}
-              forecast={forecast}
-              language={language}
-              regionId={String(selectedIsland.id)}
-              preferences={preferences}
-              geospatialProfiles={geospatialExposureProfiles}
-              todayRainBlocked={isRainBlockedBeachWindow}
-              isFilteredView={Boolean(mapToneFilter)}
-              beachForecastDaysById={beachForecastDaysById}
-              userLocation={userLocation}
-              initialDays={tripPlannerInitialDays ?? undefined}
-              onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
-            />
-          </Suspense>
+          {isTripPlannerMountable && forecast ? (
+            <Suspense fallback={<div className="mx-auto w-full max-w-[110rem] px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem] lg:min-h-[15rem]" /></div>}>
+              <TripPlanner
+                key={String(selectedIsland.id)}
+                beaches={selectedIsland.beaches}
+                forecast={forecast}
+                language={language}
+                regionId={String(selectedIsland.id)}
+                preferences={preferences}
+                geospatialProfiles={geospatialExposureProfiles}
+                todayRainBlocked={isRainBlockedBeachWindow}
+                isFilteredView={Boolean(mapToneFilter)}
+                beachForecastDaysById={beachForecastDaysById}
+                userLocation={userLocation}
+                initialDays={tripPlannerInitialDays ?? undefined}
+                onBeachClick={(beach) => openBeachDetails(beach, 'trip_planner')}
+              />
+            </Suspense>
+          ) : (
+            // isTripPlannerMountable just dipped for a frame (see comment on
+            // isTripPlannerEverMountedForIsland above) — hold the card's footprint instead
+            // of unmounting, so nothing below it jumps. Same size as the Suspense fallback.
+            <div aria-hidden="true" className="mx-auto w-full max-w-[110rem] px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem] lg:min-h-[15rem]" /></div>
+          )}
         </div>
       )}
 
