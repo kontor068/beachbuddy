@@ -59,7 +59,10 @@ export const RecentWorkLog: React.FC<RecentWorkLogProps> = ({ language }) => {
     const regionName = changelogRegionName(entry, language);
     return (
       <li key={`${entry.date}-${entry.tag}`} className="grid grid-cols-[3.9rem_1fr] gap-x-3 sm:grid-cols-[4.6rem_1fr]">
-        <time dateTime={entry.date} className="pt-[3px] text-xs font-semibold tabular-nums text-slate-400">
+        {/* slate-500, not slate-400: at this size (12px) slate-400 on the page's white/
+            slate-50 background reads under 3:1 — Lighthouse a11y flagged it (15/09).
+            slate-500 clears WCAG AA (4.5:1) for normal text and still reads as muted. */}
+        <time dateTime={entry.date} className="pt-[3px] text-xs font-semibold tabular-nums text-slate-500">
           {formatChangelogDate(entry.date, language, todayIso)}
         </time>
         <p className="text-[15px] leading-relaxed text-slate-600">

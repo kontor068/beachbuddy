@@ -2380,6 +2380,33 @@ const heroIsRegionSpecific = (imagePath, region, island) => (
   || regionOgImageOverrides.get(island?.id) === imagePath
 );
 
+// The landing hero photo (LandingHero.tsx) picks morning/afternoon/evening from the
+// VISITOR'S OWN clock — deliberately decorative, not the Athens forecast clock — so the
+// build cannot know which of the three images a given visitor will see. Lighthouse (and
+// the field CrUX data) flagged this as "LCP request not discoverable in the initial
+// document": React only decides which <picture> to render after the JS bundle has loaded
+// and run, so the browser's own preload scanner — which normally starts fetching the
+// biggest visible image before a single script executes — never gets a chance.
+// Fix: a synchronous inline script, first thing in <head>, reads the visitor's local hour
+// with the SAME 5/12/18 boundaries as LandingHero.tsx and injects a <link rel=preload> for
+// exactly that slot's mobile AVIF — with the real srcset/sizes so the browser's preload
+// scanner (not a guess by us) still picks the right file for the device's viewport/DPR.
+// Home-only: injected inside buildHomePage, never in injectBeachHead, which every other
+// page type shares — a beach or region page has no hero photo to preload.
+const heroSourcesTs = readFileSync(
+  path.join(projectRoot, 'components', 'landing', 'heroSources.ts'),
+  'utf8',
+);
+const heroSourcesMatch = heroSourcesTs.match(/HERO_SOURCES[^=]*=\s*(\{[\s\S]*?\n\});/);
+if (!heroSourcesMatch) {
+  throw new Error('[prerender] Could not parse HERO_SOURCES out of components/landing/heroSources.ts — did buildLandingHeroAssets.mjs change its output shape?');
+}
+const HERO_SOURCES = JSON.parse(heroSourcesMatch[1]);
+const heroMobileAvifSrcset = slot => HERO_SOURCES[slot].mobile
+  .map(v => `${v.avif} ${v.width}w`)
+  .join(', ');
+const heroPreloadScript = `<script>(function(){var h=new Date().getHours();var slot=(h>=5&&h<12)?'morning':(h>=12&&h<18)?'afternoon':'evening';var srcsets={morning:${JSON.stringify(heroMobileAvifSrcset('morning'))},afternoon:${JSON.stringify(heroMobileAvifSrcset('afternoon'))},evening:${JSON.stringify(heroMobileAvifSrcset('evening'))}};var l=document.createElement('link');l.rel='preload';l.as='image';l.type='image/avif';l.setAttribute('imagesrcset',srcsets[slot]);l.setAttribute('imagesizes','100vw');document.head.appendChild(l);})();</script>`;
+
 const renderHeroPicture = (sources, alt) => {
   if (!sources) return '';
   if (sources.remote) {
@@ -2627,6 +2654,14 @@ const injectBeachHead = (html, meta) => {
     .filter(alternate => alternate.hreflang !== 'x-default')
     .map(alternate => prerenderLocales.find(locale => locale.hreflang === alternate.hreflang)?.ogLocale)
     .filter(ogLocale => ogLocale && ogLocale !== (meta.ogLocale || 'en_US'));
+  // The heading font (index.css, "ΤΥΠΟΓΡΑΦΙΑ ΤΙΤΛΩΝ") is only discoverable once the CSS
+  // has downloaded AND been parsed — a real sequential hop the Lighthouse network chain
+  // flags (~1.3s deep on a throttled connection). font-display:swap already means no text
+  // is blocked waiting for it, but preloading the ONE subset this page actually needs lets
+  // it fetch in parallel with the CSS instead of after it, so the real face swaps in
+  // sooner. Greek pages need the greek subset; everything else (en/de/fr/it headings) is
+  // covered by the latin one — latin-ext is rare enough on our own copy to skip.
+  const fontPreloadFile = meta.htmlLang === 'el' ? 'commissioner-greek-v1.woff2' : 'commissioner-latin-v1.woff2';
   const extraHead = [
     ...(meta.alternateUrls || []).map(alternate => (
       `<link rel="alternate" hreflang="${escapeHtml(alternate.hreflang)}" href="${escapeHtml(alternate.href)}" />`
@@ -2634,6 +2669,7 @@ const injectBeachHead = (html, meta) => {
     ...ogLocaleAlternates.map(ogLocale => (
       `<meta property="og:locale:alternate" content="${escapeHtml(ogLocale)}" />`
     )),
+    `<link rel="preload" as="font" type="font/woff2" href="/fonts/${fontPreloadFile}" crossorigin />`,
     `<script type="application/ld+json">${jsonLd}</script>`,
   ].join('\n    ');
 
@@ -5435,7 +5471,13 @@ const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales,
     alternateUrls: alternateUrlsFor(pathName, emittedLocales),
     ogType: 'website',
     jsonLd,
-  });
+  })
+    // Right after <meta charset> — first thing in <head> that isn't the encoding
+    // declaration, which has to stay truly first — ahead of the render-blocking CSS/JS
+    // the build already put there, so the browser's preload scanner reaches it before
+    // anything else competes for the connection. See heroPreloadScript above for why
+    // this can't be a plain static <link> the way a beach page's own photo is.
+    .replace(/(<meta charset="[^"]*"\s*\/?>)/i, `$1\n    ${heroPreloadScript}`);
 
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale, regionLinks));
 };

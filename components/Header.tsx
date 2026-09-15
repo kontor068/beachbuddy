@@ -311,10 +311,15 @@ const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={onSignIn}
+                // The label text is `hidden sm:inline` (icon-only on mobile), so on a phone
+                // this was the entire accessible name — screen readers announced it as a bare
+                // "button" (Lighthouse a11y, 15/09). aria-label carries the name regardless of
+                // which breakpoint is showing the visible text.
+                aria-label={accountLabels.signIn}
                 className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
               >
                 <User className="h-4 w-4 text-[#007a83]" aria-hidden="true" />
-                <span className="hidden sm:inline">{accountLabels.signIn}</span>
+                <span className="hidden sm:inline" aria-hidden="true">{accountLabels.signIn}</span>
               </button>
             )}
 
