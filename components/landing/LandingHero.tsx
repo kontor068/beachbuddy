@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LocateFixed } from 'lucide-react';
 import type { LanguageCode } from '../../types';
 import { getLocalizedCopy } from '../../utils/i18n';
@@ -8,7 +8,9 @@ import type { DirectorySearchSuggestion } from '../BeachSearcherHome';
 import { DailyBeachScene } from './DailyBeachScene';
 import { LandingHeroPhoto } from './LandingHeroPhoto';
 import { athensDayKey } from '../../utils/athensTime';
-import type { HeroSlot } from './heroSources';
+import { HERO_SOURCES, type HeroSlot } from './heroSources';
+import { heroSlotForHour } from './heroSlot';
+import { handOverStaticFirstScreen, hasStaticFirstScreen, readStaticHeroSlot } from '../../utils/staticFirstScreen';
 
 interface LandingHeroProps {
   language: LanguageCode;
@@ -22,7 +24,34 @@ interface LandingHeroProps {
   isFindingLocation: boolean;
   locationError?: string | null;
   roughness: number;
+  /**
+   * BUILD-TIME RENDER ONLY (components/landing/LandingFirstScreen.tsx). Stands in for the
+   * photo — the build cannot know the visitor's hour, so it passes the three candidate
+   * photos (the script that picks one sits at the end of the first screen). Also switches
+   * off the entrance animation: the
+   * static copy must be on screen at once, and fully opaque, for the hand-over to be
+   * invisible.
+   */
+  firstScreenPhoto?: React.ReactNode;
 }
+
+// Longest we keep the static first screen up waiting for React's own photo. Normally it is
+// the same file, already downloaded by the static copy, so this is a ceiling for a
+// visitor whose connection stalled — after it, today's behaviour (React as it stands).
+const HAND_OVER_MAX_WAIT_MS = 3000;
+
+const whenImageReady = (img: HTMLImageElement | null | undefined, maxWaitMs: number): Promise<void> => {
+  if (!img) return Promise.resolve();
+  const loaded = img.complete
+    ? Promise.resolve()
+    : new Promise<void>(resolve => {
+      img.addEventListener('load', () => resolve(), { once: true });
+      img.addEventListener('error', () => resolve(), { once: true });
+    });
+  // decode() so the swap never shows a frame of an undecoded (blank) photo.
+  const decoded = loaded.then(() => (typeof img.decode === 'function' ? img.decode().catch(() => undefined) : undefined));
+  return Promise.race([decoded, new Promise<void>(resolve => window.setTimeout(resolve, maxWaitMs))]);
+};
 
 // One quiet accent: the "today" word in each language ("σήμερα"/"today"/
 // "heute"/"aujourd'hui"/"oggi") in the exact brand colour (#007a83 — the same
@@ -88,28 +117,69 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   isFindingLocation,
   locationError,
   roughness,
+  firstScreenPhoto,
 }) => {
   const c = getLocalizedCopy(language, landingCopy).hero;
   const heroTitle = renderTitleAccent(c.title, c.titleAccent);
   // Greek day, not the viewer's UTC day, so everyone gets the same scene per day.
   const dateSeed = useMemo(() => athensDayKey(), []);
   const [photoOk, setPhotoOk] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Taking over from the static first screen of the home page (utils/staticFirstScreen.ts)?
+  // Read once: it is only ever true on the very first render after a page load.
+  const [takingOverStaticScreen] = useState(() => !firstScreenPhoto && hasStaticFirstScreen());
+  // The entrance rise starts from opacity 0. Replaying it on a hand-over would blank the
+  // headline the visitor is already reading, and the build-time copy has to be visible
+  // from its very first paint — so both skip it.
+  const animateEntrance = !firstScreenPhoto && !takingOverStaticScreen;
+  const rise = (className: string, delayMs: number) => (
+    animateEntrance ? { className: `cb-hero-rise ${className}`, style: riseDelay(delayMs) } : { className }
+  );
 
   // Rotate the hero photo through the day (visitor's LOCAL hour): a bright sandy
   // beach in the morning, vivid turquoise at midday/afternoon, golden hour in the
   // evening/night. LandingHeroPhoto renders the actual responsive, art-directed
   // <picture> for this slot (see components/landing/heroSources.ts).
   const heroSlot: HeroSlot = useMemo(() => {
+    // The static first screen already picked a photo at page load; showing a different one
+    // (the hour can tick over 11:59 -> 12:00 in between) would swap it under the visitor.
+    const staticSlot = readStaticHeroSlot();
+    if (staticSlot && staticSlot in HERO_SOURCES) return staticSlot as HeroSlot;
     // athens-clock-exempt: decorative only — the hero photo deliberately follows the
     // visitor's own time of day. It carries no conditions data.
-    const h = new Date().getHours();
-    if (h >= 5 && h < 12) return 'morning';
-    if (h >= 12 && h < 18) return 'afternoon';
-    return 'evening';
+    return heroSlotForHour(new Date().getHours());
   }, []);
 
+  // Hand-over: once OUR photo is ready (normally the very file the static copy already
+  // fetched), remove the static copy — then carry on whatever the visitor did on it.
+  useEffect(() => {
+    if (!takingOverStaticScreen) return undefined;
+    let cancelled = false;
+    void whenImageReady(sectionRef.current?.querySelector('img'), HAND_OVER_MAX_WAIT_MS).then(() => {
+      if (cancelled) return;
+      const carry = handOverStaticFirstScreen();
+      if (!carry) return;
+      if (carry.typedQuery) onSearchChange(carry.typedQuery);
+      if (carry.searchHadFocus) {
+        window.requestAnimationFrame(() => {
+          const input = sectionRef.current?.querySelector('input');
+          if (!input) return;
+          input.focus();
+          const end = input.value.length;
+          try { input.setSelectionRange(end, end); } catch { /* not a text input */ }
+        });
+      }
+      if (carry.nearMeQueued) onNearMe();
+    });
+    return () => { cancelled = true; };
+    // Runs once per page load: the hand-over is a one-off, and re-running it on a new
+    // handler identity must not re-trigger "near me".
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [takingOverStaticScreen]);
+
   return (
-    <section className="relative">
+    <section ref={sectionRef} className="relative">
       {/* Atmosphere: two very large, very soft washes — morning light upper
           right, sky haze left — kept below 8% visual weight. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -137,7 +207,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 overflow-hidden [-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_62%,transparent_100%)] [mask-image:linear-gradient(to_bottom,#000_0%,#000_62%,transparent_100%)] sm:h-96"
         aria-hidden="true"
       >
-        {photoOk ? (
+        {firstScreenPhoto ?? (photoOk ? (
           <LandingHeroPhoto
             slot={heroSlot}
             onError={() => setPhotoOk(false)}
@@ -145,7 +215,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           />
         ) : (
           <DailyBeachScene dateSeed={dateSeed} roughness={roughness} className="h-full w-full" />
-        )}
+        ))}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#eff6fb] via-[#eff6fb]/60 to-transparent" />
       </div>
 
@@ -154,8 +224,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             and it pushed the region tiles — the page's actual conversion event —
             further below the fold. */}
         <h1
-          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
-          style={riseDelay(0)}
+          {...rise('mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]', 0)}
         >
           {heroTitle}
         </h1>
@@ -165,15 +234,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           // relaxed) and mt-4 (not 5) make them read as one block under the title
           // instead of a paragraph. Type size stays 16px — the floor for body
           // text on a phone in sunlight; shrinking it was considered and refused.
-          className="cb-hero-rise mx-auto mt-4 max-w-xl text-base font-normal leading-normal text-slate-600 sm:text-lg"
-          style={riseDelay(170)}
+          {...rise('mx-auto mt-4 max-w-xl text-base font-normal leading-normal text-slate-600 sm:text-lg', 170)}
         >
           {c.subtitle}
         </p>
 
         <div
-          className="cb-hero-rise mx-auto mt-9 flex max-w-2xl flex-col gap-3 sm:mt-11 sm:flex-row sm:items-stretch"
-          style={riseDelay(250)}
+          {...rise('mx-auto mt-9 flex max-w-2xl flex-col gap-3 sm:mt-11 sm:flex-row sm:items-stretch', 250)}
         >
           <div className="min-w-0 flex-1">
             {/* Two wordings, 4s apart, while the box sits untouched: the plain
@@ -203,6 +270,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             type="button"
             onClick={onNearMe}
             disabled={isFindingLocation}
+            // The static first screen's inline script queues a tap on this button until the
+            // app can act on it (utils/staticFirstScreen.ts) — this is how it finds it.
+            data-cb-near-me=""
             className={`inline-flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-control bg-cta px-7 text-base font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-full ${
               isFindingLocation ? 'cursor-wait opacity-70' : ''
             }`}

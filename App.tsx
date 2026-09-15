@@ -99,6 +99,7 @@ import { useLiveUgcPhotos } from './hooks/useLiveUgcPhotos';
 import { scrollToPageTop, smoothScrollToStableElement, type StableScrollOptions } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
+import { removeStaticFirstScreen } from './utils/staticFirstScreen';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
 import { QUICK_PREFERENCE_FILTERS, getPreferenceFilterLabel } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
@@ -1706,6 +1707,13 @@ export const App: React.FC = () => {
   // was removed 05/08. `markValuePropSeen` stays wired up — it is what flips the flag, and
   // useLocation still persists it, so bringing the block back is a one-line change.
   const { selectedIsland, selectIsland, selectAdHocRegion, markValuePropSeen, showLanding, goToLanding } = useLocation(allIslands);
+  // The home page's static first screen (utils/staticFirstScreen.ts) is a copy of the
+  // LANDING. The moment the data says this visit is not showing the landing — a region
+  // from the URL or a test scenario, or the data failed to load — it must go, or it would
+  // sit on top of a different page. On the landing itself LandingHero hands it over.
+  useEffect(() => {
+    if (!beachesLoading && !showLanding) removeStaticFirstScreen();
+  }, [beachesLoading, showLanding]);
   // Islands offered in the browsable selector + name search. Info-only regions
   // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
   // they are never surfaced as a pickable/searchable option in the app. Resolution

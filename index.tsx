@@ -11,6 +11,7 @@ import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 import { installGlobalErrorReporting, reportClientError } from './services/errorReporter';
 import { installDomTranslationGuard } from './utils/domTranslationGuard';
+import { removeStaticFirstScreen } from './utils/staticFirstScreen';
 
 declare global {
   interface Window {
@@ -42,6 +43,9 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     console.error('RootErrorBoundary', error, info);
+    // The home page's static first screen sits ABOVE the app: left there, it would hide
+    // this error screen behind a landing that no longer works.
+    removeStaticFirstScreen();
     if (isChunkLoadError(error)) {
       // A stale chunk after a deploy is expected and self-healing — the recovery
       // reloads into the new build. Reporting it would fill the channel with an
@@ -133,6 +137,7 @@ const root = ReactDOM.createRoot(rootElement);
 const isAuthCallback = window.location.pathname.replace(/\/+$/, '') === '/auth/callback';
 
 if (isAuthCallback) {
+  removeStaticFirstScreen();
   void import('./components/auth/AuthCallbackScreen')
     .then(({ mountAuthCallback }) => mountAuthCallback(root))
     .catch((error) => {
@@ -148,6 +153,12 @@ if (isAuthCallback) {
       </RootErrorBoundary>
     </React.StrictMode>
   );
+  // Last-resort exit for the home page's static first screen (utils/staticFirstScreen.ts).
+  // LandingHero hands over as soon as its photo is ready, and App.tsx drops it the moment
+  // the app shows anything but the landing; this only fires if neither ever happened —
+  // e.g. the landing chunk is stuck — and then the visitor sees the app as it stands,
+  // which is exactly what they saw before the first screen existed.
+  window.setTimeout(removeStaticFirstScreen, 10_000);
 }
 
 // Before anything else that can throw: the boundary only sees errors inside the

@@ -16,6 +16,9 @@ const distDir = path.join(projectRoot, 'dist');
 const publicDir = path.join(projectRoot, 'public');
 const indexHtmlPath = path.join(distDir, 'index.html');
 const beachIndexPath = path.join(publicDir, 'data', 'beaches', 'index.json');
+// Written by scripts/buildLandingFirstScreen.mjs (runs right before this script in `npm run
+// build`): the home page's static first screen, one HTML string per home language.
+const firstScreenPath = path.join(projectRoot, '.tmp', 'landing-first-screen', 'first-screen.json');
 const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://calmbeach.gr').replace(/\/+$/, '');
 const defaultOgImagePath = '/milos-sarakiniko-bg.jpg';
 const homeOgImagePath = '/og-image.png';
@@ -5436,6 +5439,58 @@ const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emitt
     .replace(/<div id="root">\s*<\/div>/i, staticGuidesHubPage(topics, locale, totals, heroImage));
 };
 
+// THE STATIC FIRST SCREEN (home pages only) — why it exists and how the app takes over from
+// it: utils/staticFirstScreen.ts. Measured 15/09/2026, throttled phone: largest paint
+// 4.8s -> 3.4s, app usable at the same moment as before. Four pieces, each needed:
+//  1. <head>, BEFORE the stylesheet (an inline script after it would wait for the whole
+//     stylesheet): decide whether to show it at all. Only on this home path — the Netlify
+//     SPA fallback and the service worker serve this very file for other URLs — and not
+//     for a visitor with a remembered region, whom the app sends straight to that region
+//     (the landing would flash and vanish). No JS -> no class -> the no-JS page is as before.
+//  2. The overlay itself, first thing in <body>, absolutely positioned above #root: removing
+//     it later moves nothing, so the hand-over cannot cause a layout shift. z-index above
+//     the loading skeleton (SkeletonLoader, fixed z-[90]), which would otherwise cover it.
+//  3. A tap on its "near me" is queued for the app; a search submitted before the app is
+//     there must not reload the page (the typed text is carried over instead).
+//  4. The app's JS yields the connection to the stylesheet and the photo. Measured: without
+//     this the photo shares the line with ~375 KB of JS and the gain halves (4.8 -> 3.7s);
+//     with it, the app still becomes usable no later than today (4.3s -> 4.1s).
+// Shown only once the WHOLE overlay has been parsed (`cb-first-screen-ready`, set by the
+// script right after it): the browser paints partially parsed pages, and a half-built hero
+// that completes a moment later is a layout shift of its own.
+const FIRST_SCREEN_CSS = '#cb-first-screen{display:none}'
+  + 'html.cb-first-screen.cb-first-screen-ready #cb-first-screen{display:block;position:absolute;top:0;left:0;right:0;'
+  + 'z-index:95;min-height:100vh;background:var(--color-canvas,#f2f8f9)}';
+
+const firstScreenHeadScript = homePath => `<script>(function(){try{var p=location.pathname;`
+  + `if(p!==${JSON.stringify(homePath)}&&p+'/'!==${JSON.stringify(homePath)})return;`
+  + `if(localStorage.getItem('selectedIslandId'))return;}catch(e){return;}`
+  + `document.documentElement.classList.add('cb-first-screen');})();</script>`;
+
+const FIRST_SCREEN_BODY_SCRIPT = '<script>(function(){var o=document.getElementById(\'cb-first-screen\');if(!o)return;'
+  // Not showing (see 1.): drop it now, so the page never carries a second, hidden copy of
+  // the header and the search box.
+  + 'if(!document.documentElement.classList.contains(\'cb-first-screen\')){o.remove();return;}'
+  + 'document.documentElement.classList.add(\'cb-first-screen-ready\');'
+  + 'o.addEventListener(\'submit\',function(e){e.preventDefault();});'
+  + 'o.addEventListener(\'click\',function(e){var b=e.target&&e.target.closest&&e.target.closest(\'[data-cb-near-me]\');'
+  + 'if(!b)return;window.__cbFirstScreenNearMe=true;b.classList.add(\'cursor-wait\',\'opacity-70\');});})();</script>';
+
+const withStaticFirstScreen = (html, firstScreenHtml, homePath) => {
+  const stylesheet = html.search(/<link rel="stylesheet"/i);
+  const bodyOpen = html.match(/<body\b[^>]*>/i);
+  const entryScript = /<script type="module" crossorigin src=/;
+  if (stylesheet === -1 || !bodyOpen || !entryScript.test(html)) {
+    throw new Error('[home] static first screen: the Vite shell no longer has the stylesheet link, <body> or module entry script this expects.');
+  }
+  const head = `<style>${FIRST_SCREEN_CSS}</style>\n    ${firstScreenHeadScript(homePath)}\n    `;
+  const withHead = `${html.slice(0, stylesheet)}${head}${html.slice(stylesheet)}`;
+  return withHead
+    .replace(bodyOpen[0], `${bodyOpen[0]}\n    <div id="cb-first-screen">${firstScreenHtml}</div>${FIRST_SCREEN_BODY_SCRIPT}`)
+    .replace(/<link rel="modulepreload"/g, '<link rel="modulepreload" fetchpriority="low"')
+    .replace(entryScript, '<script type="module" fetchpriority="low" crossorigin src=');
+};
+
 const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales, regionLinks = []) => {
   const pathName = '/';
   const canonicalUrl = canonicalUrlFor(pathName, locale);
@@ -5471,6 +5526,9 @@ const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales,
   // place. Left unused (not deleted) in case a lighter first-paint bundle someday moves the
   // bottleneck back to image discovery — re-measure live before ever re-enabling it.
 
+  // The static first screen is added by the caller, AFTER withStaticFooter: that appends the
+  // legal footer after the first `</main>` in the page, and the first screen has a <main> of
+  // its own — added first, it swallowed the footer, which then vanished for no-JS visitors.
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticHomeFallback(canonicalUrl, locale, regionLinks));
 };
 
@@ -6722,6 +6780,13 @@ const main = async () => {
     );
   }
 
+  let firstScreens;
+  try {
+    firstScreens = JSON.parse(await readFile(firstScreenPath, 'utf8'));
+  } catch (error) {
+    throw new Error(`[home] ${path.relative(projectRoot, firstScreenPath)} is missing or unreadable — run scripts/buildLandingFirstScreen.mjs first (it is part of \`npm run build\`). ${error.message}`);
+  }
+
   const homeOgImageUrl = toAbsolutePublicUrl(publicAssets.has(homeOgImagePath) ? homeOgImagePath : defaultOgImagePath);
   const homeSitemapImageUrl = toSitemapImageUrl(homeOgImageUrl, publicAssets);
   const sitemapEntries = [];
@@ -6752,7 +6817,10 @@ const main = async () => {
       label: displayName(region.name, region.id, locale.language),
     }));
     await mkdir(homeOutputDir, { recursive: true });
-    await writeFile(path.join(homeOutputDir, 'index.html'), withStaticFooter(buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), locale), 'utf8');
+    const firstScreenHtml = firstScreens[locale.language];
+    if (!firstScreenHtml) throw new Error(`[home] no static first screen for "${locale.language}" — see scripts/buildLandingFirstScreen.mjs.`);
+    const homeHtml = withStaticFooter(buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), locale);
+    await writeFile(path.join(homeOutputDir, 'index.html'), withStaticFirstScreen(homeHtml, firstScreenHtml, homeRoutePath), 'utf8');
     sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl, undefined, alternateUrlsFor('/', baseLocales)));
   }
 

@@ -65,6 +65,13 @@ interface HeaderProps {
   /** Sticky top bar. Landing page only — inside a region the bar scrolls away
       as it always did, so the map and the picks keep the full screen. */
   stickyTopBar?: boolean;
+  /**
+   * BUILD-TIME RENDER ONLY (components/landing/LandingFirstScreen.tsx): the home page's
+   * static first screen. Leaves out what depends on the day or on this device — the date
+   * pill would print the BUILD's date, and the "unseen update" dot reads local storage —
+   * both appear a moment later with the live header instead of being wrong until then.
+   */
+  staticRender?: boolean;
 }
 
 const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
@@ -127,6 +134,7 @@ const Header: React.FC<HeaderProps> = ({
   stickyTopBar = false,
   allIslands,
   onMenuAddPhoto,
+  staticRender = false,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
@@ -172,7 +180,7 @@ const Header: React.FC<HeaderProps> = ({
 
     return `${getSelectedDaySentencePrefix(selectedDate, currentDate, language)}: ${selectedIslandMeta}`;
   }, [currentDate, language, selectedDate, selectedIslandMeta]);
-  const showHeaderConditions = Boolean(headerDateLabel || selectedIslandMetaLabel);
+  const showHeaderConditions = !staticRender && Boolean(headerDateLabel || selectedIslandMetaLabel);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -451,7 +459,7 @@ const Header: React.FC<HeaderProps> = ({
                   ? <X className="h-5 w-5 text-[#007a83]" aria-hidden="true" />
                   : <MenuIcon className="h-5 w-5 text-[#007a83]" aria-hidden="true" />}
                 {/* Διακριτική κουκκίδα, όχι ασφυκτικό μπάτζ: κεντρίζει χωρίς να ουρλιάζει "AI". */}
-                {!isMainMenuOpen && hasUnseenUpdate && (
+                {!isMainMenuOpen && hasUnseenUpdate && !staticRender && (
                   <span
                     aria-hidden="true"
                     className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#ff6b57] ring-2 ring-white"
