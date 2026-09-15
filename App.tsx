@@ -8714,7 +8714,11 @@ export const App: React.FC = () => {
     if (suggestion.type === 'region') {
       setBeachSearchQuery('');
       closeMobileBottomPanels();
-      if (suggestion.island.id !== selectedIsland?.id) {
+      // On the landing, selectedIsland is only the default region waiting BEHIND it
+      // (useLocation) — picking that very region must still open it. Without showLanding
+      // here, "Athens area" from the landing search just scrolled to a map that does not
+      // exist and left the visitor on the landing (live until 15/09/2026).
+      if (showLanding || suggestion.island.id !== selectedIsland?.id) {
         // New region loads async — defer the map scroll until it's mounted (effect above).
         pendingRegionMapScrollRef.current = true;
         handleRegionSelected(suggestion.island, 'selector');
