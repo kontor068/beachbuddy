@@ -1723,7 +1723,16 @@ export const App: React.FC = () => {
     [allIslands],
   );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, errorKind: weatherErrorKind, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked, isEveningHandover } = useWeather(selectedIsland, language);
+  // THE REGION WHOSE CONDITIONS WE LOAD — none while the national landing is on screen.
+  // `selectedIsland` still resolves to a default region behind the landing (useLocation), so
+  // region-scoped code never meets a null; but nothing on the landing shows that region's
+  // forecast, sea or shore geometry. Loading them anyway meant ~13 forecast requests and a
+  // full scoring pass over that region's beaches on every home visit — ~85% of the page's
+  // main-thread work after its first paint (Lighthouse at PageSpeed's CPU: blocking time
+  // 1.7s -> 0.27s, score 57 -> 79, measured 15/09/2026). It all loads the moment a region
+  // is actually shown, exactly as it does for any region picked from the landing.
+  const conditionsIsland = showLanding ? undefined : selectedIsland;
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, errorKind: weatherErrorKind, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked, isEveningHandover } = useWeather(conditionsIsland, language);
   // Said out loud whenever the evening cutoff moved the page to tomorrow — see the render site
   // in the recommendation section.
   const eveningHandoverNote = getLocalizedCopy(language, {
@@ -3174,11 +3183,13 @@ export const App: React.FC = () => {
 
   // Re-run the geospatial-profile load when the region changes OR when the cross-region
   // "Κοντά μου" beach set changes (its region id is constant, so key on the source beaches).
-  const geoEffectKey = selectedIsland?.id === NEAR_ME_REGION_ID
-    ? `nearme:${(selectedIsland?.beaches ?? []).map(b => b.sourceBeachId ?? b.id).join(',')}`
-    : (selectedIsland?.id ?? '');
+  // Keyed on conditionsIsland, not selectedIsland: no shore geometry for the region hiding
+  // behind the landing (see conditionsIsland above).
+  const geoEffectKey = conditionsIsland?.id === NEAR_ME_REGION_ID
+    ? `nearme:${(conditionsIsland?.beaches ?? []).map(b => b.sourceBeachId ?? b.id).join(',')}`
+    : (conditionsIsland?.id ?? '');
   useEffect(() => {
-    const regionId = selectedIsland?.id;
+    const regionId = conditionsIsland?.id;
     let cancelled = false;
 
     setGeospatialExposureProfiles(undefined);
@@ -3193,7 +3204,7 @@ export const App: React.FC = () => {
     // "Κοντά μου" merges its geometry from the constituent regions — the loader owns that, so
     // the weather layer gets the same answer. Before its beach list exists there is nothing to
     // merge, and flipping the loading flag for an empty pass would only stall scoring.
-    const nearbyBeaches = selectedIsland?.beaches ?? [];
+    const nearbyBeaches = conditionsIsland?.beaches ?? [];
     if (regionId === NEAR_ME_REGION_ID && nearbyBeaches.length === 0) {
       setGeospatialExposureRegionId(regionId);
       setIsGeospatialExposureLoading(false);
@@ -5735,16 +5746,17 @@ export const App: React.FC = () => {
   // it can add a line of text, never touch scoring/colours). One fetch per region, resolved to
   // null on quiet days and on ANY failure, so the UI's default is silence, not an error.
   const [regionDustLevel, setRegionDustLevel] = useState<DustLevel | null>(null);
+  // conditionsIsland, not selectedIsland: no dust reading for the region behind the landing.
   useEffect(() => {
     let cancelled = false;
     setRegionDustLevel(null);
-    const coords = selectedIsland?.coordinates;
-    if (!selectedIsland || !coords) return;
-    getRegionDust(selectedIsland.id, coords.lat, coords.lon).then(reading => {
+    const coords = conditionsIsland?.coordinates;
+    if (!conditionsIsland || !coords) return;
+    getRegionDust(conditionsIsland.id, coords.lat, coords.lon).then(reading => {
       if (!cancelled) setRegionDustLevel(reading?.level ?? null);
     });
     return () => { cancelled = true; };
-  }, [selectedIsland?.id]);
+  }, [conditionsIsland?.id]);
   const rainRiskSummary = useMemo(() => getRainRiskSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
   const rainRiskCopy = useMemo(() => getRainRiskCopy(rainRiskSummary, language, selectedForecast?.date), [language, rainRiskSummary, selectedForecast?.date]);
   const hourlyWindIncreaseSummary = useMemo(() => getHourlyWindIncreaseSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
